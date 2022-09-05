@@ -4,7 +4,7 @@ import CodeEditor from 'components/ide/CodeEditor';
 import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 
 const IDE = (props: Props) => {
-  const { width, height } = props;
+  const { width, height, language } = props;
   const terminalRef = useRef<any>();
   const entryFileValueRef = useRef<string | undefined>();
 
@@ -24,14 +24,15 @@ const IDE = (props: Props) => {
         Run Code
       </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
-        <CodeEditor updateCode={updateCode} width={'50%'} height={'100%'} />
-        <CodeExecutionTerminal ref={terminalRef} codeRef={entryFileValueRef} width={'50%'} height={'100%'} />
+        <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} />
+        <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={entryFileValueRef} width={'50%'} height={'100%'} />
       </div>
     </div>
   );
 };
 
 type Props = {
+  language: string;
   height?: string;
   width?: string;
 };
