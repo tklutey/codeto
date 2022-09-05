@@ -3,11 +3,10 @@ import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
   const { codeRef, width, height, language } = props;
   const terminalRef = useRef<any>();
+
   useImperativeHandle(ref, () => ({
     runCode() {
-      console.log('runCode');
       if (terminalRef.current) {
-        console.log(terminalRef.current);
         terminalRef.current.contentWindow?.postMessage(
           {
             code: codeRef.current,
@@ -18,6 +17,22 @@ const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
       }
     }
   }));
+
+  useImperativeHandle(ref, () => ({
+    testCode() {
+      if (terminalRef.current) {
+        terminalRef.current.contentWindow?.postMessage(
+          {
+            code: codeRef.current,
+            event: 'testCode',
+            expectedOutput: 'Hello World'
+          },
+          '*'
+        );
+      }
+    }
+  }));
+
   return <iframe ref={terminalRef} style={{ width: width, height: height }} src={`https://riju.codeamigo.xyz/${language}`} />;
 });
 
