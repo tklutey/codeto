@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import CodeEditor from 'components/ide/CodeEditor';
 import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 
-const ProgrammingEnvironment = () => {
+const IDE = () => {
   const terminalRef = useRef<any>();
   const entryFileValueRef = useRef<string | undefined>();
 
@@ -30,4 +30,4 @@ const ProgrammingEnvironment = () => {
   );
 };
 
-export default ProgrammingEnvironment;
+export default IDE;
