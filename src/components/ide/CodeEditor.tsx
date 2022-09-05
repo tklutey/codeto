@@ -18,14 +18,15 @@ const CodeEditor = (props: Props) => {
         scrollBeyondLastLine: false,
         wordWrap: 'on'
       }}
-      width="50%"
-      height="100%"
+      {...props}
     />
   );
 };
 
 type Props = {
   updateCode: (newCode?: string, _?: any) => void;
+  width?: string;
+  height?: string;
 };
 
 export default CodeEditor;

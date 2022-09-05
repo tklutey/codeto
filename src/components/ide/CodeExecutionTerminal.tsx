@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
 const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
-  const { codeRef } = props;
+  const { codeRef, width, height } = props;
   const terminalRef = useRef<any>();
   useImperativeHandle(ref, () => ({
     runCode() {
@@ -16,11 +16,13 @@ const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
       }
     }
   }));
-  return <iframe ref={terminalRef} style={{ width: '50%', height: '100%' }} src={`https://riju.codeamigo.xyz/python`} />;
+  return <iframe ref={terminalRef} style={{ width: width, height: height }} src={`https://riju.codeamigo.xyz/python`} />;
 });
 
 type Props = {
   codeRef: any;
+  width?: string;
+  height?: string;
 };
 
 export default CodeExecutionTerminal;

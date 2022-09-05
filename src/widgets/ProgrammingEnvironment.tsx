@@ -23,8 +23,8 @@ const ProgrammingEnvironment = () => {
         Run Code
       </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
-        <CodeEditor updateCode={updateCode} />
-        <CodeExecutionTerminal ref={terminalRef} codeRef={entryFileValueRef} />
+        <CodeEditor updateCode={updateCode} width={'50%'} height={'100%'} />
+        <CodeExecutionTerminal ref={terminalRef} codeRef={entryFileValueRef} width={'50%'} height={'100%'} />
       </div>
     </div>
   );
