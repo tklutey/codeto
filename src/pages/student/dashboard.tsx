@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import Layout from 'layout';
 import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 
 const getStudentMasteryMockApi = () => {
