@@ -2,13 +2,13 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconDashboard, IconDeviceAnalytics } from '@tabler/icons';
+import { IconDashboard, IconDeviceAnalytics, IconPencil } from '@tabler/icons';
 import { OverrideIcon } from 'types';
 
 // constant
 const icons = {
   IconDashboard,
-  IconDeviceAnalytics
+  IconPencil
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -33,11 +33,19 @@ const student: StudentMenuProps = {
   type: 'group',
   children: [
     {
+      id: 'dashboard',
+      title: <FormattedMessage id="Dashboard" />,
+      type: 'item',
+      url: '/student/dashboard',
+      icon: icons.IconDashboard,
+      breadcrumbs: false
+    },
+    {
       id: 'practice',
       title: <FormattedMessage id="Practice" />,
       type: 'item',
       url: '/student/practice',
-      icon: icons.IconDashboard,
+      icon: icons.IconPencil,
       breadcrumbs: false
     }
   ]
