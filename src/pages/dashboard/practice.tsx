@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import Layout from 'layout';
-import IDE from 'components/ide';
+import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 
 const Practice = () => {
-  return <IDE />;
+  return <ProgrammingActivityLayout />;
 };
 Practice.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

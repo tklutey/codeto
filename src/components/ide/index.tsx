@@ -3,7 +3,8 @@ import { Button } from '@mui/material';
 import CodeEditor from 'components/ide/CodeEditor';
 import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 
-const IDE = () => {
+const IDE = (props: Props) => {
+  const { width, height } = props;
   const terminalRef = useRef<any>();
   const entryFileValueRef = useRef<string | undefined>();
 
@@ -18,7 +19,7 @@ const IDE = () => {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Button onClick={handleRunCode} style={{ height: '10%' }}>
         Run Code
       </Button>
@@ -30,4 +31,8 @@ const IDE = () => {
   );
 };
 
+type Props = {
+  height?: string;
+  width?: string;
+};
 export default IDE;
