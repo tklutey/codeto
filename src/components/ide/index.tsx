@@ -9,8 +9,9 @@ const IDE = (props: Props) => {
   const entryFileValueRef = useRef<string | undefined>();
 
   const handleRunCode = () => {
-    console.log('handleRunCode');
+    console.log('handleRunCode in IDE');
     if (terminalRef.current) {
+      console.log('terminalRef in IDE');
       console.log(terminalRef.current);
       terminalRef.current.runCode();
     }

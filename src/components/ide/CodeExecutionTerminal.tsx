@@ -5,8 +5,9 @@ const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
   const terminalRef = useRef<any>();
   useImperativeHandle(ref, () => ({
     runCode() {
-      console.log('runCode');
+      console.log('runCode in CodeExecutionTerminal');
       if (terminalRef.current) {
+        console.log('terminalRef in CodeExecutionTerminal');
         console.log(terminalRef.current);
         terminalRef.current.contentWindow?.postMessage(
           {
