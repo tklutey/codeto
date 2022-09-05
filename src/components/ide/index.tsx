@@ -20,7 +20,7 @@ const IDE = (props: Props) => {
 
   return (
     <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Button onClick={handleRunCode} style={{ height: '10%' }}>
+      <Button variant="contained" onClick={handleRunCode} style={{ height: '5%', marginBottom: '10px' }}>
         Run Code
       </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
