@@ -13,7 +13,16 @@ const withTM = require('next-transpile-modules')([
 ]);
 
 const nextConfig = withTM({
-  reactStrictMode: true
+  reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/student/dashboard',
+        permanent: true
+      }
+    ];
+  }
 });
 
 module.exports = nextConfig;
