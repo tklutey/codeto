@@ -13,7 +13,6 @@ import Layouts from 'components/landingpage/Layouts';
 import KeyFeature from 'components/landingpage/KeyFeature';
 import Subscribe from 'components/landingpage/Subscribe';
 import Footer from 'components/landingpage/Footer';
-import Customization from 'layout/Customization';
 import AppBar from 'ui-component/extended/AppBar';
 
 const HeaderWrapper = styled('div')(({ theme }) => ({
@@ -56,7 +55,6 @@ const Landing = () => (
       <Subscribe />
     </SecondWrapper>
     <Footer />
-    <Customization />
   </Page>
 );
 

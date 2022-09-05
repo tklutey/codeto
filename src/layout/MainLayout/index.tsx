@@ -1,14 +1,13 @@
-import React, { useMemo, FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 // material-ui
-import { styled, useTheme, Theme } from '@mui/material/styles';
-import { Container, AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import { styled, Theme, useTheme } from '@mui/material/styles';
+import { AppBar, Box, Container, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
 
 // project imports
 import Breadcrumbs from 'ui-component/extended/Breadcrumbs';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Customization from '../Customization';
 import navigation from 'menu-items';
 import useConfig from 'hooks/useConfig';
 import { drawerWidth } from 'store/constant';
@@ -128,7 +127,6 @@ const MainLayout: FC = ({ children }) => {
             </>
           )}
         </Main>
-        <Customization />
       </Box>
     </AuthGuard>
   );
