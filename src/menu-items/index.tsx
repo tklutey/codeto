@@ -8,11 +8,12 @@ import utilities from './utilities';
 import support from './support';
 import other from './other';
 import { NavItemType } from 'types';
+import student from 'menu-items/student';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems: { items: NavItemType[] } = {
-  items: [dashboard, widget, application, forms, elements, pages, utilities, support, other]
+  items: [student]
 };
 
 export default menuItems;
