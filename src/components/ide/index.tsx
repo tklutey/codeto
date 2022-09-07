@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Button } from '@mui/material';
 import CodeEditor from 'components/ide/CodeEditor';
 import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
+import Tests from 'components/ide/Tests';
 
 const IDE = (props: Props) => {
   const { width, height, language } = props;
@@ -9,11 +10,14 @@ const IDE = (props: Props) => {
   const entryFileValueRef = useRef<string | undefined>();
 
   const handleRunCode = () => {
-    console.log('handleRunCode in IDE');
     if (terminalRef.current) {
-      console.log('terminalRef in IDE');
-      console.log(terminalRef.current);
       terminalRef.current.runCode();
+    }
+  };
+
+  const handleTestCode = () => {
+    if (terminalRef.current) {
+      terminalRef.current.testCode();
     }
   };
 
@@ -26,9 +30,15 @@ const IDE = (props: Props) => {
       <Button variant="contained" onClick={handleRunCode} style={{ height: '5%', marginBottom: '10px' }}>
         Run Code
       </Button>
+      <Button variant="contained" onClick={handleTestCode} style={{ height: '5%', marginBottom: '10px' }}>
+        Test Code
+      </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} />
-        <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={entryFileValueRef} width={'50%'} height={'100%'} />
+        <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
+          <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={entryFileValueRef} width={'100%'} height={'60%'} />
+          <Tests />
+        </div>
       </div>
     </div>
   );
