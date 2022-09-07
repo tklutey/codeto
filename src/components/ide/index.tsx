@@ -30,14 +30,11 @@ const IDE = (props: Props) => {
       <Button variant="contained" onClick={handleRunCode} style={{ height: '5%', marginBottom: '10px' }}>
         Run Code
       </Button>
-      <Button variant="contained" onClick={handleTestCode} style={{ height: '5%', marginBottom: '10px' }}>
-        Test Code
-      </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} />
         <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={entryFileValueRef} width={'100%'} height={'60%'} />
-          <Tests />
+          <Tests handleRunTests={handleTestCode} />
         </div>
       </div>
     </div>
