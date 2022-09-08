@@ -15,10 +15,7 @@ const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
           '*'
         );
       }
-    }
-  }));
-
-  useImperativeHandle(ref, () => ({
+    },
     testCode() {
       if (terminalRef.current) {
         terminalRef.current.contentWindow?.postMessage(

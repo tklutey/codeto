@@ -6,12 +6,20 @@ const mockApiCall = () => {
   return {
     assignmentTitle: 'Linked List',
     assignmentDescription: 'Make a linked list',
-    language: 'python'
+    language: 'python',
+    startingCode: `print('hello world')`
   };
 };
 const Practice = () => {
-  const { assignmentTitle, assignmentDescription, language } = mockApiCall();
-  return <ProgrammingActivityLayout assignmentTitle={assignmentTitle} assignmentDescription={assignmentDescription} language={language} />;
+  const { assignmentTitle, assignmentDescription, language, startingCode } = mockApiCall();
+  return (
+    <ProgrammingActivityLayout
+      assignmentTitle={assignmentTitle}
+      assignmentDescription={assignmentDescription}
+      language={language}
+      startingCode={startingCode}
+    />
+  );
 };
 Practice.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

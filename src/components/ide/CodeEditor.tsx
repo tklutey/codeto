@@ -2,10 +2,11 @@ import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
 
 const CodeEditor = (props: Props) => {
-  const { updateCode, language } = props;
+  const { updateCode, language, startingCode } = props;
   return (
     <MonacoEditor
       defaultLanguage={language}
+      defaultValue={startingCode}
       onChange={updateCode}
       onMount={() => console.log('mounted')}
       theme={'vs-dark'}
@@ -25,6 +26,7 @@ const CodeEditor = (props: Props) => {
 
 type Props = {
   updateCode: (newCode?: string, _?: any) => void;
+  startingCode?: string;
   language: string;
   width?: string;
   height?: string;

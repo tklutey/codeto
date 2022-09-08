@@ -5,9 +5,9 @@ import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 import Tests from 'components/ide/Tests';
 
 const IDE = (props: Props) => {
-  const { width, height, language } = props;
+  const { width, height, language, startingCode } = props;
   const terminalRef = useRef<any>();
-  const entryFileValueRef = useRef<string | undefined>();
+  const codeRef = useRef<string | undefined>(startingCode);
 
   const handleRunCode = () => {
     if (terminalRef.current) {
@@ -22,7 +22,7 @@ const IDE = (props: Props) => {
   };
 
   const updateCode = (newCode?: string, _?: any) => {
-    entryFileValueRef.current = newCode;
+    codeRef.current = newCode;
   };
 
   return (
@@ -31,9 +31,9 @@ const IDE = (props: Props) => {
         Run Code
       </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
-        <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} />
+        <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
         <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
-          <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={entryFileValueRef} width={'100%'} height={'60%'} />
+          <CodeExecutionTerminal ref={terminalRef} language={language} codeRef={codeRef} width={'100%'} height={'60%'} />
           <Tests handleRunTests={handleTestCode} />
         </div>
       </div>
@@ -43,6 +43,7 @@ const IDE = (props: Props) => {
 
 type Props = {
   language: string;
+  startingCode?: string;
   height?: string;
   width?: string;
 };
