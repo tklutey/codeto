@@ -39,8 +39,8 @@ const Tests = (props: Props) => {
             {suite.errors.map(
               (val) =>
                 val.message &&
-                val.message.split('//').map((value, i) => {
-                  return <div key={i}>{value}</div>;
+                val.message.split('//').map((value, j) => {
+                  return <div key={j}>{value}</div>;
                 })
             )}
           </div>

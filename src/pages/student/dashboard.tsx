@@ -18,10 +18,6 @@ const getStudentMasteryMockApi = () => {
   };
 };
 
-// function to capitalize first letter of string
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 const StudentDashboard = () => {
   const studentMastery = getStudentMasteryMockApi();
   return (
