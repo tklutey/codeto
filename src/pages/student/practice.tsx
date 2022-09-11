@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 
-const mockApiCall = () => {
+const getNextLearningExercise = () => {
   return {
     assignmentTitle: 'Hello World',
     assignmentDescription: 'Write a program that prints "Hello World" to the console.',
@@ -18,7 +18,7 @@ public class Main {
   };
 };
 const Practice = () => {
-  const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput } = mockApiCall();
+  const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput } = getNextLearningExercise();
   return (
     <ProgrammingActivityLayout
       assignmentTitle={assignmentTitle}

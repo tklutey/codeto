@@ -3,7 +3,7 @@ import Layout from 'layout';
 import MainCard from 'ui-component/cards/MainCard';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 
-const getStudentMasteryMockApi = () => {
+const getCurrentKnowledgeState = () => {
   return {
     'Primitive Types': 100,
     'Using Objects': 100,
@@ -19,7 +19,7 @@ const getStudentMasteryMockApi = () => {
 };
 
 const StudentDashboard = () => {
-  const studentMastery = getStudentMasteryMockApi();
+  const studentMastery = getCurrentKnowledgeState();
   return (
     <MainCard title="Student Mastery" style={{ width: '70%' }}>
       <Grid container spacing={2}>
