@@ -2,14 +2,14 @@ import IDE from 'components/ide';
 import React from 'react';
 
 const ProgrammingActivityLayout = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, language, startingCode } = props;
+  const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput } = props;
   return (
     <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center' }}>
       <div style={{ width: '20%', display: 'flex', flexDirection: 'column', alignSelf: 'flex-start', paddingTop: '55px' }}>
         <h1> {assignmentTitle} </h1>
         <p> {assignmentDescription} </p>
       </div>
-      <IDE width={'80%'} height={'100%'} language={language} startingCode={startingCode} />
+      <IDE width={'80%'} height={'100%'} language={language} startingCode={startingCode} expectedOutput={expectedOutput} />
     </div>
   );
 };
@@ -19,6 +19,7 @@ type Props = {
   assignmentDescription: string;
   language: string;
   startingCode?: string;
+  expectedOutput: string;
 };
 
 export default ProgrammingActivityLayout;

@@ -4,20 +4,28 @@ import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 
 const mockApiCall = () => {
   return {
-    assignmentTitle: 'Linked List',
-    assignmentDescription: 'Make a linked list',
-    language: 'python',
-    startingCode: `print('hello world')`
+    assignmentTitle: 'Hello World',
+    assignmentDescription: 'Write a program that prints "Hello World" to the console.',
+    language: 'java',
+    startingCode: `
+public class Main {
+    public static void main(String[] args) {
+        // Write your code here
+    }
+}
+    `,
+    expectedOutput: 'Hello, World'
   };
 };
 const Practice = () => {
-  const { assignmentTitle, assignmentDescription, language, startingCode } = mockApiCall();
+  const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput } = mockApiCall();
   return (
     <ProgrammingActivityLayout
       assignmentTitle={assignmentTitle}
       assignmentDescription={assignmentDescription}
       language={language}
       startingCode={startingCode}
+      expectedOutput={expectedOutput}
     />
   );
 };
