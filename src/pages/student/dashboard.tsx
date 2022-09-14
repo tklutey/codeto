@@ -5,7 +5,7 @@ import { Grid, LinearProgress, Typography } from '@mui/material';
 import { trpc } from 'utils/trpc';
 
 const StudentDashboard = () => {
-  const studentMasteryData = trpc.useQuery(['getCurrentKnowledgeState']);
+  const studentMasteryData = trpc.useQuery(['knowledgeState.get']);
 
   return (
     <MainCard title="Student Mastery" style={{ width: '70%' }}>
