@@ -33,6 +33,10 @@
     "@mui/x-date-pickers": "^5.0.0-alpha.3",
     "@reduxjs/toolkit": "^1.8.2",
     "@tabler/icons": "^1.68.0",
+    "@trpc/client": "^9.27.2",
+    "@trpc/next": "^9.27.2",
+    "@trpc/react": "^9.27.2",
+    "@trpc/server": "^9.27.2",
     "amazon-cognito-identity-js": "^5.2.9",
     "apexcharts": "^3.35.2",
     "axios": "^0.26.0",
@@ -73,6 +77,7 @@
     "react-organizational-chart": "^2.1.1",
     "react-otp-input-rc-17": "^2.4.1-minor",
     "react-perfect-scrollbar": "^1.5.8",
+    "react-query": "3",
     "react-quill": "^2.0.0-beta.4",
     "react-redux": "^7.2.6",
     "react-slick": "^0.28.1",
@@ -88,7 +93,8 @@
     "stylis-plugin-rtl": "^2.1.1",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/chance": "^1.1.3",
