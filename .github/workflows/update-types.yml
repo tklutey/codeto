@@ -20,10 +20,10 @@ jobs:
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14
-      - run: yarn update-types
-      - name: see secrets
+      - name: Secrets
         - run: echo $SUPABASE_URL
         - run: echo $SUPABASE_ANON_KEY
+      - run: yarn update-types
       - name: check for file changes
         id: git_status
         run: |
