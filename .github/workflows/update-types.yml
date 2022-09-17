@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SUPABASE_URL: ${{secrets.SUPABASE_URL}}
-      SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
+      SUPABASE_ANON_KEY: ${{secrets.SUPABASE_KEY}}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14
-      - run: npm run update-types
+      - run: yarn update-types
       - name: check for file changes
         id: git_status
         run: |
