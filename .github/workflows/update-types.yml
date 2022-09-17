@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 14
       - run: yarn update-types
+      - name: see secrets
+        - run: echo $SUPABASE_URL
+        - run: echo $SUPABASE_ANON_KEY
       - name: check for file changes
         id: git_status
         run: |
