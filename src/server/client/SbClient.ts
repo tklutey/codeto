@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { definitions } from 'types/subabase';
+import { definitions } from 'types/supabase';
 
 export default class SbClient {
   private supabaseClient: SupabaseClient;
