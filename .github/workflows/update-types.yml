@@ -25,6 +25,11 @@ jobs:
         id: git_status
         run: |
           echo "::set-output name=status::$(git status -s)"
+      - name: Prettify code
+              uses: creyD/prettier_action@v4.2
+              with:
+                # This part is also where you can pass other options, for example:
+                prettier_options: --write src/types/supabase.ts
       - name: Commit files
         if: ${{contains(steps.git_status.outputs.status, ' ')}}
         run: |
