@@ -1,18 +1,16 @@
 import * as trpc from '@trpc/server';
+import SbClient from 'server/client/SbClient';
 
 export const knowledgeState = trpc.router().query('get', {
-  resolve() {
-    return {
-      'Primitive Types': 100,
-      'Using Objects': 100,
-      'Boolean Expressions and if Statements': 100,
-      Iteration: 80,
-      'Writing Classes': 70,
-      Array: 50,
-      ArrayList: 30,
-      '2D Array': 10,
-      Inheritance: 0,
-      Recursion: 0
-    };
+  async resolve() {
+    const sbClient = new SbClient();
+    const learningUnits = await sbClient.get_learning_units();
+    let learningUnitMastery: Record<string, number> = {};
+    learningUnits?.forEach((learningUnit) => {
+      if (learningUnit.unit_name) {
+        learningUnitMastery[learningUnit.unit_name] = Math.floor(Math.random() * 100);
+      }
+    });
+    return learningUnitMastery;
   }
 });
