@@ -8,7 +8,7 @@ const StudentDashboard = () => {
   const studentMasteryData = trpc.useQuery(['knowledgeState.get']);
 
   return (
-    <MainCard title="Student Mastery" style={{ width: '70%' }}>
+    <MainCard title="Student Mastery" style={{ width: '100%' }}>
       {studentMasteryData?.data && (
         <Grid container spacing={2}>
           {Object.entries(studentMasteryData.data).map(([key, value]) => (
