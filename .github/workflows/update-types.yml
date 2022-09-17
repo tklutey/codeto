@@ -21,8 +21,10 @@ jobs:
         with:
           node-version: 14
       - name: Secrets
-        - run: echo $SUPABASE_URL
-        - run: echo $SUPABASE_ANON_KEY
+        id: secrets
+        run: |
+          echo ${#TEST_GITHUB_TOKEN}
+          echo ${#TEST_SECRET}
       - run: yarn update-types
       - name: check for file changes
         id: git_status
