@@ -204,6 +204,390 @@ export interface paths {
       };
     };
   };
+  '/decorated_denormalized_standards': {
+    get: {
+      parameters: {
+        query: {
+          standard_code?: parameters['rowFilter.decorated_denormalized_standards.standard_code'];
+          standard_description?: parameters['rowFilter.decorated_denormalized_standards.standard_description'];
+          objective_code?: parameters['rowFilter.decorated_denormalized_standards.objective_code'];
+          objective_description?: parameters['rowFilter.decorated_denormalized_standards.objective_description'];
+          topic_code?: parameters['rowFilter.decorated_denormalized_standards.topic_code'];
+          topic_description?: parameters['rowFilter.decorated_denormalized_standards.topic_description'];
+          unit_name?: parameters['rowFilter.decorated_denormalized_standards.unit_name'];
+          unit_id?: parameters['rowFilter.decorated_denormalized_standards.unit_id'];
+          unit_sequence?: parameters['rowFilter.decorated_denormalized_standards.unit_sequence'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['decorated_denormalized_standards'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
+  '/standard_relationship': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_relationship.id'];
+          created_at?: parameters['rowFilter.standard_relationship.created_at'];
+          parent_id?: parameters['rowFilter.standard_relationship.parent_id'];
+          child_id?: parameters['rowFilter.standard_relationship.child_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['standard_relationship'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** standard_relationship */
+          standard_relationship?: definitions['standard_relationship'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_relationship.id'];
+          created_at?: parameters['rowFilter.standard_relationship.created_at'];
+          parent_id?: parameters['rowFilter.standard_relationship.parent_id'];
+          child_id?: parameters['rowFilter.standard_relationship.child_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_relationship.id'];
+          created_at?: parameters['rowFilter.standard_relationship.created_at'];
+          parent_id?: parameters['rowFilter.standard_relationship.parent_id'];
+          child_id?: parameters['rowFilter.standard_relationship.child_id'];
+        };
+        body: {
+          /** standard_relationship */
+          standard_relationship?: definitions['standard_relationship'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  '/topics_denormalized': {
+    get: {
+      parameters: {
+        query: {
+          standard_id?: parameters['rowFilter.topics_denormalized.standard_id'];
+          obj_id?: parameters['rowFilter.topics_denormalized.obj_id'];
+          topic_id?: parameters['rowFilter.topics_denormalized.topic_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['topics_denormalized'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
+  '/learning_standard': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.learning_standard.id'];
+          created_at?: parameters['rowFilter.learning_standard.created_at'];
+          code?: parameters['rowFilter.learning_standard.code'];
+          description?: parameters['rowFilter.learning_standard.description'];
+          type?: parameters['rowFilter.learning_standard.type'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['learning_standard'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** learning_standard */
+          learning_standard?: definitions['learning_standard'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.learning_standard.id'];
+          created_at?: parameters['rowFilter.learning_standard.created_at'];
+          code?: parameters['rowFilter.learning_standard.code'];
+          description?: parameters['rowFilter.learning_standard.description'];
+          type?: parameters['rowFilter.learning_standard.type'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.learning_standard.id'];
+          created_at?: parameters['rowFilter.learning_standard.created_at'];
+          code?: parameters['rowFilter.learning_standard.code'];
+          description?: parameters['rowFilter.learning_standard.description'];
+          type?: parameters['rowFilter.learning_standard.type'];
+        };
+        body: {
+          /** learning_standard */
+          learning_standard?: definitions['learning_standard'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  '/topic_unit_relationship': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.topic_unit_relationship.id'];
+          created_at?: parameters['rowFilter.topic_unit_relationship.created_at'];
+          topic_id?: parameters['rowFilter.topic_unit_relationship.topic_id'];
+          unit_id?: parameters['rowFilter.topic_unit_relationship.unit_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['topic_unit_relationship'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** topic_unit_relationship */
+          topic_unit_relationship?: definitions['topic_unit_relationship'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.topic_unit_relationship.id'];
+          created_at?: parameters['rowFilter.topic_unit_relationship.created_at'];
+          topic_id?: parameters['rowFilter.topic_unit_relationship.topic_id'];
+          unit_id?: parameters['rowFilter.topic_unit_relationship.unit_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.topic_unit_relationship.id'];
+          created_at?: parameters['rowFilter.topic_unit_relationship.created_at'];
+          topic_id?: parameters['rowFilter.topic_unit_relationship.topic_id'];
+          unit_id?: parameters['rowFilter.topic_unit_relationship.unit_id'];
+        };
+        body: {
+          /** topic_unit_relationship */
+          topic_unit_relationship?: definitions['topic_unit_relationship'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  '/rpc/get_standards': {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferParams'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -244,6 +628,112 @@ export interface definitions {
     created_at?: string;
     /** Format: text */
     course_name?: string;
+  };
+  decorated_denormalized_standards: {
+    /** Format: text */
+    standard_code?: string;
+    /** Format: text */
+    standard_description?: string;
+    /** Format: text */
+    objective_code?: string;
+    /** Format: text */
+    objective_description?: string;
+    /** Format: text */
+    topic_code?: string;
+    /** Format: text */
+    topic_description?: string;
+    /** Format: text */
+    unit_name?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    unit_id?: number;
+    /** Format: bigint */
+    unit_sequence?: number;
+  };
+  standard_relationship: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    parent_id?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    child_id?: number;
+  };
+  topics_denormalized: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    standard_id?: number;
+    /** Format: bigint */
+    obj_id?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    topic_id?: number;
+  };
+  learning_standard: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    code?: string;
+    /** Format: text */
+    description?: string;
+    /** Format: text */
+    type?: string;
+  };
+  topic_unit_relationship: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    topic_id?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `decorated_denormalized_standards.unit_id`.<fk table='decorated_denormalized_standards' column='unit_id'/>
+     */
+    unit_id?: number;
   };
 }
 
@@ -300,6 +790,66 @@ export interface parameters {
   'rowFilter.course.created_at': string;
   /** Format: text */
   'rowFilter.course.course_name': string;
+  /** @description decorated_denormalized_standards */
+  'body.decorated_denormalized_standards': definitions['decorated_denormalized_standards'];
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.standard_code': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.standard_description': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.objective_code': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.objective_description': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.topic_code': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.topic_description': string;
+  /** Format: text */
+  'rowFilter.decorated_denormalized_standards.unit_name': string;
+  /** Format: bigint */
+  'rowFilter.decorated_denormalized_standards.unit_id': string;
+  /** Format: bigint */
+  'rowFilter.decorated_denormalized_standards.unit_sequence': string;
+  /** @description standard_relationship */
+  'body.standard_relationship': definitions['standard_relationship'];
+  /** Format: bigint */
+  'rowFilter.standard_relationship.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.standard_relationship.created_at': string;
+  /** Format: bigint */
+  'rowFilter.standard_relationship.parent_id': string;
+  /** Format: bigint */
+  'rowFilter.standard_relationship.child_id': string;
+  /** @description topics_denormalized */
+  'body.topics_denormalized': definitions['topics_denormalized'];
+  /** Format: bigint */
+  'rowFilter.topics_denormalized.standard_id': string;
+  /** Format: bigint */
+  'rowFilter.topics_denormalized.obj_id': string;
+  /** Format: bigint */
+  'rowFilter.topics_denormalized.topic_id': string;
+  /** @description learning_standard */
+  'body.learning_standard': definitions['learning_standard'];
+  /** Format: bigint */
+  'rowFilter.learning_standard.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.learning_standard.created_at': string;
+  /** Format: text */
+  'rowFilter.learning_standard.code': string;
+  /** Format: text */
+  'rowFilter.learning_standard.description': string;
+  /** Format: text */
+  'rowFilter.learning_standard.type': string;
+  /** @description topic_unit_relationship */
+  'body.topic_unit_relationship': definitions['topic_unit_relationship'];
+  /** Format: bigint */
+  'rowFilter.topic_unit_relationship.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.topic_unit_relationship.created_at': string;
+  /** Format: bigint */
+  'rowFilter.topic_unit_relationship.topic_id': string;
+  /** Format: bigint */
+  'rowFilter.topic_unit_relationship.unit_id': string;
 }
 
 export interface operations {}

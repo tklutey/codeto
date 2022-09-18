@@ -11,19 +11,19 @@ const StudentDashboard = () => {
     <MainCard title="Student Mastery" style={{ width: '100%' }}>
       {studentMasteryData?.data && (
         <Grid container spacing={2}>
-          {Object.entries(studentMasteryData.data).map(([key, value]) => (
-            <Grid item key={key} xs={12}>
+          {studentMasteryData.data.map((unitData) => (
+            <Grid item key={unitData.unit_id} xs={12}>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item sm zeroMinWidth>
-                  <Typography variant="body2">{key}</Typography>
+                  <Typography variant="body2">{unitData.unit_name}</Typography>
                 </Grid>
                 <Grid item>
                   <Typography variant="body2" align="right">
-                    {value}%
+                    {unitData.unit_mastery}%
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <LinearProgress variant="determinate" value={value} color="primary" />
+                  <LinearProgress variant="determinate" value={unitData.unit_mastery} color="primary" />
                 </Grid>
               </Grid>
             </Grid>

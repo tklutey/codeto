@@ -14,8 +14,8 @@ export default class SbClient {
     }
   }
 
-  async get_learning_units() {
-    let { data: learning_unit, error } = await this.supabaseClient.from<definitions['learning_unit']>('learning_unit').select('unit_name');
-    return learning_unit;
+  async getKnowledgeState() {
+    let { data: x, error } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
+    return x;
   }
 }
