@@ -27,7 +27,7 @@ const nextConfig = withTM({
     SUPABASE_URL: 'https://albpgbarsvqtxqeodwvi.supabase.co',
     SUPABASE_KEY:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsYnBnYmFyc3ZxdHhxZW9kd3ZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjMxOTk2MDIsImV4cCI6MTk3ODc3NTYwMn0.gkrByuOz1k_ydoPAxKxfpH3sHnN-JFg5Y8X8oB83QZ8',
-    VERCEL_URL: 'https://codeto.io'
+    VERCEL_URL: 'https://www.codeto.io'
   }
 });
 
