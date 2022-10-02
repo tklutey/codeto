@@ -14,7 +14,7 @@ const CodeExecutionTerminal = (props: Props) => {
   useEffect(() => {
     if (term.current && terminalText) {
       term.current.clear();
-      term.current.writeln(terminalText, () => console.log('wrote + ' + terminalText));
+      term.current.writeln(terminalText, () => console.log('wrote ' + terminalText));
     }
   }, [terminalText]);
 

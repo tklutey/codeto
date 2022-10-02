@@ -13,23 +13,23 @@ const IDE = (props: Props) => {
   const { width, height, language, startingCode, expectedOutput } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
-  const [terminalText, setTerminalText] = React.useState<string>('Awaiting...');
+  const [terminalText, setTerminalText] = React.useState<string>('');
 
   const handleRunCode = () => {
     if (codeRef.current) {
-      setTerminalText('Running...');
       const input = {
         script: codeRef.current,
         language: language,
-        doMock: true
+        doMock: false
       };
-      mutation.mutate(input);
-      if (mutation.isSuccess) {
-        const output = mutation.data.output;
-        if (output) {
-          setTerminalText(output);
+      mutation.mutate(input, {
+        onSuccess: (data) => {
+          const output = data.output;
+          if (output) {
+            setTerminalText(output);
+          }
         }
-      }
+      });
     }
   };
 
