@@ -1,20 +1,21 @@
 import * as trpc from '@trpc/server';
 import { Execute, ExecuteApiFp } from 'server/client/jdoodle-ts-client';
+import { z } from 'zod';
 
-export const executeCode = trpc.router().query('get', {
-  async resolve() {
-    const clientId = 'ff007312f152182ebdc5b75e7ae71d38';
-    const clientSecret = '604a0c3d63604affe36a7212877989fba277b2afe3a2c8314735b5bda5df167c';
-    const language = 'java';
-    const script = `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, World");
-    }
-}`;
+const CLIENT_ID = 'ff007312f152182ebdc5b75e7ae71d38';
+const CLIENT_SECRET = '604a0c3d63604affe36a7212877989fba277b2afe3a2c8314735b5bda5df167c';
+
+export const executeCode = trpc.router().mutation('post', {
+  input: z.object({
+    language: z.string(),
+    script: z.string()
+  }),
+  async resolve({ input }) {
+    const { language, script } = input;
 
     const execute: Execute = {
-      clientId,
-      clientSecret,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
       script,
       language,
       versionIndex: '0'
