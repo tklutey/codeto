@@ -1,44 +1,35 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import 'xterm/css/xterm.css';
+import { Terminal } from 'xterm';
 
-const CodeExecutionTerminal = forwardRef((props: Props, ref) => {
-  const { codeRef, width, height, language, expectedOutput } = props;
-  const terminalRef = useRef<any>();
+const CodeExecutionTerminal = (props: Props) => {
+  const { width, height, expectedOutput, terminalText } = props;
+  const term = useRef<Terminal>();
+  useEffect(() => {
+    term.current = new Terminal();
+    // @ts-ignore
+    term.current.open(document.getElementById('terminal'));
+  }, []);
 
-  useImperativeHandle(ref, () => ({
-    runCode() {
-      if (terminalRef.current) {
-        terminalRef.current.contentWindow?.postMessage(
-          {
-            code: codeRef.current,
-            event: 'runCode'
-          },
-          '*'
-        );
-      }
-    },
-    testCode() {
-      if (terminalRef.current) {
-        terminalRef.current.contentWindow?.postMessage(
-          {
-            code: codeRef.current,
-            event: 'testCode',
-            expectedOutput: expectedOutput
-          },
-          '*'
-        );
-      }
+  useEffect(() => {
+    if (term.current && terminalText) {
+      term.current.clear();
+      term.current.writeln(terminalText, () => console.log('wrote + ' + terminalText));
     }
-  }));
+  }, [terminalText]);
 
-  return <iframe ref={terminalRef} style={{ width: width, height: height }} src={`https://riju.codeamigo.xyz/${language}`} />;
-});
+  return (
+    <div>
+      <div id="terminal" style={{ width: width, height: height }}></div>
+    </div>
+  );
+};
 
 type Props = {
-  codeRef: any;
   expectedOutput: string;
-  language: string;
   width?: string;
   height?: string;
+  terminalText?: string;
 };
 
 export default CodeExecutionTerminal;

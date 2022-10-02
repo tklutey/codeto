@@ -8,10 +8,11 @@ const CLIENT_SECRET = '604a0c3d63604affe36a7212877989fba277b2afe3a2c8314735b5bda
 export const executeCode = trpc.router().mutation('post', {
   input: z.object({
     language: z.string(),
-    script: z.string()
+    script: z.string(),
+    doMock: z.boolean()
   }),
   async resolve({ input }) {
-    const { language, script } = input;
+    const { language, script, doMock } = input;
 
     const execute: Execute = {
       clientId: CLIENT_ID,
@@ -21,9 +22,18 @@ export const executeCode = trpc.router().mutation('post', {
       versionIndex: '0'
     };
 
-    const executeApiFp = ExecuteApiFp();
-    const executePost = executeApiFp.executePost(execute);
-    const response200 = await executePost();
-    return response200;
+    if (doMock) {
+      return {
+        output: 'Hello, World\n',
+        statusCode: 200,
+        memory: '24176',
+        cpuTime: '0.06'
+      };
+    } else {
+      const executeApiFp = ExecuteApiFp();
+      const executePost = executeApiFp.executePost(execute);
+      const response200 = await executePost();
+      return response200;
+    }
   }
 });
