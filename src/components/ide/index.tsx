@@ -16,6 +16,7 @@ const IDE = (props: Props) => {
   const [terminalText, setTerminalText] = React.useState<string>('');
 
   const handleRunCode = () => {
+    setTerminalText('Running...');
     if (codeRef.current) {
       const input = {
         script: codeRef.current,
