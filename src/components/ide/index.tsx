@@ -3,14 +3,20 @@ import { Button } from '@mui/material';
 import CodeEditor from 'components/ide/CodeEditor';
 // import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 import dynamic from 'next/dynamic';
+import Tests from 'components/ide/Tests';
+import { trpc } from 'utils/trpc';
+import { ExerciseTests } from 'server/routers/lesson';
+
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
 });
-import Tests from 'components/ide/Tests';
-import { trpc } from 'utils/trpc';
 
+export type TestResult = {
+  status: 'pass' | 'fail' | 'running';
+  message: string;
+};
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, expectedOutput } = props;
+  const { width, height, language, startingCode, expectedOutput, tests } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
@@ -34,8 +40,21 @@ const IDE = (props: Props) => {
     }
   };
 
-  const handleTestCode = () => {
-    console.log('not yet implemented');
+  const handleTestCode = (): TestResult[] => {
+    const stdOut = 'Hello, World';
+    if (tests?.expectedOutput) {
+      const testResults: TestResult[] = tests.expectedOutput.map((test) => {
+        const status = test.matchRegex.match(stdOut) ? 'pass' : 'fail';
+        return { status: status, message: test.summary };
+      });
+      return testResults;
+    }
+    return [
+      {
+        status: 'pass',
+        message: 'No tests found'
+      }
+    ];
   };
 
   const updateCode = (newCode?: string, _?: any) => {
@@ -64,5 +83,6 @@ type Props = {
   startingCode?: string;
   height?: string;
   width?: string;
+  tests?: ExerciseTests;
 };
 export default IDE;

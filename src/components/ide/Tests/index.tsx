@@ -1,31 +1,20 @@
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { CodeSandboxTestMsgType, TestDataType } from 'components/ide/Tests/types';
+import { useState } from 'react';
+import { TestResult } from 'components/ide/index';
 
 const Tests = (props: Props) => {
   const { handleRunTests } = props;
-  const [suites, setSuites] = useState<TestDataType[]>();
-  useEffect(() => {
-    const handleTestResults = (msg: MessageEvent<CodeSandboxTestMsgType>) => {
-      if (msg.data.event === 'test_end') {
-        setSuites((curr) => {
-          if (curr?.find((val) => val.name === msg.data.test.name)) return curr;
+  const [suites, setSuites] = useState<TestResult[]>();
 
-          return [...(curr || []), msg.data.test];
-        });
-      }
-    };
-
-    window.addEventListener('message', handleTestResults);
-
-    return () => window.removeEventListener('message', handleTestResults);
-  }, []);
+  const doRunTests = () => {
+    setSuites(handleRunTests());
+  };
   return (
     <div>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h2>Test Summary</h2>
-          <Button variant="contained" onClick={handleRunTests} style={{ height: '35px', marginTop: '5px' }}>
+          <Button variant="contained" onClick={doRunTests} style={{ height: '35px', marginTop: '5px' }}>
             Run Tests
           </Button>
         </div>
@@ -34,15 +23,8 @@ const Tests = (props: Props) => {
         {suites?.map((suite, i) => (
           <div key={i}>
             <div>
-              {suite.status === 'pass' ? <>✅</> : <>❌</>} {suite.blocks.join(' > ')} {suite.name}
+              {suite.status === 'pass' ? <>✅</> : <>❌</>} {suite.message}
             </div>
-            {suite.errors.map(
-              (val) =>
-                val.message &&
-                val.message.split('//').map((value, j) => {
-                  return <div key={j}>{value}</div>;
-                })
-            )}
           </div>
         ))}
       </div>
@@ -51,7 +33,7 @@ const Tests = (props: Props) => {
 };
 
 type Props = {
-  handleRunTests: () => void;
+  handleRunTests: () => TestResult[];
 };
 
 export default Tests;

@@ -1,5 +1,11 @@
 import * as trpc from '@trpc/server';
 
+export type ExerciseTests = {
+  expectedOutput: {
+    summary: string;
+    matchRegex: string;
+  }[];
+};
 export const lesson = trpc.router().query('get', {
   resolve() {
     return {
@@ -13,7 +19,10 @@ public class Main {
     }
 }
     `,
-      expectedOutput: 'Hello, World'
+      expectedOutput: 'Hello, World',
+      tests: {
+        expectedOutput: [{ summary: 'The code outputs "Hello, World".', matchRegex: 'Hello, World' }]
+      }
     };
   }
 });

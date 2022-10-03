@@ -6,7 +6,7 @@ import { trpc } from 'utils/trpc';
 const Practice = () => {
   const lesson = trpc.useQuery(['lesson.get']);
   if (lesson?.data) {
-    const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput } = lesson.data;
+    const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput, tests } = lesson.data;
     return (
       <ProgrammingActivityLayout
         assignmentTitle={assignmentTitle}
@@ -14,6 +14,7 @@ const Practice = () => {
         language={language}
         startingCode={startingCode}
         expectedOutput={expectedOutput}
+        tests={tests}
       />
     );
   }
