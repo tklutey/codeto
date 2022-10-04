@@ -20,7 +20,7 @@ const IDE = (props: Props) => {
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
 
-  const executeCode = (onSuccess: (data: any) => void) => {
+  const executeCode = (onSuccess?: (output: string) => void) => {
     setTerminalText('Running...');
     if (codeRef.current) {
       const input = {
@@ -29,18 +29,17 @@ const IDE = (props: Props) => {
         doMock: false
       };
       mutation.mutate(input, {
-        onSuccess: onSuccess
+        onSuccess: (data) => {
+          const output = data.output;
+          if (output) {
+            setTerminalText(output);
+            if (onSuccess) {
+              onSuccess(output);
+            }
+          }
+        }
       });
     }
-  };
-
-  const handleRunCode = () => {
-    executeCode((data) => {
-      const output = data.output;
-      if (output) {
-        setTerminalText(output);
-      }
-    });
   };
 
   const runTestSuite = (testSuite: TestInstance[], stringToMatch: string): TestResult[] => {
@@ -50,21 +49,20 @@ const IDE = (props: Props) => {
     });
   };
 
+  const runAndPush = (testResults: TestResult[], testSuite: TestInstance[], stringToMatch: string) => {
+    const expectedOutputTestResults: TestResult[] = runTestSuite(testSuite, stringToMatch);
+    testResults.push(...expectedOutputTestResults);
+  };
+
   const handleTestCode = (): TestResult[] => {
     const testResults: TestResult[] = [];
     if (tests?.expectedOutput) {
-      executeCode((data) => {
-        const output = data.output;
-        if (output) {
-          setTerminalText(output);
-          const expectedOutputTestResults: TestResult[] = runTestSuite(tests.expectedOutput, output);
-          testResults.push(...expectedOutputTestResults);
-        }
+      executeCode((output) => {
+        runAndPush(testResults, tests.expectedOutput, output);
       });
     }
     if (tests?.expectedSourceCode) {
-      const expectedSourceCodeTestResults: TestResult[] = runTestSuite(tests.expectedSourceCode, codeRef.current || '');
-      testResults.push(...expectedSourceCodeTestResults);
+      runAndPush(testResults, tests.expectedSourceCode, codeRef.current || '');
     }
     if (testResults.length > 0) {
       return testResults;
@@ -83,7 +81,7 @@ const IDE = (props: Props) => {
 
   return (
     <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Button variant="contained" onClick={handleRunCode} style={{ height: '5%', marginBottom: '10px' }}>
+      <Button variant="contained" onClick={() => executeCode()} style={{ height: '5%', marginBottom: '10px' }}>
         Run Code
       </Button>
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
