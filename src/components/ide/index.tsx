@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import { Button } from '@mui/material';
 import CodeEditor from 'components/ide/CodeEditor';
-// import CodeExecutionTerminal from 'components/ide/CodeExecutionTerminal';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
-import { ExerciseTests } from 'server/routers/lesson';
+import { ExerciseTests, TestInstance } from 'server/routers/lesson';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
@@ -21,7 +20,7 @@ const IDE = (props: Props) => {
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
 
-  const handleRunCode = () => {
+  const executeCode = (onSuccess: (data: any) => void) => {
     setTerminalText('Running...');
     if (codeRef.current) {
       const input = {
@@ -30,23 +29,44 @@ const IDE = (props: Props) => {
         doMock: false
       };
       mutation.mutate(input, {
-        onSuccess: (data) => {
-          const output = data.output;
-          if (output) {
-            setTerminalText(output);
-          }
-        }
+        onSuccess: onSuccess
       });
     }
   };
 
+  const handleRunCode = () => {
+    executeCode((data) => {
+      const output = data.output;
+      if (output) {
+        setTerminalText(output);
+      }
+    });
+  };
+
+  const runTestSuite = (testSuite: TestInstance[], stringToMatch: string): TestResult[] => {
+    return testSuite.map((test) => {
+      const status = stringToMatch.match(test.matchRegex) ? 'pass' : 'fail';
+      return { status: status, message: test.summary };
+    });
+  };
+
   const handleTestCode = (): TestResult[] => {
-    const stdOut = 'Hello, World';
+    const testResults: TestResult[] = [];
     if (tests?.expectedOutput) {
-      const testResults: TestResult[] = tests.expectedOutput.map((test) => {
-        const status = test.matchRegex.match(stdOut) ? 'pass' : 'fail';
-        return { status: status, message: test.summary };
+      executeCode((data) => {
+        const output = data.output;
+        if (output) {
+          setTerminalText(output);
+          const expectedOutputTestResults: TestResult[] = runTestSuite(tests.expectedOutput, output);
+          testResults.push(...expectedOutputTestResults);
+        }
       });
+    }
+    if (tests?.expectedSourceCode) {
+      const expectedSourceCodeTestResults: TestResult[] = runTestSuite(tests.expectedSourceCode, codeRef.current || '');
+      testResults.push(...expectedSourceCodeTestResults);
+    }
+    if (testResults.length > 0) {
       return testResults;
     }
     return [
