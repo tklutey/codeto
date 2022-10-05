@@ -341,6 +341,195 @@ export interface paths {
       };
     };
   };
+  '/standard_knowledge_state_relationship': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_knowledge_state_relationship.id'];
+          created_at?: parameters['rowFilter.standard_knowledge_state_relationship.created_at'];
+          knowledge_state_id?: parameters['rowFilter.standard_knowledge_state_relationship.knowledge_state_id'];
+          standard_id?: parameters['rowFilter.standard_knowledge_state_relationship.standard_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['standard_knowledge_state_relationship'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** standard_knowledge_state_relationship */
+          standard_knowledge_state_relationship?: definitions['standard_knowledge_state_relationship'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_knowledge_state_relationship.id'];
+          created_at?: parameters['rowFilter.standard_knowledge_state_relationship.created_at'];
+          knowledge_state_id?: parameters['rowFilter.standard_knowledge_state_relationship.knowledge_state_id'];
+          standard_id?: parameters['rowFilter.standard_knowledge_state_relationship.standard_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.standard_knowledge_state_relationship.id'];
+          created_at?: parameters['rowFilter.standard_knowledge_state_relationship.created_at'];
+          knowledge_state_id?: parameters['rowFilter.standard_knowledge_state_relationship.knowledge_state_id'];
+          standard_id?: parameters['rowFilter.standard_knowledge_state_relationship.standard_id'];
+        };
+        body: {
+          /** standard_knowledge_state_relationship */
+          standard_knowledge_state_relationship?: definitions['standard_knowledge_state_relationship'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  '/knowledge_state': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.knowledge_state.id'];
+          created_at?: parameters['rowFilter.knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.knowledge_state.course_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['knowledge_state'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** knowledge_state */
+          knowledge_state?: definitions['knowledge_state'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.knowledge_state.id'];
+          created_at?: parameters['rowFilter.knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.knowledge_state.course_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.knowledge_state.id'];
+          created_at?: parameters['rowFilter.knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.knowledge_state.course_id'];
+        };
+        body: {
+          /** knowledge_state */
+          knowledge_state?: definitions['knowledge_state'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   '/topics_denormalized': {
     get: {
       parameters: {
@@ -588,6 +777,23 @@ export interface paths {
       };
     };
   };
+  '/rpc/get_knowledge_state': {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferParams'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -677,6 +883,50 @@ export interface definitions {
      * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
      */
     child_id?: number;
+  };
+  standard_knowledge_state_relationship: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `knowledge_state.id`.<fk table='knowledge_state' column='id'/>
+     */
+    knowledge_state_id?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    standard_id?: number;
+  };
+  knowledge_state: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `course.id`.<fk table='course' column='id'/>
+     */
+    course_id?: number;
   };
   topics_denormalized: {
     /**
@@ -820,6 +1070,24 @@ export interface parameters {
   'rowFilter.standard_relationship.parent_id': string;
   /** Format: bigint */
   'rowFilter.standard_relationship.child_id': string;
+  /** @description standard_knowledge_state_relationship */
+  'body.standard_knowledge_state_relationship': definitions['standard_knowledge_state_relationship'];
+  /** Format: bigint */
+  'rowFilter.standard_knowledge_state_relationship.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.standard_knowledge_state_relationship.created_at': string;
+  /** Format: bigint */
+  'rowFilter.standard_knowledge_state_relationship.knowledge_state_id': string;
+  /** Format: bigint */
+  'rowFilter.standard_knowledge_state_relationship.standard_id': string;
+  /** @description knowledge_state */
+  'body.knowledge_state': definitions['knowledge_state'];
+  /** Format: bigint */
+  'rowFilter.knowledge_state.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.knowledge_state.created_at': string;
+  /** Format: bigint */
+  'rowFilter.knowledge_state.course_id': string;
   /** @description topics_denormalized */
   'body.topics_denormalized': definitions['topics_denormalized'];
   /** Format: bigint */
