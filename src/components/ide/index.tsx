@@ -15,7 +15,7 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, expectedOutput, tests } = props;
+  const { width, height, language, startingCode, tests } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
@@ -87,7 +87,7 @@ const IDE = (props: Props) => {
       <div style={{ height: '90%', width: '100%', display: 'flex' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
         <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
-          <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} expectedOutput={expectedOutput} />
+          <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
           <Tests handleRunTests={handleTestCode} />
         </div>
       </div>
@@ -97,7 +97,6 @@ const IDE = (props: Props) => {
 
 type Props = {
   language: string;
-  expectedOutput: string;
   startingCode?: string;
   height?: string;
   width?: string;

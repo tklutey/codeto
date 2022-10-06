@@ -1,10 +1,10 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import 'xterm/css/xterm.css';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 
 const CodeExecutionTerminal = (props: Props) => {
-  const { width, height, expectedOutput, terminalText } = props;
+  const { width, height, terminalText } = props;
   const term = useRef<Terminal>();
   useEffect(() => {
     term.current = new Terminal();
@@ -30,7 +30,6 @@ const CodeExecutionTerminal = (props: Props) => {
 };
 
 type Props = {
-  expectedOutput: string;
   width?: string;
   height?: string;
   terminalText?: string;

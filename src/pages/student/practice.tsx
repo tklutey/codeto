@@ -21,7 +21,6 @@ const Practice = () => {
         assignmentDescription={assignmentDescription}
         language={language}
         startingCode={startingCode}
-        expectedOutput={''}
         tests={tests as ExerciseTests}
         youtubeTutorialUrl={youtubeTutorialUrl}
       />

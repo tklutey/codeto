@@ -10,7 +10,7 @@ const ColumnFlexDiv = styled('div')({
 });
 
 const ProgrammingActivityLayout = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput, tests, youtubeTutorialUrl } = props;
+  const { assignmentTitle, assignmentDescription, language, startingCode, tests, youtubeTutorialUrl } = props;
   return (
     <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center' }}>
       <div
@@ -41,7 +41,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           ></iframe>
         </ColumnFlexDiv>
       </div>
-      <IDE width={'80%'} height={'100%'} language={language} startingCode={startingCode} expectedOutput={expectedOutput} tests={tests} />
+      <IDE width={'80%'} height={'100%'} language={language} startingCode={startingCode} tests={tests} />
     </div>
   );
 };
@@ -51,7 +51,6 @@ type Props = {
   assignmentDescription: string;
   language: string;
   startingCode?: string;
-  expectedOutput: string;
   tests?: ExerciseTests;
   youtubeTutorialUrl?: string;
 };
