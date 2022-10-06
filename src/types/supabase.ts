@@ -437,99 +437,6 @@ export interface paths {
       };
     };
   };
-  '/knowledge_state': {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.knowledge_state.id'];
-          created_at?: parameters['rowFilter.knowledge_state.created_at'];
-          course_id?: parameters['rowFilter.knowledge_state.course_id'];
-          /** Filtering Columns */
-          select?: parameters['select'];
-          /** Ordering */
-          order?: parameters['order'];
-          /** Limiting and Pagination */
-          offset?: parameters['offset'];
-          /** Limiting and Pagination */
-          limit?: parameters['limit'];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters['range'];
-          /** Limiting and Pagination */
-          'Range-Unit'?: parameters['rangeUnit'];
-          /** Preference */
-          Prefer?: parameters['preferCount'];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions['knowledge_state'][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** knowledge_state */
-          knowledge_state?: definitions['knowledge_state'];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters['select'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.knowledge_state.id'];
-          created_at?: parameters['rowFilter.knowledge_state.created_at'];
-          course_id?: parameters['rowFilter.knowledge_state.course_id'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.knowledge_state.id'];
-          created_at?: parameters['rowFilter.knowledge_state.created_at'];
-          course_id?: parameters['rowFilter.knowledge_state.course_id'];
-        };
-        body: {
-          /** knowledge_state */
-          knowledge_state?: definitions['knowledge_state'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   '/topics_denormalized': {
     get: {
       parameters: {
@@ -562,6 +469,111 @@ export interface paths {
         };
         /** Partial Content */
         206: unknown;
+      };
+    };
+  };
+  '/coding_problem': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem.id'];
+          created_at?: parameters['rowFilter.coding_problem.created_at'];
+          title?: parameters['rowFilter.coding_problem.title'];
+          description?: parameters['rowFilter.coding_problem.description'];
+          language?: parameters['rowFilter.coding_problem.language'];
+          starting_code?: parameters['rowFilter.coding_problem.starting_code'];
+          tests?: parameters['rowFilter.coding_problem.tests'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['coding_problem'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** coding_problem */
+          coding_problem?: definitions['coding_problem'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem.id'];
+          created_at?: parameters['rowFilter.coding_problem.created_at'];
+          title?: parameters['rowFilter.coding_problem.title'];
+          description?: parameters['rowFilter.coding_problem.description'];
+          language?: parameters['rowFilter.coding_problem.language'];
+          starting_code?: parameters['rowFilter.coding_problem.starting_code'];
+          tests?: parameters['rowFilter.coding_problem.tests'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem.id'];
+          created_at?: parameters['rowFilter.coding_problem.created_at'];
+          title?: parameters['rowFilter.coding_problem.title'];
+          description?: parameters['rowFilter.coding_problem.description'];
+          language?: parameters['rowFilter.coding_problem.language'];
+          starting_code?: parameters['rowFilter.coding_problem.starting_code'];
+          tests?: parameters['rowFilter.coding_problem.tests'];
+        };
+        body: {
+          /** coding_problem */
+          coding_problem?: definitions['coding_problem'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
       };
     };
   };
@@ -760,7 +772,117 @@ export interface paths {
       };
     };
   };
+  '/basis_knowledge_state': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.basis_knowledge_state.id'];
+          created_at?: parameters['rowFilter.basis_knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.basis_knowledge_state.course_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['basis_knowledge_state'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** basis_knowledge_state */
+          basis_knowledge_state?: definitions['basis_knowledge_state'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.basis_knowledge_state.id'];
+          created_at?: parameters['rowFilter.basis_knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.basis_knowledge_state.course_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.basis_knowledge_state.id'];
+          created_at?: parameters['rowFilter.basis_knowledge_state.created_at'];
+          course_id?: parameters['rowFilter.basis_knowledge_state.course_id'];
+        };
+        body: {
+          /** basis_knowledge_state */
+          basis_knowledge_state?: definitions['basis_knowledge_state'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   '/rpc/get_standards': {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferParams'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
+  '/rpc/get_coding_problem': {
     post: {
       parameters: {
         body: {
@@ -899,7 +1021,7 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `knowledge_state.id`.<fk table='knowledge_state' column='id'/>
+     * This is a Foreign Key to `basis_knowledge_state.id`.<fk table='basis_knowledge_state' column='id'/>
      */
     knowledge_state_id?: number;
     /**
@@ -908,25 +1030,6 @@ export interface definitions {
      * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
      */
     standard_id?: number;
-  };
-  knowledge_state: {
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at?: string;
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Foreign Key to `course.id`.<fk table='course' column='id'/>
-     */
-    course_id?: number;
   };
   topics_denormalized: {
     /**
@@ -943,6 +1046,29 @@ export interface definitions {
      * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
      */
     topic_id?: number;
+  };
+  coding_problem: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: text */
+    title?: string;
+    /** Format: text */
+    description?: string;
+    /** Format: text */
+    language?: string;
+    /** Format: text */
+    starting_code?: string;
+    /** Format: json */
+    tests?: unknown;
   };
   learning_standard: {
     /**
@@ -984,6 +1110,25 @@ export interface definitions {
      * This is a Foreign Key to `decorated_denormalized_standards.unit_id`.<fk table='decorated_denormalized_standards' column='unit_id'/>
      */
     unit_id?: number;
+  };
+  basis_knowledge_state: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `course.id`.<fk table='course' column='id'/>
+     */
+    course_id?: number;
   };
 }
 
@@ -1080,14 +1225,6 @@ export interface parameters {
   'rowFilter.standard_knowledge_state_relationship.knowledge_state_id': string;
   /** Format: bigint */
   'rowFilter.standard_knowledge_state_relationship.standard_id': string;
-  /** @description knowledge_state */
-  'body.knowledge_state': definitions['knowledge_state'];
-  /** Format: bigint */
-  'rowFilter.knowledge_state.id': string;
-  /** Format: timestamp with time zone */
-  'rowFilter.knowledge_state.created_at': string;
-  /** Format: bigint */
-  'rowFilter.knowledge_state.course_id': string;
   /** @description topics_denormalized */
   'body.topics_denormalized': definitions['topics_denormalized'];
   /** Format: bigint */
@@ -1096,6 +1233,22 @@ export interface parameters {
   'rowFilter.topics_denormalized.obj_id': string;
   /** Format: bigint */
   'rowFilter.topics_denormalized.topic_id': string;
+  /** @description coding_problem */
+  'body.coding_problem': definitions['coding_problem'];
+  /** Format: bigint */
+  'rowFilter.coding_problem.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.coding_problem.created_at': string;
+  /** Format: text */
+  'rowFilter.coding_problem.title': string;
+  /** Format: text */
+  'rowFilter.coding_problem.description': string;
+  /** Format: text */
+  'rowFilter.coding_problem.language': string;
+  /** Format: text */
+  'rowFilter.coding_problem.starting_code': string;
+  /** Format: json */
+  'rowFilter.coding_problem.tests': string;
   /** @description learning_standard */
   'body.learning_standard': definitions['learning_standard'];
   /** Format: bigint */
@@ -1118,6 +1271,14 @@ export interface parameters {
   'rowFilter.topic_unit_relationship.topic_id': string;
   /** Format: bigint */
   'rowFilter.topic_unit_relationship.unit_id': string;
+  /** @description basis_knowledge_state */
+  'body.basis_knowledge_state': definitions['basis_knowledge_state'];
+  /** Format: bigint */
+  'rowFilter.basis_knowledge_state.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.basis_knowledge_state.created_at': string;
+  /** Format: bigint */
+  'rowFilter.basis_knowledge_state.course_id': string;
 }
 
 export interface operations {}
