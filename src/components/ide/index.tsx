@@ -4,7 +4,7 @@ import CodeEditor from 'components/ide/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
-import { ExerciseTests, TestInstance } from 'server/routers/lesson';
+import { ExerciseTests, TestInstance } from 'server/routers/codingProblem';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false

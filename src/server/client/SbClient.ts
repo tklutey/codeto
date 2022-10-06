@@ -18,4 +18,9 @@ export default class SbClient {
     let { data: x, error } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
     return x;
   }
+
+  async getCodingProblem() {
+    let { data: x, error } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem');
+    return x;
+  }
 }

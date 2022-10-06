@@ -483,6 +483,7 @@ export interface paths {
           language?: parameters['rowFilter.coding_problem.language'];
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
+          youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -540,6 +541,7 @@ export interface paths {
           language?: parameters['rowFilter.coding_problem.language'];
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
+          youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
         };
         header: {
           /** Preference */
@@ -561,6 +563,7 @@ export interface paths {
           language?: parameters['rowFilter.coding_problem.language'];
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
+          youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
         };
         body: {
           /** coding_problem */
@@ -1060,15 +1063,17 @@ export interface definitions {
      */
     created_at?: string;
     /** Format: text */
-    title?: string;
+    title: string;
     /** Format: text */
-    description?: string;
+    description: string;
     /** Format: text */
-    language?: string;
+    language: string;
     /** Format: text */
     starting_code?: string;
     /** Format: json */
     tests?: unknown;
+    /** Format: text */
+    youtube_tutorial_url?: string;
   };
   learning_standard: {
     /**
@@ -1249,6 +1254,8 @@ export interface parameters {
   'rowFilter.coding_problem.starting_code': string;
   /** Format: json */
   'rowFilter.coding_problem.tests': string;
+  /** Format: text */
+  'rowFilter.coding_problem.youtube_tutorial_url': string;
   /** @description learning_standard */
   'body.learning_standard': definitions['learning_standard'];
   /** Format: bigint */

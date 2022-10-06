@@ -1,6 +1,6 @@
 import IDE from 'components/ide';
 import React from 'react';
-import { ExerciseTests } from 'server/routers/lesson';
+import { ExerciseTests } from 'server/routers/codingProblem';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const { assignmentTitle, assignmentDescription, language, startingCode, expectedOutput, tests } = props;
