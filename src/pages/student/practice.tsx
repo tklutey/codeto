@@ -3,8 +3,14 @@ import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { trpc } from 'utils/trpc';
 import { ExerciseTests } from 'server/routers/codingProblem';
+import { openDrawer } from 'store/slices/menu';
+import { dispatch, useSelector } from 'store';
 
 const Practice = () => {
+  const { drawerOpen } = useSelector((state) => state.menu);
+  if (drawerOpen) {
+    dispatch(openDrawer(false));
+  }
   const lesson = trpc.useQuery(['codingProblem.get']);
   if (lesson?.data) {
     const {
