@@ -12,6 +12,7 @@ const Practice = () => {
       description: assignmentDescription,
       language: language,
       starting_code: startingCode,
+      youtube_tutorial_url: youtubeTutorialUrl,
       tests
     } = lesson.data;
     return (
@@ -22,6 +23,7 @@ const Practice = () => {
         startingCode={startingCode}
         expectedOutput={''}
         tests={tests as ExerciseTests}
+        youtubeTutorialUrl={youtubeTutorialUrl}
       />
     );
   }
