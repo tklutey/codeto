@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { trpc } from 'utils/trpc';
@@ -8,9 +8,11 @@ import { dispatch, useSelector } from 'store';
 
 const Practice = () => {
   const { drawerOpen } = useSelector((state) => state.menu);
-  if (drawerOpen) {
-    dispatch(openDrawer(false));
-  }
+  useEffect(() => {
+    if (drawerOpen) {
+      dispatch(openDrawer(false));
+    }
+  }, []);
   const lesson = trpc.useQuery(['codingProblem.get']);
   if (lesson?.data) {
     const {
