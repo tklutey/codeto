@@ -84,7 +84,7 @@ const IDE = (props: Props) => {
       <Button variant="contained" onClick={() => executeCode()} style={{ height: '5%', marginBottom: '10px' }}>
         Run Code
       </Button>
-      <div style={{ height: '90%', width: '100%', display: 'flex' }}>
+      <div style={{ height: '100%', width: '100%', display: 'flex' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
         <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />

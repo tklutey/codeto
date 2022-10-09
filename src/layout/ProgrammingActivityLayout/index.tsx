@@ -41,7 +41,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           ></iframe>
         </ColumnFlexDiv>
       </div>
-      <IDE width={'80%'} height={'100%'} language={language} startingCode={startingCode} tests={tests} />
+      <IDE width={'80%'} height={'90%'} language={language} startingCode={startingCode} tests={tests} />
     </div>
   );
 };
