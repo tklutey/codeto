@@ -885,6 +885,26 @@ export interface paths {
       };
     };
   };
+  '/rpc/get_fringe_standards': {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: integer[] */
+            _arr: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferParams'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   '/rpc/get_coding_problem': {
     post: {
       parameters: {

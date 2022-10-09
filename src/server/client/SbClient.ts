@@ -23,4 +23,9 @@ export default class SbClient {
     let { data: x, error } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem');
     return x;
   }
+
+  async getFringeStandards(arr: number[]) {
+    let { data: x, error } = await this.supabaseClient.rpc<definitions['learning_standard']>('get_fringe_standards', { _arr: arr });
+    return x;
+  }
 }
