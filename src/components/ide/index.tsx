@@ -15,7 +15,7 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, tests } = props;
+  const { width, height, language, startingCode, tests, setIsProblemComplete } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
@@ -54,6 +54,10 @@ const IDE = (props: Props) => {
     testResults.push(...expectedOutputTestResults);
   };
 
+  const allTestsPassed = (testResults: TestResult[]) => {
+    return testResults.every((result) => result.status === 'pass');
+  };
+
   const handleTestCode = (): TestResult[] => {
     const testResults: TestResult[] = [];
     if (tests?.expectedOutput) {
@@ -63,6 +67,9 @@ const IDE = (props: Props) => {
     }
     if (tests?.expectedSourceCode) {
       runAndPush(testResults, tests.expectedSourceCode, codeRef.current || '');
+    }
+    if (allTestsPassed(testResults)) {
+      setIsProblemComplete(true);
     }
     if (testResults.length > 0) {
       return testResults;
@@ -101,5 +108,6 @@ type Props = {
   height?: string;
   width?: string;
   tests?: ExerciseTests;
+  setIsProblemComplete: (isComplete: boolean) => void;
 };
 export default IDE;

@@ -1,11 +1,12 @@
 import IDE from 'components/ide';
-import React from 'react';
+import React, { useState } from 'react';
 import { ExerciseTests } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const { assignmentTitle, assignmentDescription, language, startingCode, tests, youtubeTutorialUrl } = props;
+  const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
       <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center' }}>
@@ -14,9 +15,16 @@ const ProgrammingActivityLayout = (props: Props) => {
           assignmentDescription={assignmentDescription}
           youtubeTutorialUrl={youtubeTutorialUrl}
         />
-        <IDE width={'80%'} height={'90%'} language={language} startingCode={startingCode} tests={tests} />
+        <IDE
+          width={'80%'}
+          height={'90%'}
+          language={language}
+          startingCode={startingCode}
+          tests={tests}
+          setIsProblemComplete={setCanMoveOnToNextProblem}
+        />
       </div>
-      <AssignmentFooter />
+      <AssignmentFooter disabled={!canMoveOnToNextProblem} />
     </div>
   );
 };

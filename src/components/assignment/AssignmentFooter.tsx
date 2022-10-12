@@ -13,12 +13,14 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   marginBottom: '-20px',
   marginRight: '-20px'
 }));
-const AssignmentFooter = () => {
+const AssignmentFooter = (props: Props) => {
+  const { disabled } = props;
   const theme = useTheme();
   return (
     <FooterStrip>
       <Button
         variant="contained"
+        disabled={disabled}
         sx={{
           margin: '14px',
           color: theme.palette.common.black,
@@ -30,6 +32,10 @@ const AssignmentFooter = () => {
       </Button>
     </FooterStrip>
   );
+};
+
+type Props = {
+  disabled: boolean;
 };
 
 export default AssignmentFooter;
