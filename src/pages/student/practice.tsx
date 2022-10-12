@@ -13,7 +13,7 @@ const Practice = () => {
       dispatch(openDrawer(false));
     }
   }, []);
-  const lesson = trpc.useQuery(['codingProblem.get']);
+  const lesson = trpc.useQuery(['codingProblem.get', 1]);
   if (lesson?.data) {
     const {
       title: assignmentTitle,

@@ -19,8 +19,8 @@ export default class SbClient {
     return x;
   }
 
-  async getCodingProblem() {
-    let { data: x, error } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem');
+  async getCodingProblemById(id: number) {
+    let { data: x, error } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem_by_id', { id: id });
     return x;
   }
 

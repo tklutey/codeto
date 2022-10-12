@@ -1,5 +1,7 @@
 import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
+import { z } from 'zod';
+import { definitions } from 'types/supabase';
 
 export type TestInstance = {
   summary: string;
@@ -10,12 +12,12 @@ export type ExerciseTests = {
   expectedSourceCode: TestInstance[];
 };
 export const codingProblem = trpc.router().query('get', {
-  async resolve() {
+  input: z.number(),
+  async resolve({ input }): Promise<definitions['coding_problem']> {
+    const id = input;
     const sbClient = new SbClient();
-    const codingProblemQueryResult = await sbClient.getCodingProblem();
-    if (codingProblemQueryResult && codingProblemQueryResult?.length > 0) {
-      return codingProblemQueryResult[0];
-    }
-    return null;
+    const codingProblemQueryResult = await sbClient.getCodingProblemById(id);
+    // @ts-ignore
+    return codingProblemQueryResult;
   }
 });

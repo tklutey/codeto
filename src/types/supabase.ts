@@ -885,13 +885,13 @@ export interface paths {
       };
     };
   };
-  '/rpc/get_fringe_standards': {
+  '/rpc/get_coding_problem_by_id': {
     post: {
       parameters: {
         body: {
           args: {
-            /** Format: integer[] */
-            _arr: string;
+            /** Format: integer */
+            id: number;
           };
         };
         header: {
@@ -905,11 +905,14 @@ export interface paths {
       };
     };
   };
-  '/rpc/get_coding_problem': {
+  '/rpc/get_fringe_standards': {
     post: {
       parameters: {
         body: {
-          args: { [key: string]: unknown };
+          args: {
+            /** Format: integer[] */
+            _arr: string;
+          };
         };
         header: {
           /** Preference */
@@ -1081,7 +1084,7 @@ export interface definitions {
      * Format: timestamp with time zone
      * @default now()
      */
-    created_at?: string;
+    created_at: string;
     /** Format: text */
     title: string;
     /** Format: text */
