@@ -6,8 +6,8 @@ const Tests = (props: Props) => {
   const { handleRunTests } = props;
   const [suites, setSuites] = useState<TestResult[]>();
 
-  const doRunTests = () => {
-    setSuites(handleRunTests());
+  const doRunTests = async () => {
+    setSuites(await handleRunTests());
   };
   return (
     <div>
@@ -33,7 +33,7 @@ const Tests = (props: Props) => {
 };
 
 type Props = {
-  handleRunTests: () => TestResult[];
+  handleRunTests: () => Promise<TestResult[]>;
 };
 
 export default Tests;

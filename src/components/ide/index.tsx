@@ -20,7 +20,7 @@ const IDE = (props: Props) => {
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = React.useState<string>('');
 
-  const executeCode = (onSuccess?: (output: string) => void) => {
+  const executeCode = async (onSuccess?: (output: string) => void) => {
     setTerminalText('Running...');
     if (codeRef.current) {
       const input = {
@@ -28,17 +28,15 @@ const IDE = (props: Props) => {
         language: language,
         doMock: false
       };
-      mutation.mutate(input, {
-        onSuccess: (data) => {
-          const output = data.output;
-          if (output) {
-            setTerminalText(output);
-            if (onSuccess) {
-              onSuccess(output);
-            }
-          }
+      const data = await mutation.mutateAsync(input);
+
+      const output = data.output;
+      if (output) {
+        setTerminalText(output);
+        if (onSuccess) {
+          onSuccess(output);
         }
-      });
+      }
     }
   };
 
@@ -58,15 +56,15 @@ const IDE = (props: Props) => {
     return testResults.every((result) => result.status === 'pass');
   };
 
-  const handleTestCode = (): TestResult[] => {
+  const handleTestCode = async (): Promise<TestResult[]> => {
     const testResults: TestResult[] = [];
-    if (tests?.expectedOutput) {
-      executeCode((output) => {
-        runAndPush(testResults, tests.expectedOutput, output);
-      });
-    }
     if (tests?.expectedSourceCode) {
       runAndPush(testResults, tests.expectedSourceCode, codeRef.current || '');
+    }
+    if (tests?.expectedOutput) {
+      await executeCode((output) => {
+        runAndPush(testResults, tests.expectedOutput, output);
+      });
     }
     if (allTestsPassed(testResults)) {
       setIsProblemComplete(true);
