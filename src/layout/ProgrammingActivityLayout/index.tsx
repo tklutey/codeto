@@ -14,6 +14,8 @@ const ProgrammingActivityLayout = (props: Props) => {
           assignmentTitle={assignmentTitle}
           assignmentDescription={assignmentDescription}
           youtubeTutorialUrl={youtubeTutorialUrl}
+          width={'20%'}
+          height={'95%'}
         />
         <IDE
           width={'80%'}

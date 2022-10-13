@@ -8,12 +8,12 @@ const ColumnFlexDiv = styled('div')({
 });
 
 const AssignmentSidebar = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, youtubeTutorialUrl } = props;
+  const { assignmentTitle, assignmentDescription, youtubeTutorialUrl, height, width } = props;
   return (
     <div
       style={{
-        width: '20%',
-        height: '100%',
+        width: width,
+        height: height,
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'flex-start',
@@ -45,6 +45,8 @@ type Props = {
   assignmentTitle: string;
   assignmentDescription: string;
   youtubeTutorialUrl?: string;
+  width?: string;
+  height?: string;
 };
 
 export default AssignmentSidebar;
