@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
-import { Button } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import CodeEditor from 'components/ide/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
 import { ExerciseTests, TestInstance } from 'server/routers/codingProblem';
+import RunButton from 'components/ide/RunButton';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
@@ -18,9 +18,11 @@ const IDE = (props: Props) => {
   const { width, height, language, startingCode, tests, setIsProblemComplete } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
-  const [terminalText, setTerminalText] = React.useState<string>('');
+  const [terminalText, setTerminalText] = useState<string>('');
+  const [isExecuting, setIsExecuting] = useState<boolean>(false);
 
   const executeCode = async (onSuccess?: (output: string) => void) => {
+    setIsExecuting(true);
     setTerminalText('Running...');
     if (codeRef.current) {
       const input = {
@@ -29,6 +31,7 @@ const IDE = (props: Props) => {
         doMock: false
       };
       const data = await mutation.mutateAsync(input);
+      setIsExecuting(false);
 
       const output = data.output;
       if (output) {
@@ -86,12 +89,10 @@ const IDE = (props: Props) => {
 
   return (
     <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Button variant="contained" onClick={() => executeCode()} style={{ height: '5%', marginBottom: '10px' }}>
-        Run Code
-      </Button>
-      <div style={{ height: '100%', width: '100%', display: 'flex' }}>
+      <div style={{ height: '100%', width: '100%', display: 'flex', position: 'relative' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
-        <div style={{ height: '90%', width: '50%', display: 'flex', flexDirection: 'column' }}>
+        <RunButton run={executeCode} isExecuting={isExecuting} />
+        <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
           <Tests handleRunTests={handleTestCode} />
         </div>

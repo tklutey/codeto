@@ -23,8 +23,8 @@ const CodeExecutionTerminal = (props: Props) => {
   }, [terminalText]);
 
   return (
-    <div>
-      <div id="terminal" style={{ width: width, height: height }}></div>
+    <div style={{ width: width, height: height }}>
+      <div id="terminal" style={{ width: '100%', height: '100%' }}></div>
     </div>
   );
 };

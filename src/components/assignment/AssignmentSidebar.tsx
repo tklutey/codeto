@@ -17,7 +17,6 @@ const AssignmentSidebar = (props: Props) => {
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'flex-start',
-        paddingTop: '55px',
         paddingRight: '20px',
         justifyContent: 'space-between'
       }}
