@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { trpc } from 'utils/trpc';
@@ -8,12 +8,23 @@ import { dispatch, useSelector } from 'store';
 
 const Practice = () => {
   const { drawerOpen } = useSelector((state) => state.menu);
+  const [codingProblemId, setCodingProblemId] = useState(1);
   useEffect(() => {
     if (drawerOpen) {
       dispatch(openDrawer(false));
     }
   }, []);
-  const lesson = trpc.useQuery(['codingProblem.get', 1]);
+
+  const goToNextProblem = () => {
+    const MAX_PROBLEM_ID = 2;
+    let nextProblemId = codingProblemId + 1;
+    if (nextProblemId > MAX_PROBLEM_ID) {
+      nextProblemId = nextProblemId % MAX_PROBLEM_ID;
+    }
+    setCodingProblemId(nextProblemId);
+  };
+
+  const lesson = trpc.useQuery(['codingProblem.get', codingProblemId]);
   if (lesson?.data) {
     const {
       title: assignmentTitle,
@@ -31,6 +42,7 @@ const Practice = () => {
         startingCode={startingCode}
         tests={tests as ExerciseTests}
         youtubeTutorialUrl={youtubeTutorialUrl}
+        goToNextProblem={goToNextProblem}
       />
     );
   }
