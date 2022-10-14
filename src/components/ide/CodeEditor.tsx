@@ -12,6 +12,7 @@ const CodeEditor = (props: Props) => {
       theme={'vs-dark'}
       options={{
         automaticLayout: true,
+        fontFamily: 'monaco',
         fontSize: '14px',
         fontWeight: 600,
         lineNumbersMinChars: 3,
