@@ -37,7 +37,7 @@ const AssignmentFooter = (props: Props) => {
 
 type Props = {
   disabled: boolean;
-  goToNextProblem: () => void;
+  goToNextProblem?: () => void;
 };
 
 export default AssignmentFooter;

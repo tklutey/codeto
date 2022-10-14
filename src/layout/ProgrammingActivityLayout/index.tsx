@@ -38,7 +38,7 @@ type Props = {
   startingCode?: string;
   tests?: ExerciseTests;
   youtubeTutorialUrl?: string;
-  goToNextProblem: () => void;
+  goToNextProblem?: () => void;
 };
 
 export default ProgrammingActivityLayout;
