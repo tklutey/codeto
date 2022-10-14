@@ -20,9 +20,9 @@ export default function Layout({ variant = LAYOUT.main, children }: Props) {
 
     default:
       return (
-        <AuthGuard>
-          <MainLayout>{children}</MainLayout>
-        </AuthGuard>
+        // <AuthGuard>
+        <MainLayout>{children}</MainLayout>
+        // </AuthGuard>
       );
   }
 }
