@@ -15,7 +15,7 @@ const RunButton = (props: Props) => {
   };
 
   return (
-    <Circle style={{ position: 'absolute', left: 'calc(50% - 30px)', top: '30%', zIndex: 10 }}>
+    <Circle style={{ position: 'absolute', left: 'calc(50% - 30px)', top: 'calc(30% - 30px)', zIndex: 10 }}>
       <div onClick={handleClick} style={{ cursor: 'pointer', width: '100%', height: '100%' }} role="button">
         {isExecuting ? (
           <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
