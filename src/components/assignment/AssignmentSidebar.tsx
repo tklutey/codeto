@@ -23,17 +23,22 @@ const AssignmentSidebar = (props: Props) => {
       }}
     >
       <ColumnFlexDiv style={{ height: '65%' }}>
-        <h1> {assignmentTitle} </h1>
-        <div style={{ height: '100%', overflowY: 'auto' }}>
+        <div style={{ height: '15%' }}>
+          <h1> {assignmentTitle} </h1>
+        </div>
+        <div style={{ height: '85%', overflowY: 'auto' }}>
           {/* eslint-disable-next-line react/no-children-prop */}
           <ReactMarkdown children={assignmentDescription} />
         </div>
       </ColumnFlexDiv>
       <ColumnFlexDiv style={{ height: '30%' }}>
-        <h2>Get Unstuck</h2>
+        <div style={{ height: '25%' }}>
+          <h2>Get Unstuck</h2>
+        </div>
         <iframe
           src={youtubeTutorialUrl}
           width="100%"
+          height="75%"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
