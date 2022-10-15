@@ -88,7 +88,7 @@ const IDE = (props: Props) => {
   };
 
   return (
-    <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ height: height, width: width, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'clip' }}>
       <div style={{ height: '100%', width: '100%', display: 'flex', position: 'relative' }}>
         <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
         <RunButton run={executeCode} isExecuting={isExecuting} />

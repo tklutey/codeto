@@ -1,5 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import ReactMarkdown from 'react-markdown';
 
 const ColumnFlexDiv = styled('div')({
   display: 'flex',
@@ -21,11 +22,14 @@ const AssignmentSidebar = (props: Props) => {
         justifyContent: 'space-between'
       }}
     >
-      <ColumnFlexDiv>
+      <ColumnFlexDiv style={{ height: '65%' }}>
         <h1> {assignmentTitle} </h1>
-        <p> {assignmentDescription} </p>
+        <div style={{ height: '100%', overflowY: 'auto' }}>
+          {/* eslint-disable-next-line react/no-children-prop */}
+          <ReactMarkdown children={assignmentDescription} />
+        </div>
       </ColumnFlexDiv>
-      <ColumnFlexDiv>
+      <ColumnFlexDiv style={{ height: '30%' }}>
         <h2>Get Unstuck</h2>
         <iframe
           src={youtubeTutorialUrl}

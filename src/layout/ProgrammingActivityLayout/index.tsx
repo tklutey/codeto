@@ -9,17 +9,17 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-      <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
+      <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
           assignmentDescription={assignmentDescription}
           youtubeTutorialUrl={youtubeTutorialUrl}
           width={'20%'}
-          height={'95%'}
+          height={'100%'}
         />
         <IDE
           width={'80%'}
-          height={'95%'}
+          height={'100%'}
           language={language}
           startingCode={startingCode}
           tests={tests}
