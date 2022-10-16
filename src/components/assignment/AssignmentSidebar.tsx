@@ -5,7 +5,8 @@ import ReactMarkdown from 'react-markdown';
 const ColumnFlexDiv = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  alignSelf: 'flex-start'
+  alignSelf: 'flex-start',
+  width: '100%'
 });
 
 const AssignmentSidebar = (props: Props) => {
