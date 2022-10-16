@@ -64,11 +64,13 @@ const IDE = (props: Props) => {
     if (tests?.expectedSourceCode) {
       runAndPush(testResults, tests.expectedSourceCode, codeRef.current || '');
     }
-    if (tests?.expectedOutput) {
-      await executeCode((output) => {
+    await executeCode((output) => {
+      if (tests?.expectedOutput) {
         runAndPush(testResults, tests.expectedOutput, output);
-      });
-    }
+      }
+      const status = output.match('error') ? 'fail' : 'pass';
+      testResults.push({ status: status, message: 'The test runs without any errors.' });
+    });
     if (allTestsPassed(testResults)) {
       setIsProblemComplete(true);
     }
