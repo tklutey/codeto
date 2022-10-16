@@ -484,6 +484,8 @@ export interface paths {
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
           youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
+          source?: parameters['rowFilter.coding_problem.source'];
+          solution_code?: parameters['rowFilter.coding_problem.solution_code'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -542,6 +544,8 @@ export interface paths {
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
           youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
+          source?: parameters['rowFilter.coding_problem.source'];
+          solution_code?: parameters['rowFilter.coding_problem.solution_code'];
         };
         header: {
           /** Preference */
@@ -564,6 +568,8 @@ export interface paths {
           starting_code?: parameters['rowFilter.coding_problem.starting_code'];
           tests?: parameters['rowFilter.coding_problem.tests'];
           youtube_tutorial_url?: parameters['rowFilter.coding_problem.youtube_tutorial_url'];
+          source?: parameters['rowFilter.coding_problem.source'];
+          solution_code?: parameters['rowFilter.coding_problem.solution_code'];
         };
         body: {
           /** coding_problem */
@@ -667,6 +673,102 @@ export interface paths {
         body: {
           /** learning_standard */
           learning_standard?: definitions['learning_standard'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  '/coding_problem_standard_relationship': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
+          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['coding_problem_standard_relationship'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** coding_problem_standard_relationship */
+          coding_problem_standard_relationship?: definitions['coding_problem_standard_relationship'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
+          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
+          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
+        };
+        body: {
+          /** coding_problem_standard_relationship */
+          coding_problem_standard_relationship?: definitions['coding_problem_standard_relationship'];
         };
         header: {
           /** Preference */
@@ -1097,6 +1199,10 @@ export interface definitions {
     tests?: unknown;
     /** Format: text */
     youtube_tutorial_url?: string;
+    /** Format: text */
+    source?: string;
+    /** Format: text */
+    solution_code?: string;
   };
   learning_standard: {
     /**
@@ -1113,6 +1219,31 @@ export interface definitions {
     description?: string;
     /** Format: text */
     type?: string;
+  };
+  coding_problem_standard_relationship: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `coding_problem.id`.<fk table='coding_problem' column='id'/>
+     */
+    coding_problem_id?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     */
+    learning_standard_id?: number;
   };
   topic_unit_relationship: {
     /**
@@ -1279,6 +1410,10 @@ export interface parameters {
   'rowFilter.coding_problem.tests': string;
   /** Format: text */
   'rowFilter.coding_problem.youtube_tutorial_url': string;
+  /** Format: text */
+  'rowFilter.coding_problem.source': string;
+  /** Format: text */
+  'rowFilter.coding_problem.solution_code': string;
   /** @description learning_standard */
   'body.learning_standard': definitions['learning_standard'];
   /** Format: bigint */
@@ -1291,6 +1426,16 @@ export interface parameters {
   'rowFilter.learning_standard.description': string;
   /** Format: text */
   'rowFilter.learning_standard.type': string;
+  /** @description coding_problem_standard_relationship */
+  'body.coding_problem_standard_relationship': definitions['coding_problem_standard_relationship'];
+  /** Format: bigint */
+  'rowFilter.coding_problem_standard_relationship.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.coding_problem_standard_relationship.created_at': string;
+  /** Format: bigint */
+  'rowFilter.coding_problem_standard_relationship.coding_problem_id': string;
+  /** Format: bigint */
+  'rowFilter.coding_problem_standard_relationship.learning_standard_id': string;
   /** @description topic_unit_relationship */
   'body.topic_unit_relationship': definitions['topic_unit_relationship'];
   /** Format: bigint */

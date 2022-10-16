@@ -32,6 +32,7 @@ const Practice = () => {
       language: language,
       starting_code: startingCode,
       youtube_tutorial_url: youtubeTutorialUrl,
+      solution_code: solutionCode,
       tests
     } = lesson.data;
     return (
@@ -40,6 +41,7 @@ const Practice = () => {
         assignmentDescription={assignmentDescription}
         language={language}
         startingCode={startingCode}
+        solutionCode={solutionCode}
         tests={tests as ExerciseTests}
         youtubeTutorialUrl={youtubeTutorialUrl}
         goToNextProblem={goToNextProblem}

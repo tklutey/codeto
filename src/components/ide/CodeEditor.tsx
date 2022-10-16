@@ -26,7 +26,7 @@ const CodeEditor = (props: Props) => {
 };
 
 type Props = {
-  updateCode: (newCode?: string, _?: any) => void;
+  updateCode?: (newCode?: string, _?: any) => void;
   startingCode?: string;
   language: string;
   width?: string;

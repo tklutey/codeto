@@ -3,13 +3,22 @@ import React, { useState } from 'react';
 import { ExerciseTests } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
+import SolutionModal from 'components/assignment/SolutionModal';
 
 const ProgrammingActivityLayout = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, language, startingCode, tests, youtubeTutorialUrl, goToNextProblem } = props;
+  const { assignmentTitle, assignmentDescription, language, startingCode, solutionCode, tests, youtubeTutorialUrl, goToNextProblem } =
+    props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
+        <SolutionModal
+          isOpen={showSolution}
+          handleClose={() => setShowSolution(false)}
+          language={language}
+          solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
+        />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
           assignmentDescription={assignmentDescription}
@@ -26,7 +35,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           setIsProblemComplete={setCanMoveOnToNextProblem}
         />
       </div>
-      <AssignmentFooter disabled={!canMoveOnToNextProblem} goToNextProblem={goToNextProblem} />
+      <AssignmentFooter disabled={!canMoveOnToNextProblem} goToNextProblem={goToNextProblem} setShowSolution={setShowSolution} />
     </div>
   );
 };
@@ -36,6 +45,7 @@ type Props = {
   assignmentDescription: string;
   language: string;
   startingCode?: string;
+  solutionCode?: string;
   tests?: ExerciseTests;
   youtubeTutorialUrl?: string;
   goToNextProblem?: () => void;

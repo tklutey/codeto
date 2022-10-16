@@ -25,6 +25,7 @@ const Problem = () => {
       language: language,
       starting_code: startingCode,
       youtube_tutorial_url: youtubeTutorialUrl,
+      solution_code: solutionCode,
       tests
     } = lesson.data;
     return (
@@ -33,6 +34,7 @@ const Problem = () => {
         assignmentDescription={assignmentDescription}
         language={language}
         startingCode={startingCode}
+        solutionCode={solutionCode}
         tests={tests as ExerciseTests}
         youtubeTutorialUrl={youtubeTutorialUrl}
       />
