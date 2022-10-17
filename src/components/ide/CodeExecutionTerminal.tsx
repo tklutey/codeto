@@ -7,7 +7,7 @@ const CodeExecutionTerminal = (props: Props) => {
   const { width, height, terminalText } = props;
   const term = useRef<Terminal>();
   useEffect(() => {
-    term.current = new Terminal();
+    term.current = new Terminal({ convertEol: true });
     const fitAddon = new FitAddon();
     term.current.loadAddon(fitAddon);
     // @ts-ignore
@@ -19,6 +19,7 @@ const CodeExecutionTerminal = (props: Props) => {
     if (term.current && terminalText) {
       term.current.reset();
       term.current.write(terminalText, () => console.log('wrote ' + terminalText));
+      term.current.focus();
     }
   }, [terminalText]);
 
