@@ -16,7 +16,7 @@ const CodeExecutionTerminal = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (term.current && terminalText) {
+    if (term.current && terminalText !== undefined && terminalText !== null) {
       term.current.reset();
       term.current.write(terminalText, () => console.log('wrote ' + terminalText));
       term.current.focus();
