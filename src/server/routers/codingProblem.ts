@@ -24,9 +24,28 @@ export const codingProblem = trpc
     }
   })
   .query('getProblemsWithStandards', {
-    async resolve() {
+    input: z.array(z.number()),
+    async resolve({ input }) {
+      const arr = input;
       const sbClient = new SbClient();
       const codingProblemsWithStandards = await sbClient.getCodingProblemsWithStandards();
-      return codingProblemsWithStandards;
+      const a = codingProblemsWithStandards?.map((problem) => {
+        const isMastered = arr.includes(problem.learning_standard_id);
+        return { ...problem, isMastered };
+      });
+      const b = a?.reduce((acc, curr) => {
+        const { isMastered, coding_problem_id: codingProblemId } = curr;
+        const value = isMastered ? 0 : 1;
+        if (!acc[codingProblemId]) {
+          acc[codingProblemId] = 0;
+        }
+        acc[codingProblemId] += value;
+        return acc;
+      }, {});
+      const c = a?.map((problem) => {
+        const distanceFromCurrentKnowledgeState = b[problem.coding_problem_id];
+        return { ...problem, distanceFromCurrentKnowledgeState };
+      });
+      return c;
     }
   });
