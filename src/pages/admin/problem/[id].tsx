@@ -17,7 +17,7 @@ const Problem = () => {
     }
   }, []);
 
-  const lesson = trpc.useQuery(['codingProblem.get', Number(id)]);
+  const lesson = trpc.useQuery(['codingProblem.getById', Number(id)]);
   if (lesson?.data) {
     const {
       title: assignmentTitle,

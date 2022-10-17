@@ -586,6 +586,102 @@ export interface paths {
       };
     };
   };
+  '/coding_problem_basis_relationship': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_basis_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_basis_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_basis_relationship.coding_problem_id'];
+          basis_id?: parameters['rowFilter.coding_problem_basis_relationship.basis_id'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['coding_problem_basis_relationship'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** coding_problem_basis_relationship */
+          coding_problem_basis_relationship?: definitions['coding_problem_basis_relationship'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_basis_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_basis_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_basis_relationship.coding_problem_id'];
+          basis_id?: parameters['rowFilter.coding_problem_basis_relationship.basis_id'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.coding_problem_basis_relationship.id'];
+          created_at?: parameters['rowFilter.coding_problem_basis_relationship.created_at'];
+          coding_problem_id?: parameters['rowFilter.coding_problem_basis_relationship.coding_problem_id'];
+          basis_id?: parameters['rowFilter.coding_problem_basis_relationship.basis_id'];
+        };
+        body: {
+          /** coding_problem_basis_relationship */
+          coding_problem_basis_relationship?: definitions['coding_problem_basis_relationship'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   '/learning_standard': {
     get: {
       parameters: {
@@ -673,102 +769,6 @@ export interface paths {
         body: {
           /** learning_standard */
           learning_standard?: definitions['learning_standard'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  '/coding_problem_standard_relationship': {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
-          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
-          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
-          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
-          /** Filtering Columns */
-          select?: parameters['select'];
-          /** Ordering */
-          order?: parameters['order'];
-          /** Limiting and Pagination */
-          offset?: parameters['offset'];
-          /** Limiting and Pagination */
-          limit?: parameters['limit'];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters['range'];
-          /** Limiting and Pagination */
-          'Range-Unit'?: parameters['rangeUnit'];
-          /** Preference */
-          Prefer?: parameters['preferCount'];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions['coding_problem_standard_relationship'][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** coding_problem_standard_relationship */
-          coding_problem_standard_relationship?: definitions['coding_problem_standard_relationship'];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters['select'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
-          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
-          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
-          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters['preferReturn'];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters['rowFilter.coding_problem_standard_relationship.id'];
-          created_at?: parameters['rowFilter.coding_problem_standard_relationship.created_at'];
-          coding_problem_id?: parameters['rowFilter.coding_problem_standard_relationship.coding_problem_id'];
-          learning_standard_id?: parameters['rowFilter.coding_problem_standard_relationship.learning_standard_id'];
-        };
-        body: {
-          /** coding_problem_standard_relationship */
-          coding_problem_standard_relationship?: definitions['coding_problem_standard_relationship'];
         };
         header: {
           /** Preference */
@@ -967,6 +967,23 @@ export interface paths {
       responses: {
         /** No Content */
         204: never;
+      };
+    };
+  };
+  '/rpc/get_coding_problems_standards': {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferParams'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
       };
     };
   };
@@ -1204,23 +1221,7 @@ export interface definitions {
     /** Format: text */
     solution_code?: string;
   };
-  learning_standard: {
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /** Format: timestamp with time zone */
-    created_at?: string;
-    /** Format: text */
-    code?: string;
-    /** Format: text */
-    description?: string;
-    /** Format: text */
-    type?: string;
-  };
-  coding_problem_standard_relationship: {
+  coding_problem_basis_relationship: {
     /**
      * Format: bigint
      * @description Note:
@@ -1241,9 +1242,25 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `learning_standard.id`.<fk table='learning_standard' column='id'/>
+     * This is a Foreign Key to `basis_knowledge_state.id`.<fk table='basis_knowledge_state' column='id'/>
      */
-    learning_standard_id?: number;
+    basis_id?: number;
+  };
+  learning_standard: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    code?: string;
+    /** Format: text */
+    description?: string;
+    /** Format: text */
+    type?: string;
   };
   topic_unit_relationship: {
     /**
@@ -1414,6 +1431,16 @@ export interface parameters {
   'rowFilter.coding_problem.source': string;
   /** Format: text */
   'rowFilter.coding_problem.solution_code': string;
+  /** @description coding_problem_basis_relationship */
+  'body.coding_problem_basis_relationship': definitions['coding_problem_basis_relationship'];
+  /** Format: bigint */
+  'rowFilter.coding_problem_basis_relationship.id': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.coding_problem_basis_relationship.created_at': string;
+  /** Format: bigint */
+  'rowFilter.coding_problem_basis_relationship.coding_problem_id': string;
+  /** Format: bigint */
+  'rowFilter.coding_problem_basis_relationship.basis_id': string;
   /** @description learning_standard */
   'body.learning_standard': definitions['learning_standard'];
   /** Format: bigint */
@@ -1426,16 +1453,6 @@ export interface parameters {
   'rowFilter.learning_standard.description': string;
   /** Format: text */
   'rowFilter.learning_standard.type': string;
-  /** @description coding_problem_standard_relationship */
-  'body.coding_problem_standard_relationship': definitions['coding_problem_standard_relationship'];
-  /** Format: bigint */
-  'rowFilter.coding_problem_standard_relationship.id': string;
-  /** Format: timestamp with time zone */
-  'rowFilter.coding_problem_standard_relationship.created_at': string;
-  /** Format: bigint */
-  'rowFilter.coding_problem_standard_relationship.coding_problem_id': string;
-  /** Format: bigint */
-  'rowFilter.coding_problem_standard_relationship.learning_standard_id': string;
   /** @description topic_unit_relationship */
   'body.topic_unit_relationship': definitions['topic_unit_relationship'];
   /** Format: bigint */

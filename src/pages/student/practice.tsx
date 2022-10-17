@@ -24,7 +24,7 @@ const Practice = () => {
     setCodingProblemId(nextProblemId);
   };
 
-  const lesson = trpc.useQuery(['codingProblem.get', codingProblemId]);
+  const lesson = trpc.useQuery(['codingProblem.getById', codingProblemId]);
   if (lesson?.data) {
     const {
       title: assignmentTitle,

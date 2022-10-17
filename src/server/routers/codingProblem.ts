@@ -11,13 +11,22 @@ export type ExerciseTests = {
   expectedOutput: TestInstance[];
   expectedSourceCode: TestInstance[];
 };
-export const codingProblem = trpc.router().query('get', {
-  input: z.number(),
-  async resolve({ input }): Promise<definitions['coding_problem']> {
-    const id = input;
-    const sbClient = new SbClient();
-    const codingProblemQueryResult = await sbClient.getCodingProblemById(id);
-    // @ts-ignore
-    return codingProblemQueryResult;
-  }
-});
+export const codingProblem = trpc
+  .router()
+  .query('getById', {
+    input: z.number(),
+    async resolve({ input }): Promise<definitions['coding_problem']> {
+      const id = input;
+      const sbClient = new SbClient();
+      const codingProblemQueryResult = await sbClient.getCodingProblemById(id);
+      // @ts-ignore
+      return codingProblemQueryResult;
+    }
+  })
+  .query('getProblemsWithStandards', {
+    async resolve() {
+      const sbClient = new SbClient();
+      const codingProblemsWithStandards = await sbClient.getCodingProblemsWithStandards();
+      return codingProblemsWithStandards;
+    }
+  });

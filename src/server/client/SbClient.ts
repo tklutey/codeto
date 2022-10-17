@@ -28,4 +28,9 @@ export default class SbClient {
     let { data: x, error } = await this.supabaseClient.rpc<definitions['learning_standard']>('get_fringe_standards', { _arr: arr });
     return x;
   }
+
+  async getCodingProblemsWithStandards() {
+    let { data: x, error } = await this.supabaseClient.rpc('get_coding_problems_standards');
+    return x;
+  }
 }
