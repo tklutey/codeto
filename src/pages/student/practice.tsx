@@ -16,7 +16,8 @@ const Practice = () => {
   }, []);
 
   const goToNextProblem = () => {
-    const MAX_PROBLEM_ID = 2;
+    // TODO: Make this an API call
+    const MAX_PROBLEM_ID = 6;
     let nextProblemId = codingProblemId + 1;
     if (nextProblemId > MAX_PROBLEM_ID) {
       nextProblemId = nextProblemId % MAX_PROBLEM_ID;
