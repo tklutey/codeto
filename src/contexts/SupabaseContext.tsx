@@ -36,6 +36,7 @@ const SupabaseContext = createContext<SupabaseContextType | null>(null);
 export const FirebaseProvider = ({ children }: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(accountReducer, initialState);
   const registerMutation = trpc.useMutation('auth.register');
+  const loginMutation = trpc.useMutation('auth.login');
 
   useEffect(
     () =>
@@ -62,7 +63,19 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
     [dispatch]
   );
 
-  const emailPasswordSignIn = (email: string, password: string) => firebase.auth().signInWithEmailAndPassword(email, password);
+  const emailPasswordSignIn = async (email: string, password: string) => {
+    const output = await loginMutation.mutateAsync({ email, password });
+    const user = output?.data?.user;
+    if (user) {
+      dispatch({
+        type: LOGIN,
+        payload: {
+          isLoggedIn: true,
+          user
+        }
+      });
+    }
+  };
 
   const googleSignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
