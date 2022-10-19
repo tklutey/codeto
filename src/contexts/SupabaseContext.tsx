@@ -87,8 +87,8 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
 
   const register = async (email: string, password: string) => registerMutation.mutateAsync({ email, password });
 
-  const logout = () => {
-    logoutMutation.mutate();
+  const logout = async () => {
+    await logoutMutation.mutateAsync();
     dispatch({
       type: LOGOUT
     });
