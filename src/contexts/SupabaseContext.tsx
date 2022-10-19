@@ -12,7 +12,7 @@ import accountReducer from 'store/accountReducer';
 import Loader from 'ui-component/Loader';
 import { FIREBASE_API } from 'config';
 import { InitialLoginContextProps } from 'types';
-import { FirebaseContextType } from 'types/auth';
+import { SupabaseContextType } from 'types/auth';
 
 // firebase initialize
 if (!firebase.apps.length) {
@@ -28,7 +28,7 @@ const initialState: InitialLoginContextProps = {
 
 // ==============================|| FIREBASE CONTEXT & PROVIDER ||============================== //
 
-const FirebaseContext = createContext<FirebaseContextType | null>(null);
+const SupabaseContext = createContext<SupabaseContextType | null>(null);
 
 export const FirebaseProvider = ({ children }: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(accountReducer, initialState);
@@ -58,15 +58,15 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
     [dispatch]
   );
 
-  const firebaseEmailPasswordSignIn = (email: string, password: string) => firebase.auth().signInWithEmailAndPassword(email, password);
+  const emailPasswordSignIn = (email: string, password: string) => firebase.auth().signInWithEmailAndPassword(email, password);
 
-  const firebaseGoogleSignIn = () => {
+  const googleSignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     return firebase.auth().signInWithPopup(provider);
   };
 
-  const firebaseRegister = async (email: string, password: string) => firebase.auth().createUserWithEmailAndPassword(email, password);
+  const register = async (email: string, password: string) => firebase.auth().createUserWithEmailAndPassword(email, password);
 
   const logout = () => firebase.auth().signOut();
 
@@ -80,21 +80,21 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
   }
 
   return (
-    <FirebaseContext.Provider
+    <SupabaseContext.Provider
       value={{
         ...state,
-        firebaseRegister,
-        firebaseEmailPasswordSignIn,
+        register,
+        emailPasswordSignIn,
         login: () => {},
-        firebaseGoogleSignIn,
+        googleSignIn,
         logout,
         resetPassword,
         updateProfile
       }}
     >
       {children}
-    </FirebaseContext.Provider>
+    </SupabaseContext.Provider>
   );
 };
 
-export default FirebaseContext;
+export default SupabaseContext;

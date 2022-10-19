@@ -26,7 +26,7 @@ import Locales from 'ui-component/Locales';
 import RTLLayout from 'ui-component/RTLLayout';
 import Snackbar from 'ui-component/extended/Snackbar';
 
-import { FirebaseProvider as AuthProvider } from '../contexts/FirebaseContext';
+import { FirebaseProvider as AuthProvider } from 'contexts/SupabaseContext';
 import { withTRPC } from '@trpc/next';
 import { AppRouter } from 'pages/api/trpc/[trpc]';
 // import { Auth0Provider as AuthProvider } from '../contexts/Auth0Context';

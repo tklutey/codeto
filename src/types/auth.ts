@@ -4,15 +4,15 @@ import firebase from 'firebase/compat/app';
 // project imports
 import { UserProfile } from 'types/user-profile';
 
-export type FirebaseContextType = {
+export type SupabaseContextType = {
   isLoggedIn: boolean;
   isInitialized?: boolean;
   user?: UserProfile | null | undefined;
   logout: () => Promise<void>;
   login: () => void;
-  firebaseRegister: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
-  firebaseEmailPasswordSignIn: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
-  firebaseGoogleSignIn: () => Promise<firebase.auth.UserCredential>;
+  register: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
+  emailPasswordSignIn: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
+  googleSignIn: () => Promise<firebase.auth.UserCredential>;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: VoidFunction;
 };
