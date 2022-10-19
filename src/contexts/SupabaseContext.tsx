@@ -75,6 +75,7 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
         }
       });
     }
+    return output;
   };
 
   const googleSignIn = () => {
