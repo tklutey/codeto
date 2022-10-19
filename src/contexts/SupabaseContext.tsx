@@ -37,6 +37,7 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
   const [state, dispatch] = useReducer(accountReducer, initialState);
   const registerMutation = trpc.useMutation('auth.register');
   const loginMutation = trpc.useMutation('auth.login');
+  const logoutMutation = trpc.useMutation('auth.logout');
 
   useEffect(
     () =>
@@ -86,7 +87,12 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
 
   const register = async (email: string, password: string) => registerMutation.mutateAsync({ email, password });
 
-  const logout = () => firebase.auth().signOut();
+  const logout = () => {
+    logoutMutation.mutate();
+    dispatch({
+      type: LOGOUT
+    });
+  };
 
   const resetPassword = async (email: string) => {
     await firebase.auth().sendPasswordResetEmail(email);

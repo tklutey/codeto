@@ -27,4 +27,11 @@ export const auth = trpc
       const response = await sbClient.signIn(email, password);
       return response;
     }
+  })
+  .mutation('logout', {
+    async resolve() {
+      const sbClient = new SbClient();
+      const response = await sbClient.logout();
+      return response;
+    }
   });
