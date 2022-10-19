@@ -4,13 +4,15 @@ import { executeCode } from 'server/routers/executeCode';
 import { knowledgeState } from 'server/routers/knowledgeState';
 import { codingProblem } from 'server/routers/codingProblem';
 import { fringe } from 'server/routers/fringe';
+import { auth } from 'server/routers/auth';
 
 const appRouter = trpc
   .router()
   .merge('knowledgeState.', knowledgeState)
   .merge('codingProblem.', codingProblem)
   .merge('executeCode.', executeCode)
-  .merge('fringe.', fringe);
+  .merge('fringe.', fringe)
+  .merge('auth.', auth);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

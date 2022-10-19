@@ -13,6 +13,9 @@ import Loader from 'ui-component/Loader';
 import { FIREBASE_API } from 'config';
 import { InitialLoginContextProps } from 'types';
 import { SupabaseContextType } from 'types/auth';
+import { createClient } from '@supabase/supabase-js';
+import SbClient from 'server/client/SbClient';
+import { trpc } from 'utils/trpc';
 
 // firebase initialize
 if (!firebase.apps.length) {
@@ -32,6 +35,7 @@ const SupabaseContext = createContext<SupabaseContextType | null>(null);
 
 export const FirebaseProvider = ({ children }: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(accountReducer, initialState);
+  const registerMutation = trpc.useMutation('auth.register');
 
   useEffect(
     () =>
@@ -66,7 +70,7 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
     return firebase.auth().signInWithPopup(provider);
   };
 
-  const register = async (email: string, password: string) => firebase.auth().createUserWithEmailAndPassword(email, password);
+  const register = async (email: string, password: string) => registerMutation.mutateAsync({ email, password });
 
   const logout = () => firebase.auth().signOut();
 

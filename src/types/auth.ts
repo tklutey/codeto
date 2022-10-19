@@ -1,4 +1,5 @@
 // third-party
+import { AuthResponse } from '@supabase/supabase-js';
 import firebase from 'firebase/compat/app';
 
 // project imports
@@ -10,7 +11,7 @@ export type SupabaseContextType = {
   user?: UserProfile | null | undefined;
   logout: () => Promise<void>;
   login: () => void;
-  register: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
+  register: (email: string, password: string) => Promise<AuthResponse>;
   emailPasswordSignIn: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
   googleSignIn: () => Promise<firebase.auth.UserCredential>;
   resetPassword: (email: string) => Promise<void>;

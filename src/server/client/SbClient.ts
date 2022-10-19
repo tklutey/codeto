@@ -14,6 +14,10 @@ export default class SbClient {
     }
   }
 
+  async signUp(email: string, password: string) {
+    return this.supabaseClient.auth.signUp({ email, password });
+  }
+
   async getKnowledgeState() {
     let { data: x, error } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
     return x;
