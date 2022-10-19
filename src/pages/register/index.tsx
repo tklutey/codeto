@@ -46,9 +46,6 @@ const Register = () => {
                             <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                               Sign up
                             </Typography>
-                            <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                              Enter your credentials to continue
-                            </Typography>
                           </Stack>
                         </Grid>
                       </Grid>
