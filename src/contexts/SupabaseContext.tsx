@@ -12,10 +12,12 @@ import accountReducer from 'store/accountReducer';
 import Loader from 'ui-component/Loader';
 import { FIREBASE_API } from 'config';
 import { InitialLoginContextProps } from 'types';
-import { SupabaseContextType } from 'types/auth';
+import { JWTData, SupabaseContextType } from 'types/auth';
 import { createClient } from '@supabase/supabase-js';
 import SbClient from 'server/client/SbClient';
 import { trpc } from 'utils/trpc';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import jwt from 'jsonwebtoken';
 
 // firebase initialize
 if (!firebase.apps.length) {
@@ -33,24 +35,23 @@ const initialState: InitialLoginContextProps = {
 
 const SupabaseContext = createContext<SupabaseContextType | null>(null);
 
-export const FirebaseProvider = ({ children }: { children: React.ReactElement }) => {
+export const SupabaseProvider = ({ children }: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(accountReducer, initialState);
-  const registerMutation = trpc.useMutation('auth.register');
-  const loginMutation = trpc.useMutation('auth.login');
-  const logoutMutation = trpc.useMutation('auth.logout');
+  const supabaseClient = useSupabaseClient();
 
-  useEffect(
-    () =>
-      firebase.auth().onAuthStateChanged((user) => {
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const session = await supabaseClient.auth.getSession();
+        const user = session?.data.session?.user;
         if (user) {
           dispatch({
             type: LOGIN,
             payload: {
               isLoggedIn: true,
               user: {
-                id: user.uid,
-                email: user.email!,
-                name: user.displayName || 'Betty'
+                email: user.email,
+                id: user.id
               }
             }
           });
@@ -59,13 +60,18 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
             type: LOGOUT
           });
         }
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dispatch]
-  );
+      } catch (err) {
+        console.error(err);
+        dispatch({
+          type: LOGOUT
+        });
+      }
+    };
+    init();
+  }, []);
 
   const emailPasswordSignIn = async (email: string, password: string) => {
-    const output = await loginMutation.mutateAsync({ email, password });
+    const output = await supabaseClient.auth.signInWithPassword({ email, password });
     const user = output?.data?.user;
     if (user) {
       dispatch({
@@ -85,10 +91,23 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
     return firebase.auth().signInWithPopup(provider);
   };
 
-  const register = async (email: string, password: string) => registerMutation.mutateAsync({ email, password });
+  const register = async (email: string, password: string) => {
+    const output = await supabaseClient.auth.signUp({ email, password });
+    const user = output?.data?.user;
+    if (user) {
+      dispatch({
+        type: LOGIN,
+        payload: {
+          isLoggedIn: true,
+          user
+        }
+      });
+    }
+    return output;
+  };
 
   const logout = async () => {
-    await logoutMutation.mutateAsync();
+    await supabaseClient.auth.signOut();
     dispatch({
       type: LOGOUT
     });

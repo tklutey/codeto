@@ -26,7 +26,7 @@ import Locales from 'ui-component/Locales';
 import RTLLayout from 'ui-component/RTLLayout';
 import Snackbar from 'ui-component/extended/Snackbar';
 
-import { FirebaseProvider as AuthProvider } from 'contexts/SupabaseContext';
+import { SupabaseProvider as AuthProvider } from 'contexts/SupabaseContext';
 import { withTRPC } from '@trpc/next';
 import { AppRouter } from 'pages/api/trpc/[trpc]';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -57,14 +57,14 @@ function MyApp({ Component, pageProps }: AppProps & Props) {
             <RTLLayout>
               <Locales>
                 <NavigationScroll>
-                  <AuthProvider>
-                    <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+                  <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+                    <AuthProvider>
                       <>
                         {getLayout(<Component {...pageProps} />)}
                         <Snackbar />
                       </>
-                    </SessionContextProvider>
-                  </AuthProvider>
+                    </AuthProvider>
+                  </SessionContextProvider>
                 </NavigationScroll>
               </Locales>
             </RTLLayout>
