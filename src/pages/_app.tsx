@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useState } from 'react';
 
 // global styles
 import '../styles/globals.css';
@@ -29,6 +29,9 @@ import Snackbar from 'ui-component/extended/Snackbar';
 import { FirebaseProvider as AuthProvider } from 'contexts/SupabaseContext';
 import { withTRPC } from '@trpc/next';
 import { AppRouter } from 'pages/api/trpc/[trpc]';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+
 // import { Auth0Provider as AuthProvider } from '../contexts/Auth0Context';
 // import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 // import { AWSCognitoProvider as AuthProvider } from 'contexts/AWSCognitoContext';
@@ -44,6 +47,7 @@ interface Props {
 
 function MyApp({ Component, pageProps }: AppProps & Props) {
   const getLayout = Component.getLayout ?? ((page: any) => page);
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   return (
     <Provider store={store}>
@@ -54,10 +58,12 @@ function MyApp({ Component, pageProps }: AppProps & Props) {
               <Locales>
                 <NavigationScroll>
                   <AuthProvider>
-                    <>
-                      {getLayout(<Component {...pageProps} />)}
-                      <Snackbar />
-                    </>
+                    <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+                      <>
+                        {getLayout(<Component {...pageProps} />)}
+                        <Snackbar />
+                      </>
+                    </SessionContextProvider>
                   </AuthProvider>
                 </NavigationScroll>
               </Locales>
