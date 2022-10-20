@@ -13,7 +13,7 @@ export type SupabaseContextType = {
   login: () => void;
   register: (email: string, password: string) => Promise<AuthResponse>;
   emailPasswordSignIn: (email: string, password: string) => Promise<AuthResponse>;
-  googleSignIn: () => Promise<firebase.auth.UserCredential>;
+  googleSignIn: () => null;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: VoidFunction;
 };

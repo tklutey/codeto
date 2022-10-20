@@ -1,24 +1,14 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 
-// third-party
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-
 // action - state management
 import { LOGIN, LOGOUT } from 'store/actions';
 import accountReducer from 'store/accountReducer';
 
 // project imports
 import Loader from 'ui-component/Loader';
-import { FIREBASE_API } from 'config';
 import { InitialLoginContextProps } from 'types';
 import { SupabaseContextType } from 'types/auth';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-
-// firebase initialize
-if (!firebase.apps.length) {
-  firebase.initializeApp(FIREBASE_API);
-}
 
 // const
 const initialState: InitialLoginContextProps = {
@@ -27,7 +17,7 @@ const initialState: InitialLoginContextProps = {
   user: null
 };
 
-// ==============================|| FIREBASE CONTEXT & PROVIDER ||============================== //
+// ==============================|| SUPABASE CONTEXT & PROVIDER ||============================== //
 
 const SupabaseContext = createContext<SupabaseContextType | null>(null);
 
@@ -82,9 +72,8 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
   };
 
   const googleSignIn = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    return firebase.auth().signInWithPopup(provider);
+    console.error('Not implemented');
+    return null;
   };
 
   const register = async (email: string, password: string) => {
@@ -110,7 +99,7 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
   };
 
   const resetPassword = async (email: string) => {
-    await firebase.auth().sendPasswordResetEmail(email);
+    console.error('Not Implemented');
   };
 
   const updateProfile = () => {};
