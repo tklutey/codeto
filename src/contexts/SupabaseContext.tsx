@@ -12,12 +12,8 @@ import accountReducer from 'store/accountReducer';
 import Loader from 'ui-component/Loader';
 import { FIREBASE_API } from 'config';
 import { InitialLoginContextProps } from 'types';
-import { JWTData, SupabaseContextType } from 'types/auth';
-import { createClient } from '@supabase/supabase-js';
-import SbClient from 'server/client/SbClient';
-import { trpc } from 'utils/trpc';
+import { SupabaseContextType } from 'types/auth';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import jwt from 'jsonwebtoken';
 
 // firebase initialize
 if (!firebase.apps.length) {
