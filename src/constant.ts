@@ -7,6 +7,6 @@ export const LAYOUT: any = {
 };
 export interface Props {
   children: ReactElement;
-  variant?: "main" | "minimal" | "noauth";
+  variant?: 'main' | 'minimal' | 'noauth';
 }
 export default LAYOUT;

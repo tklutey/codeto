@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import Link from 'Link';
 
@@ -8,18 +7,15 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography,
-  useMediaQuery
+  Typography
 } from '@mui/material';
 
 // third party
@@ -27,7 +23,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import useConfig from 'hooks/useConfig';
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
@@ -36,25 +31,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-const Google = '/assets/images/icons/social-google.svg';
-
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const { borderRadius } = useConfig();
   const [checked, setChecked] = React.useState(true);
 
-  const { emailPasswordSignIn, googleSignIn } = useAuth();
-  const googleHandler = async () => {
-    try {
-      await googleSignIn();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { emailPasswordSignIn } = useAuth();
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {

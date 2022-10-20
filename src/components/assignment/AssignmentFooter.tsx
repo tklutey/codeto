@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/styles';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const FooterStrip = styled('footer')(({ theme }) => ({

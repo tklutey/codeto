@@ -15,6 +15,7 @@ const Problem = () => {
     if (drawerOpen) {
       dispatch(openDrawer(false));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const lesson = trpc.useQuery(['codingProblem.getById', Number(id)]);

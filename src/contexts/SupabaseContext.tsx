@@ -54,7 +54,7 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
       }
     };
     init();
-  }, []);
+  }, [supabaseClient.auth]);
 
   const emailPasswordSignIn = async (email: string, password: string) => {
     const output = await supabaseClient.auth.signInWithPassword({ email, password });

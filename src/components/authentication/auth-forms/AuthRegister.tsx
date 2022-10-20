@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useEffect } from 'react';
 import Link from 'Link';
 // material-ui
@@ -7,7 +6,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -27,7 +25,6 @@ import { Formik } from 'formik';
 
 // project imports
 import useAuth from 'hooks/useAuth';
-import useConfig from 'hooks/useConfig';
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
@@ -36,28 +33,19 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { StringColorProps } from 'types';
-const Google = '/assets/images/icons/social-google.svg';
+
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const { borderRadius } = useConfig();
   const [showPassword, setShowPassword] = React.useState(false);
   const [checked, setChecked] = React.useState(true);
 
   const [strength, setStrength] = React.useState(0);
   const [level, setLevel] = React.useState<StringColorProps>();
-  const { register, googleSignIn } = useAuth();
-
-  const googleHandler = async () => {
-    try {
-      await googleSignIn();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { register } = useAuth();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

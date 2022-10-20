@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconDashboard, IconDeviceAnalytics, IconPencil } from '@tabler/icons';
+import { IconDashboard, IconPencil } from '@tabler/icons';
 import { OverrideIcon } from 'types';
 
 // constant

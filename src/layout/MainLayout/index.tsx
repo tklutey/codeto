@@ -91,44 +91,44 @@ const MainLayout: FC = ({ children }) => {
   );
 
   return (
-    // <AuthGuard>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {/* header */}
-      <AppBar
-        enableColorOnDark
-        position="fixed"
-        color="inherit"
-        elevation={0}
-        sx={{
-          bgcolor: theme.palette.background.default,
-          transition: drawerOpen ? theme.transitions.create('width') : 'none'
-        }}
-      >
-        {header}
-      </AppBar>
+    <AuthGuard>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        {/* header */}
+        <AppBar
+          enableColorOnDark
+          position="fixed"
+          color="inherit"
+          elevation={0}
+          sx={{
+            bgcolor: theme.palette.background.default,
+            transition: drawerOpen ? theme.transitions.create('width') : 'none'
+          }}
+        >
+          {header}
+        </AppBar>
 
-      {/* drawer */}
-      <Sidebar />
+        {/* drawer */}
+        <Sidebar />
 
-      {/* main content */}
-      <Main theme={theme} open={drawerOpen}>
-        {/* breadcrumb */}
-        {container && (
-          <Container maxWidth="lg">
-            <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
-            {children}
-          </Container>
-        )}
-        {!container && (
-          <>
-            <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
-            {children}
-          </>
-        )}
-      </Main>
-    </Box>
-    // </AuthGuard>
+        {/* main content */}
+        <Main theme={theme} open={drawerOpen}>
+          {/* breadcrumb */}
+          {container && (
+            <Container maxWidth="lg">
+              <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
+              {children}
+            </Container>
+          )}
+          {!container && (
+            <>
+              <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
+              {children}
+            </>
+          )}
+        </Main>
+      </Box>
+    </AuthGuard>
   );
 };
 

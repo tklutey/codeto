@@ -1,6 +1,5 @@
 // third-party
 import { AuthResponse } from '@supabase/supabase-js';
-import firebase from 'firebase/compat/app';
 
 // project imports
 import { UserProfile } from 'types/user-profile';

@@ -1,5 +1,3 @@
-import * as createTypography from '@mui/material/styles/createTypography';
-
 declare module '@mui/material/styles/createTypography' {
   export interface FontStyle
     extends Required<{

@@ -27,22 +27,22 @@ export default class SbClient {
   }
 
   async getKnowledgeState() {
-    let { data: x, error } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
+    let { data: x } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
     return x;
   }
 
   async getCodingProblemById(id: number) {
-    let { data: x, error } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem_by_id', { id: id });
+    let { data: x } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem_by_id', { id: id });
     return x;
   }
 
   async getFringeStandards(arr: number[]) {
-    let { data: x, error } = await this.supabaseClient.rpc<definitions['learning_standard']>('get_fringe_standards', { _arr: arr });
+    let { data: x } = await this.supabaseClient.rpc<definitions['learning_standard']>('get_fringe_standards', { _arr: arr });
     return x;
   }
 
   async getCodingProblemsWithStandards() {
-    let { data: x, error } = await this.supabaseClient.rpc('get_coding_problems_standards');
+    let { data: x } = await this.supabaseClient.rpc('get_coding_problems_standards');
     return x;
   }
 }

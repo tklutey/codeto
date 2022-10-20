@@ -15,7 +15,7 @@ interface AccountReducerActionProps {
   payload?: InitialLoginContextProps;
 }
 
-const accountReducer = (state = initialState, action: AccountReducerActionProps) => {
+const accountReducer = (action: AccountReducerActionProps, state = initialState) => {
   switch (action.type) {
     case REGISTER: {
       const { user } = action.payload!;
