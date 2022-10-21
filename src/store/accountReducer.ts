@@ -10,12 +10,13 @@ const initialState: InitialLoginContextProps = {
   user: null
 };
 
-interface AccountReducerActionProps {
+export interface AccountReducerActionProps {
   type: string;
   payload?: InitialLoginContextProps;
 }
 
-const accountReducer = (action: AccountReducerActionProps, state = initialState) => {
+// eslint-disable-next-line @typescript-eslint/default-param-last
+const accountReducer = (state: InitialLoginContextProps = initialState, action: AccountReducerActionProps): InitialLoginContextProps => {
   switch (action.type) {
     case REGISTER: {
       const { user } = action.payload!;

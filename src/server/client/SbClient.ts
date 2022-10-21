@@ -1,5 +1,4 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { definitions } from 'types/supabase';
 
 export default class SbClient {
   private supabaseClient: SupabaseClient;
@@ -14,30 +13,18 @@ export default class SbClient {
     }
   }
 
-  async signUp(email: string, password: string) {
-    return this.supabaseClient.auth.signUp({ email, password });
-  }
-
-  async signIn(email: string, password: string) {
-    return this.supabaseClient.auth.signInWithPassword({ email, password });
-  }
-
-  async logout() {
-    return this.supabaseClient.auth.signOut();
-  }
-
   async getKnowledgeState() {
-    let { data: x } = await this.supabaseClient.rpc<definitions['decorated_denormalized_standards']>('get_standards');
+    let { data: x } = await this.supabaseClient.rpc('get_standards');
     return x;
   }
 
   async getCodingProblemById(id: number) {
-    let { data: x } = await this.supabaseClient.rpc<definitions['coding_problem']>('get_coding_problem_by_id', { id: id });
+    let { data: x } = await this.supabaseClient.rpc('get_coding_problem_by_id', { id: id });
     return x;
   }
 
   async getFringeStandards(arr: number[]) {
-    let { data: x } = await this.supabaseClient.rpc<definitions['learning_standard']>('get_fringe_standards', { _arr: arr });
+    let { data: x } = await this.supabaseClient.rpc('get_fringe_standards', { _arr: arr });
     return x;
   }
 
