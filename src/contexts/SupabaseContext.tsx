@@ -59,14 +59,19 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
   const emailPasswordSignIn = async (email: string, password: string) => {
     const output = await supabaseClient.auth.signInWithPassword({ email, password });
     const user = output?.data?.user;
-    if (user) {
-      dispatch({
-        type: LOGIN,
-        payload: {
-          isLoggedIn: true,
-          user
-        }
-      });
+    const error = output?.error;
+    if (!error) {
+      if (user) {
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: true,
+            user
+          }
+        });
+      }
+    } else {
+      throw error;
     }
     return output;
   };
