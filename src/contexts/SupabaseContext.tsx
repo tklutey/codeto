@@ -70,10 +70,10 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
           }
         });
       }
+      return output;
     } else {
       throw error;
     }
-    return output;
   };
 
   const googleSignIn = () => {
@@ -84,16 +84,20 @@ export const SupabaseProvider = ({ children }: { children: React.ReactElement })
   const register = async (email: string, password: string) => {
     const output = await supabaseClient.auth.signUp({ email, password });
     const user = output?.data?.user;
-    if (user) {
-      dispatch({
-        type: LOGIN,
-        payload: {
-          isLoggedIn: true,
-          user
-        }
-      });
+    const error = output?.error;
+    if (!error) {
+      if (user) {
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: true,
+            user
+          }
+        });
+      }
+      return output;
     }
-    return output;
+    throw error;
   };
 
   const logout = async () => {

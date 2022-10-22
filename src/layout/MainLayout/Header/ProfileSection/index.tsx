@@ -57,7 +57,6 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef<any>(null);
   const handleLogout = async () => {
-    console.log('logout');
     try {
       await logout();
     } catch (err) {
@@ -190,7 +189,13 @@ const ProfileSection = () => {
                       />
                       <Divider />
                     </Box>
-                    <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
+                    <PerfectScrollbar
+                      style={{
+                        height: '100%',
+                        maxHeight: 'calc(100vh - 250px)',
+                        overflowX: 'hidden'
+                      }}
+                    >
                       <Box sx={{ p: 2, pt: 0 }}>
                         <UpgradePlanCard />
                         <Divider />
