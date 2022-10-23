@@ -60,4 +60,19 @@ export default class SbClient {
     }
     return 'No new records to insert';
   }
+
+  async getLearningStandardRelationships() {
+    const { data } = await this.supabaseClient.from('standard_relationship').select();
+    return data;
+  }
+
+  async getAllLearningStandards() {
+    const { data } = await this.supabaseClient.from('learning_standard').select();
+    return data;
+  }
+
+  async getTopicUnitRelationships() {
+    const { data } = await this.supabaseClient.from('topic_unit_relationship').select();
+    return data;
+  }
 }

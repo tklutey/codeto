@@ -55,4 +55,67 @@ export const knowledgeState = trpc
       const sbClient = new SbClient();
       return sbClient.getMasteredStandardsForUser(userId);
     }
+  })
+  .query('getLearningStandardsForCourse', {
+    async resolve() {
+      const sbClient = new SbClient();
+      const learningStandardRelationships = await sbClient.getLearningStandardRelationships();
+      const learningStandards = await sbClient.getAllLearningStandards();
+      const topicUnitRelationships = await sbClient.getTopicUnitRelationships();
+      const decoratedLearningStandardRelationships = learningStandardRelationships
+        ?.map((lsr) => {
+          const parent = learningStandards?.find((ls) => ls.id === lsr.parent_id);
+          const child = learningStandards?.find((ls) => ls.id === lsr.child_id);
+          return {
+            parent,
+            child
+          };
+        })
+        .filter((lsr) => lsr.parent.type === 'topic')
+        .map((lsr) => {
+          const unit = topicUnitRelationships?.find((tur) => tur.topic_id === lsr.parent.id);
+          if (!unit) {
+            console.log('no unit found for topic', lsr.parent.code);
+          }
+          return {
+            ...lsr,
+            unit
+          };
+        })
+        .map((lsr) => {
+          const { parent: topic, child: objective, unit } = lsr;
+          return {
+            unitId: unit.id,
+            topic: {
+              id: topic.id,
+              code: topic.code,
+              description: topic.description
+            },
+            objective: {
+              id: objective.id,
+              code: objective.code,
+              description: objective.description
+            }
+          };
+        });
+      return decoratedLearningStandardRelationships;
+    }
+  })
+  .query('getUserCourseMasterySummary', {
+    input: z.string(),
+    async resolve({ input }) {
+      const userId = input;
+      const sbClient = new SbClient();
+      const masteredStandards = await sbClient.getMasteredStandardsForUser(userId);
+      const masteredStandardIds = new Set(masteredStandards?.map((standard) => standard.learning_standard_id));
+      const courseStandards = await sbClient.getLearningStandardRelationships();
+      const masterySummary = courseStandards?.map((standard) => {
+        const isMastered = masteredStandardIds.has(standard?.learning_standard?.id);
+        return {
+          ...standard,
+          isMastered
+        };
+      });
+      return masterySummary;
+    }
   });
