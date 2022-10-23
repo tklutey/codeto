@@ -47,4 +47,10 @@ export const knowledgeState = trpc
       const sbClient = new SbClient();
       return sbClient.updateUserKnowledgeState(learningStandards, userId);
     }
+  })
+  .query('getMasteredLearningStandards', {
+    async resolve() {
+      const sbClient = new SbClient();
+      return 'a';
+    }
   });

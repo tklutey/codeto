@@ -33,22 +33,31 @@ export default class SbClient {
     return x;
   }
 
-  async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {
-    const { data: existingLearningStandards } = await this.supabaseClient
+  async getMasteredStandardsForUser(userUuid: string) {
+    const { data: masteredStandards } = await this.supabaseClient
       .from('user_learning_standard_relationship')
       .select()
       .eq('user_id', userUuid);
-    // create a set from data
-    const existingLearningStandardsSet = new Set(existingLearningStandards?.map((x) => x.learning_standard_id));
-    const insertRecords = newLearningStandards.map((id) => {
-      if (!existingLearningStandardsSet.has(id)) {
-        return {
-          user_id: userUuid,
-          learning_standard_id: id
-        };
-      }
-    });
+    return masteredStandards;
+  }
 
-    return this.supabaseClient.from('user_learning_standard_relationship').upsert(insertRecords).select();
+  async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {
+    const masteredStandards = await this.getMasteredStandardsForUser(userUuid);
+    const existingLearningStandardsSet = new Set(masteredStandards?.map((x) => x.learning_standard_id));
+    const insertRecords = newLearningStandards
+      .map((id) => {
+        if (!existingLearningStandardsSet.has(id)) {
+          return {
+            user_id: userUuid,
+            learning_standard_id: id
+          };
+        }
+      })
+      .filter((x) => x);
+
+    if (insertRecords.length > 0) {
+      return this.supabaseClient.from('user_learning_standard_relationship').upsert(insertRecords).select();
+    }
+    return 'No new records to insert';
   }
 }
