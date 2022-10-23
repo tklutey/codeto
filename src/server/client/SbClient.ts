@@ -32,4 +32,23 @@ export default class SbClient {
     let { data: x } = await this.supabaseClient.rpc('get_coding_problems_standards');
     return x;
   }
+
+  async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {
+    const { data: existingLearningStandards } = await this.supabaseClient
+      .from('user_learning_standard_relationship')
+      .select()
+      .eq('user_id', userUuid);
+    // create a set from data
+    const existingLearningStandardsSet = new Set(existingLearningStandards?.map((x) => x.learning_standard_id));
+    const insertRecords = newLearningStandards.map((id) => {
+      if (!existingLearningStandardsSet.has(id)) {
+        return {
+          user_id: userUuid,
+          learning_standard_id: id
+        };
+      }
+    });
+
+    return this.supabaseClient.from('user_learning_standard_relationship').upsert(insertRecords).select();
+  }
 }
