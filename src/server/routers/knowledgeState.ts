@@ -49,8 +49,10 @@ export const knowledgeState = trpc
     }
   })
   .query('getMasteredLearningStandards', {
-    async resolve() {
+    input: z.string(),
+    async resolve({ input }) {
+      const userId = input;
       const sbClient = new SbClient();
-      return 'a';
+      return sbClient.getMasteredStandardsForUser(userId);
     }
   });
