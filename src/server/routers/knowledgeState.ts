@@ -59,9 +59,9 @@ export const knowledgeState = trpc
   .query('getLearningStandardsForCourse', {
     async resolve() {
       const sbClient = new SbClient();
+      const topicUnitRelationshipsPromise = sbClient.getTopicUnitRelationships();
       const learningStandardRelationships = await sbClient.getLearningStandardRelationships();
       const learningStandards = await sbClient.getAllLearningStandards();
-      const topicUnitRelationships = await sbClient.getTopicUnitRelationships();
       const decoratedLearningStandardRelationships = learningStandardRelationships
         ?.map((lsr) => {
           const parent = learningStandards?.find((ls) => ls.id === lsr.parent_id);
@@ -71,8 +71,10 @@ export const knowledgeState = trpc
             child
           };
         })
-        .filter((lsr) => lsr.parent.type === 'topic')
-        .map((lsr) => {
+        .filter((lsr) => lsr.parent.type === 'topic');
+      const topicUnitRelationships = await topicUnitRelationshipsPromise;
+      const learningStandardsWithUnits = decoratedLearningStandardRelationships
+        ?.map((lsr) => {
           const unit = topicUnitRelationships?.find((tur) => tur.topic_id === lsr.parent.id);
           if (!unit) {
             console.log('no unit found for topic', lsr.parent.code);
@@ -98,7 +100,7 @@ export const knowledgeState = trpc
             }
           };
         });
-      return decoratedLearningStandardRelationships;
+      return learningStandardsWithUnits;
     }
   })
   .query('getUserCourseMasterySummary', {
