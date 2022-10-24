@@ -71,6 +71,11 @@ export default class SbClient {
     return data;
   }
 
+  async getAllCourseUnits() {
+    const { data } = await this.supabaseClient.from('learning_unit').select();
+    return data;
+  }
+
   async getTopicUnitRelationships() {
     const { data } = await this.supabaseClient.from('topic_unit_relationship').select();
     return data;

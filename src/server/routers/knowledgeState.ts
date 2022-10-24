@@ -62,6 +62,7 @@ export const knowledgeState = trpc
       const topicUnitRelationshipsPromise = sbClient.getTopicUnitRelationships();
       const learningStandardRelationships = await sbClient.getLearningStandardRelationships();
       const learningStandards = await sbClient.getAllLearningStandards();
+      const unitsPromise = sbClient.getAllCourseUnits();
       const decoratedLearningStandardRelationships = learningStandardRelationships
         ?.map((lsr) => {
           const parent = learningStandards?.find((ls) => ls.id === lsr.parent_id);
@@ -81,26 +82,29 @@ export const knowledgeState = trpc
           }
           return {
             ...lsr,
-            unit
+            unitId: unit.unit_id
           };
         })
         .map((lsr) => {
-          const { parent: topic, child: objective, unit } = lsr;
+          const { parent: topic, child: objective, unitId } = lsr;
           return {
-            unitId: unit.id,
-            topic: {
-              id: topic.id,
-              code: topic.code,
-              description: topic.description
-            },
-            objective: {
-              id: objective.id,
-              code: objective.code,
-              description: objective.description
-            }
+            unitId: unitId,
+            objective_code: objective.code,
+            objective_description: objective.description,
+            topic_code: topic.code,
+            topic_description: topic.description
           };
         });
-      return learningStandardsWithUnits;
+      const units = await unitsPromise;
+      const unitStandardDetails = units?.map((unit) => {
+        const unitLearningStandards = learningStandardsWithUnits?.filter((ls) => ls.unitId === unit.id);
+        return {
+          unit_id: unit.id,
+          unit_name: unit.unit_name,
+          standards: unitLearningStandards
+        };
+      });
+      return unitStandardDetails;
     }
   })
   .query('getUserCourseMasterySummary', {
