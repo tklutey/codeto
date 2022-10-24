@@ -3,9 +3,14 @@ import Layout from 'layout';
 import MainCard from 'ui-component/cards/MainCard';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 import { trpc } from 'utils/trpc';
+import useAuth from 'hooks/useAuth';
 
 const StudentDashboard = () => {
-  const studentMasteryData = trpc.useQuery(['knowledgeState.get']);
+  const { user } = useAuth();
+  if (!user || !user.id) {
+    throw new Error('User not found');
+  }
+  const studentMasteryData = trpc.useQuery(['knowledgeState.getUserCourseMasterySummary', user.id]);
 
   return (
     <MainCard title="Student Mastery" style={{ width: '100%' }}>
