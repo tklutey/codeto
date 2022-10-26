@@ -31,7 +31,7 @@ export const codingProblem = trpc
           ...rest,
           learning_standards: learningStandards
         };
-      });
+      })[0];
       // @ts-ignore
       return transformedResult;
     }
