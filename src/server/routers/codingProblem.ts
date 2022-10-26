@@ -1,7 +1,6 @@
 import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
-import { definitions } from 'types/supabase';
 
 export type TestInstance = {
   summary: string;
@@ -15,7 +14,7 @@ export const codingProblem = trpc
   .router()
   .query('getById', {
     input: z.number(),
-    async resolve({ input }): Promise<definitions['coding_problem']> {
+    async resolve({ input }) {
       const id = input;
       const sbClient = new SbClient();
       const codingProblemQueryResult = await sbClient.getCodingProblemById(id);
