@@ -13,14 +13,12 @@ export default class SbClient {
     }
   }
 
-  async getKnowledgeState() {
-    let { data: x } = await this.supabaseClient.rpc('get_standards');
-    return x;
-  }
-
   async getCodingProblemById(id: number) {
-    let { data: x } = await this.supabaseClient.rpc('get_coding_problem_by_id', { id: id });
-    return x;
+    let { data } = await this.supabaseClient
+      .from('coding_problem')
+      .select('*, basis_knowledge_state(id, standard_basis_relationship(*))')
+      .eq('id', id);
+    return data;
   }
 
   async getFringeStandards(arr: number[]) {

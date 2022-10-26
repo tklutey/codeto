@@ -19,8 +19,21 @@ export const codingProblem = trpc
       const id = input;
       const sbClient = new SbClient();
       const codingProblemQueryResult = await sbClient.getCodingProblemById(id);
+      const transformedResult = codingProblemQueryResult?.map((cp) => {
+        const { basis_knowledge_state, ...rest } = cp;
+        // @ts-ignore
+        const learningStandards = basis_knowledge_state?.flatMap((bks) => {
+          // @ts-ignore
+          const a = bks.standard_basis_relationship.map((sbr) => sbr.standard_id);
+          return a;
+        });
+        return {
+          ...rest,
+          learning_standards: learningStandards
+        };
+      });
       // @ts-ignore
-      return codingProblemQueryResult;
+      return transformedResult;
     }
   })
   .query('getProblemsWithStandards', {
