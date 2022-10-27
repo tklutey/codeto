@@ -21,13 +21,13 @@ export default class SbClient {
     return data;
   }
 
-  async getFringeStandards(arr: number[]) {
-    let { data: x } = await this.supabaseClient.rpc('get_fringe_standards', { _arr: arr });
-    return x;
+  async getAllCodingProblems() {
+    let { data } = await this.supabaseClient.from('coding_problem').select('*, basis_knowledge_state(id, standard_basis_relationship(*))');
+    return data;
   }
 
-  async getCodingProblemsWithStandards() {
-    let { data: x } = await this.supabaseClient.rpc('get_coding_problems_standards');
+  async getFringeStandards(arr: number[]) {
+    let { data: x } = await this.supabaseClient.rpc('get_fringe_standards', { _arr: arr });
     return x;
   }
 
