@@ -7,14 +7,23 @@ import { openDrawer } from 'store/slices/menu';
 import { dispatch, useSelector } from 'store';
 import useAuth from 'hooks/useAuth';
 
+const extractKnowledgeState = (masteredLearningStandards: any[]) => {
+  return masteredLearningStandards.map((mls) => mls.learning_standard_id);
+};
+
 const Practice = () => {
   const { user } = useAuth();
   if (!user || !user.id) {
     throw new Error('User not found');
   }
   const { drawerOpen } = useSelector((state) => state.menu);
-  const [codingProblemId, setCodingProblemId] = useState(1);
-  const lesson = trpc.useQuery(['codingProblem.getById', codingProblemId]);
+  const { data: masteredLearningStandards, refetch: refetchMasteredLearningStandards } = trpc.useQuery([
+    'knowledgeState.getMasteredLearningStandards',
+    user.id
+  ]);
+  const [knowledgeState, setKnowledgeState] = useState(extractKnowledgeState(masteredLearningStandards || []));
+  const { data: problemsByDistance } = trpc.useQuery(['codingProblem.getProblemsByDistance', knowledgeState]);
+  const codingProblem = problemsByDistance?.[0];
   const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
   useEffect(() => {
     if (drawerOpen) {
@@ -24,24 +33,19 @@ const Practice = () => {
   }, []);
 
   const goToNextProblem = (learningStandards: number[]) => {
-    return () => {
+    return async () => {
       const input = {
         learningStandards,
         userId: user.id
       };
       // @ts-ignore
-      const data = updateKnowledgeStateMutation.mutate(input);
-      // TODO: Make this an API call
-      const MAX_PROBLEM_ID = 6;
-      let nextProblemId = codingProblemId + 1;
-      if (nextProblemId > MAX_PROBLEM_ID) {
-        nextProblemId = nextProblemId % MAX_PROBLEM_ID;
-      }
-      setCodingProblemId(nextProblemId);
+      updateKnowledgeStateMutation.mutate(input);
+      const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
+      setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
     };
   };
 
-  if (lesson?.data) {
+  if (codingProblem) {
     const {
       title: assignmentTitle,
       description: assignmentDescription,
@@ -51,7 +55,7 @@ const Practice = () => {
       solution_code: solutionCode,
       learning_standards: learningStandards,
       tests
-    } = lesson.data;
+    } = codingProblem;
     return (
       <ProgrammingActivityLayout
         assignmentTitle={assignmentTitle}
