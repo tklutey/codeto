@@ -7,7 +7,7 @@ import { openDrawer } from 'store/slices/menu';
 import { dispatch, useSelector } from 'store';
 import useAuth from 'hooks/useAuth';
 
-const extractKnowledgeState = (masteredLearningStandards: any[]) => {
+const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
 };
 
@@ -17,13 +17,17 @@ const Practice = () => {
     throw new Error('User not found');
   }
   const { drawerOpen } = useSelector((state) => state.menu);
-  const { data: masteredLearningStandards, refetch: refetchMasteredLearningStandards } = trpc.useQuery([
-    'knowledgeState.getMasteredLearningStandards',
-    user.id
-  ]);
-  const [knowledgeState, setKnowledgeState] = useState(extractKnowledgeState(masteredLearningStandards || []));
+  const [knowledgeState, setKnowledgeState] = useState<number[]>([]);
+  const { refetch: refetchMasteredLearningStandards } = trpc.useQuery(['knowledgeState.getMasteredLearningStandards', user.id], {
+    onSuccess: (data) => {
+      if (data) {
+        setKnowledgeState(extractKnowledgeState(data));
+      }
+    }
+  });
   const { data: problemsByDistance } = trpc.useQuery(['codingProblem.getProblemsByDistance', knowledgeState]);
   const codingProblem = problemsByDistance?.[0];
+
   const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
   useEffect(() => {
     if (drawerOpen) {
@@ -39,7 +43,7 @@ const Practice = () => {
         userId: user.id
       };
       // @ts-ignore
-      updateKnowledgeStateMutation.mutate(input);
+      await updateKnowledgeStateMutation.mutateAsync(input);
       const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
       setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
     };
