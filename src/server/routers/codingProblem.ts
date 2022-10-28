@@ -57,7 +57,8 @@ export const codingProblem = trpc
             distance
           };
         })
-        .sort((a, b) => a.distance - b.distance);
+        .sort((a, b) => a.distance - b.distance)
+        .filter((cp) => cp.distance > 0);
       return learningStandards;
     }
   });
