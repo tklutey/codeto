@@ -1,5 +1,5 @@
 import * as trpc from '@trpc/server';
-import { Execute, ExecuteApiFp } from 'server/client/jdoodle-ts-client';
+import { Execute, ExecuteApiFp, InlineResponse200 } from 'server/client/jdoodle-ts-client';
 import { z } from 'zod';
 
 const CLIENT_ID = 'ff007312f152182ebdc5b75e7ae71d38';
@@ -11,7 +11,7 @@ export const executeCode = trpc.router().mutation('post', {
     script: z.string(),
     doMock: z.boolean()
   }),
-  async resolve({ input }) {
+  async resolve({ input }): Promise<InlineResponse200> {
     const { language, script, doMock } = input;
 
     const execute: Execute = {
@@ -26,8 +26,8 @@ export const executeCode = trpc.router().mutation('post', {
       return {
         output: 'Hello, World\n',
         statusCode: 200,
-        memory: '24176',
-        cpuTime: '0.06'
+        memory: 24176,
+        cpuTime: 0.06
       };
     } else {
       const executeApiFp = ExecuteApiFp();
