@@ -26,11 +26,6 @@ export default class SbClient {
     return data;
   }
 
-  async getFringeStandards(arr: number[]) {
-    let { data: x } = await this.supabaseClient.rpc('get_fringe_standards', { _arr: arr });
-    return x;
-  }
-
   async getMasteredStandardsForUser(userUuid: string) {
     const { data: masteredStandards } = await this.supabaseClient
       .from('user_learning_standard_relationship')
