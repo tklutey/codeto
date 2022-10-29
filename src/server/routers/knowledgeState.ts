@@ -80,6 +80,16 @@ export const knowledgeState = trpc
       return getCourseSummary();
     }
   })
+  .mutation('resetUserMastery', {
+    input: z.object({
+      userId: z.string()
+    }),
+    async resolve({ input }) {
+      const { userId } = input;
+      const sbClient = new SbClient();
+      return sbClient.deleteUserMasteredStandards(userId);
+    }
+  })
   .query('getUserCourseMasterySummary', {
     input: z.string(),
     async resolve({ input }) {

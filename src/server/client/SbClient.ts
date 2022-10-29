@@ -39,6 +39,11 @@ export default class SbClient {
     return masteredStandards;
   }
 
+  async deleteUserMasteredStandards(userUuid: string) {
+    const { data } = await this.supabaseClient.from('user_learning_standard_relationship').delete().eq('user_id', userUuid);
+    return data;
+  }
+
   async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {
     const masteredStandards = await this.getMasteredStandardsForUser(userUuid);
     const existingLearningStandardsSet = new Set(masteredStandards?.map((x) => x.learning_standard_id));
