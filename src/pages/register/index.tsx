@@ -13,7 +13,6 @@ import AuthWrapper1 from 'components/authentication/AuthWrapper1';
 import AuthCardWrapper from 'components/authentication/AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import AuthRegister from 'components/authentication/auth-forms/AuthRegister';
-import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
 
 // assets
@@ -72,9 +71,6 @@ const Register = () => {
                 </AuthCardWrapper>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-            <AuthFooter />
           </Grid>
         </Grid>
       </AuthWrapper1>

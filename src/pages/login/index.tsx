@@ -1,8 +1,8 @@
-import { ReactElement } from 'react';
+import {ReactElement} from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import {useTheme} from '@mui/material/styles';
+import {Divider, Grid, Stack, Typography, useMediaQuery} from '@mui/material';
 import Link from '../../Link';
 
 // project imports
@@ -13,7 +13,6 @@ import AuthWrapper1 from 'components/authentication/AuthWrapper1';
 import AuthCardWrapper from 'components/authentication/AuthCardWrapper';
 import AuthLogin from 'components/authentication/auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
@@ -73,9 +72,6 @@ const Login = () => {
                 </AuthCardWrapper>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-            <AuthFooter />
           </Grid>
         </Grid>
       </AuthWrapper1>

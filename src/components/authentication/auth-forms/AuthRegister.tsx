@@ -34,9 +34,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { StringColorProps } from 'types';
 
-// ===========================|| FIREBASE - REGISTER ||=========================== //
-
-const FirebaseRegister = ({ ...others }) => {
+const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -237,4 +235,4 @@ const FirebaseRegister = ({ ...others }) => {
   );
 };
 
-export default FirebaseRegister;
+export default AuthRegister;

@@ -13,7 +13,6 @@ import AuthWrapper1 from 'components/authentication/AuthWrapper1';
 import AuthCardWrapper from 'components/authentication/AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import AuthForgotPassword from 'components/authentication/auth-forms/AuthForgotPassword';
-import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
 
 // ============================|| AUTH3 - FORGOT PASSWORD ||============================ //
@@ -73,9 +72,6 @@ const ForgotPassword = () => {
                 </AuthCardWrapper>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-            <AuthFooter />
           </Grid>
         </Grid>
       </AuthWrapper1>

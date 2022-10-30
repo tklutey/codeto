@@ -31,9 +31,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// ============================|| FIREBASE - LOGIN ||============================ //
-
-const FirebaseLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
+const AuthLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = React.useState(true);
@@ -53,8 +51,8 @@ const FirebaseLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          email: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -177,4 +175,4 @@ const FirebaseLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
   );
 };
 
-export default FirebaseLogin;
+export default AuthLogin;
