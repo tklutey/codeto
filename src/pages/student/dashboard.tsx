@@ -4,6 +4,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 import { trpc } from 'utils/trpc';
 import useAuth from 'hooks/useAuth';
+import SkeletonStudentMasteryChart from 'components/skeleton/SkeletonStudentMasteryChart';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -35,6 +36,7 @@ const StudentDashboard = () => {
           ))}
         </Grid>
       )}
+      {!studentMasteryData?.data && <SkeletonStudentMasteryChart rows={10} />}
     </MainCard>
   );
 };
