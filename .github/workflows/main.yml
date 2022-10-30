@@ -15,8 +15,14 @@ jobs:
   newman:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - uses: matt-ball/newman-action@master
         with:
           collection: https://api.getpostman.com/collections/12584448-c8c5a445-3c35-44f3-a023-761fe0252d07?apikey=PMAK-61fe9508434e4f05f01c9898-80138aa7f65eee0bc3c3e07974be084cd9
           environment: https://api.getpostman.com/environments/12584448-81292e6a-035e-44dd-8fc2-b54ca8cf1ff4?apikey=PMAK-61fe9508434e4f05f01c9898-80138aa7f65eee0bc3c3e07974be084cd9
+
+      - uses: amondnet/vercel-action@v20 #deploy
+        with:
+          vercel-token: "GgBLugSp3ZJ77XWwfAaGmg0T" # Required
+          vercel-org-id: "ytVln4XcVCmWF0qAehIPGM0F"  #Required
+          vercel-project-id: "ytVln4XcVCmWF0qAehIPGM0F" #Required
