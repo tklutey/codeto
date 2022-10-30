@@ -6,6 +6,7 @@ import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { ExerciseTests } from 'server/routers/codingProblem';
 import Layout from 'layout';
 import { useRouter } from 'next/router';
+import Page from 'ui-component/Page';
 
 const Problem = () => {
   const router = useRouter();
@@ -19,29 +20,34 @@ const Problem = () => {
   }, []);
 
   const lesson = trpc.useQuery(['codingProblem.getById', Number(id)]);
-  if (lesson?.data) {
-    const {
-      title: assignmentTitle,
-      description: assignmentDescription,
-      language: language,
-      starting_code: startingCode,
-      youtube_tutorial_url: youtubeTutorialUrl,
-      solution_code: solutionCode,
-      tests
-    } = lesson.data;
-    return (
-      <ProgrammingActivityLayout
-        assignmentTitle={assignmentTitle}
-        assignmentDescription={assignmentDescription}
-        language={language}
-        startingCode={startingCode}
-        solutionCode={solutionCode}
-        tests={tests as ExerciseTests}
-        youtubeTutorialUrl={youtubeTutorialUrl}
-      />
-    );
-  }
-  return <div>Loading...</div>;
+  const getPageContent = (problem: any) => {
+    if (problem) {
+      const {
+        title: assignmentTitle,
+        description: assignmentDescription,
+        language: language,
+        starting_code: startingCode,
+        youtube_tutorial_url: youtubeTutorialUrl,
+        solution_code: solutionCode,
+        learning_standards: learningStandards,
+        tests
+      } = problem;
+      return (
+        <ProgrammingActivityLayout
+          assignmentTitle={assignmentTitle}
+          assignmentDescription={assignmentDescription}
+          language={language}
+          startingCode={startingCode}
+          solutionCode={solutionCode}
+          tests={tests as ExerciseTests}
+          youtubeTutorialUrl={youtubeTutorialUrl}
+        />
+      );
+    }
+    return <div>Loading...</div>;
+  };
+
+  return <Page title="Practice">{getPageContent(lesson)}</Page>;
 };
 
 Problem.getLayout = function getLayout(page: ReactElement) {

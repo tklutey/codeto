@@ -6,6 +6,7 @@ import { ExerciseTests } from 'server/routers/codingProblem';
 import { openDrawer } from 'store/slices/menu';
 import { dispatch, useSelector } from 'store';
 import useAuth from 'hooks/useAuth';
+import Page from 'ui-component/Page';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -49,31 +50,35 @@ const Practice = () => {
     };
   };
 
-  if (codingProblem) {
-    const {
-      title: assignmentTitle,
-      description: assignmentDescription,
-      language: language,
-      starting_code: startingCode,
-      youtube_tutorial_url: youtubeTutorialUrl,
-      solution_code: solutionCode,
-      learning_standards: learningStandards,
-      tests
-    } = codingProblem;
-    return (
-      <ProgrammingActivityLayout
-        assignmentTitle={assignmentTitle}
-        assignmentDescription={assignmentDescription}
-        language={language}
-        startingCode={startingCode}
-        solutionCode={solutionCode}
-        tests={tests as ExerciseTests}
-        youtubeTutorialUrl={youtubeTutorialUrl}
-        goToNextProblem={goToNextProblem(learningStandards)}
-      />
-    );
-  }
-  return <div>Loading...</div>;
+  const getPageContent = (problem: any) => {
+    if (problem) {
+      const {
+        title: assignmentTitle,
+        description: assignmentDescription,
+        language: language,
+        starting_code: startingCode,
+        youtube_tutorial_url: youtubeTutorialUrl,
+        solution_code: solutionCode,
+        learning_standards: learningStandards,
+        tests
+      } = problem;
+      return (
+        <ProgrammingActivityLayout
+          assignmentTitle={assignmentTitle}
+          assignmentDescription={assignmentDescription}
+          language={language}
+          startingCode={startingCode}
+          solutionCode={solutionCode}
+          tests={tests as ExerciseTests}
+          youtubeTutorialUrl={youtubeTutorialUrl}
+          goToNextProblem={goToNextProblem(learningStandards)}
+        />
+      );
+    }
+    return <div>Loading...</div>;
+  };
+
+  return <Page title="Practice">{getPageContent(codingProblem)}</Page>;
 };
 Practice.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
