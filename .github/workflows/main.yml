@@ -25,4 +25,4 @@ jobs:
         with:
           vercel-token: "GgBLugSp3ZJ77XWwfAaGmg0T" # Required
           vercel-org-id: "ytVln4XcVCmWF0qAehIPGM0F"  #Required
-          vercel-project-id: "ytVln4XcVCmWF0qAehIPGM0F" #Required
+          vercel-project-id: "prj_zdTtlmNuTSmbs6DoSYCj4talQOfp" #Required
