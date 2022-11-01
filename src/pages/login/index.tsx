@@ -1,8 +1,8 @@
-import { ReactElement } from 'react';
+import {ReactElement} from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import {useTheme} from '@mui/material/styles';
+import {Divider, Grid, Stack, Typography, useMediaQuery} from '@mui/material';
 import Link from '../../Link';
 
 // project imports

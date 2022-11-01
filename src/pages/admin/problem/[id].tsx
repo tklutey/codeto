@@ -29,6 +29,7 @@ const Problem = () => {
         starting_code: startingCode,
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
+        learning_standards: learningStandards,
         tests
       } = problem;
       return (
