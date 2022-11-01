@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v20 #deploy
         with:
           vercel-token: "GgBLugSp3ZJ77XWwfAaGmg0T" # Required
@@ -24,6 +23,7 @@ jobs:
           vercel-project-id: "prj_zdTtlmNuTSmbs6DoSYCj4talQOfp" #Required
           alias-domains: 'https://beta.codeto.io'
 
+      - uses: actions/checkout@v2
       - uses: matt-ball/newman-action@master
         with:
           collection: https://api.getpostman.com/collections/12584448-c8c5a445-3c35-44f3-a023-761fe0252d07?apikey=PMAK-61fe9508434e4f05f01c9898-80138aa7f65eee0bc3c3e07974be084cd9
