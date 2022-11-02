@@ -15,7 +15,7 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   marginRight: '-20px'
 }));
 const AssignmentFooter = (props: Props) => {
-  const { disabled, onProblemCorrect, setShowSolution } = props;
+  const { disabled, onNextClicked, setShowSolution } = props;
   const theme = useTheme();
   return (
     <FooterStrip>
@@ -38,7 +38,7 @@ const AssignmentFooter = (props: Props) => {
           background: theme.palette.warning.dark,
           '&:hover': { background: theme.palette.warning.main }
         }}
-        onClick={onProblemCorrect}
+        onClick={onNextClicked}
       >
         Next
       </Button>
@@ -48,7 +48,7 @@ const AssignmentFooter = (props: Props) => {
 
 type Props = {
   disabled: boolean;
-  onProblemCorrect?: () => void;
+  onNextClicked?: () => void;
   setShowSolution: (show: boolean) => void;
 };
 

@@ -18,6 +18,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           handleClose={() => setShowSolution(false)}
           language={language}
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
+          onNextClicked={goToNextProblem(false)}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
@@ -35,7 +36,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           setIsProblemComplete={setCanMoveOnToNextProblem}
         />
       </div>
-      <AssignmentFooter disabled={!canMoveOnToNextProblem} onProblemCorrect={goToNextProblem(true)} setShowSolution={setShowSolution} />
+      <AssignmentFooter disabled={!canMoveOnToNextProblem} onNextClicked={goToNextProblem(true)} setShowSolution={setShowSolution} />
     </div>
   );
 };
