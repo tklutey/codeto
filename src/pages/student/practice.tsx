@@ -37,16 +37,18 @@ const Practice = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goToNextProblem = (learningStandards: number[]) => {
-    return async () => {
-      const input = {
-        learningStandards,
-        userId: user.id
+  const goToNextProblem = (isCorrect: boolean) => {
+    return (learningStandards: number[]) => {
+      return async () => {
+        const input = {
+          learningStandards,
+          userId: user.id
+        };
+        // @ts-ignore
+        await updateKnowledgeStateMutation.mutateAsync(input);
+        const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
+        setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
       };
-      // @ts-ignore
-      await updateKnowledgeStateMutation.mutateAsync(input);
-      const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
-      setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
     };
   };
 
@@ -71,7 +73,7 @@ const Practice = () => {
           solutionCode={solutionCode}
           tests={tests as ExerciseTests}
           youtubeTutorialUrl={youtubeTutorialUrl}
-          goToNextProblem={goToNextProblem(learningStandards)}
+          goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
         />
       );
     }

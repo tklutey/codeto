@@ -8,7 +8,7 @@ import SolutionModal from 'components/assignment/SolutionModal';
 const ProgrammingActivityLayout = (props: Props) => {
   const { assignmentTitle, assignmentDescription, language, startingCode, solutionCode, tests, youtubeTutorialUrl, goToNextProblem } =
     props;
-  const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
+  const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(true);
   const [showSolution, setShowSolution] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
@@ -35,7 +35,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           setIsProblemComplete={setCanMoveOnToNextProblem}
         />
       </div>
-      <AssignmentFooter disabled={!canMoveOnToNextProblem} goToNextProblem={goToNextProblem} setShowSolution={setShowSolution} />
+      <AssignmentFooter disabled={!canMoveOnToNextProblem} onProblemCorrect={goToNextProblem(true)} setShowSolution={setShowSolution} />
     </div>
   );
 };
@@ -48,7 +48,7 @@ type Props = {
   solutionCode?: string;
   tests?: ExerciseTests;
   youtubeTutorialUrl?: string;
-  goToNextProblem?: () => void;
+  goToNextProblem: (isCorrect: boolean) => () => void;
 };
 
 export default ProgrammingActivityLayout;
