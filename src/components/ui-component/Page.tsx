@@ -21,7 +21,7 @@ const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', meta, ..
       {meta}
     </Head>
 
-    <Box ref={ref} {...other}>
+    <Box ref={ref} {...other} height={'100%'}>
       {children}
     </Box>
   </>
