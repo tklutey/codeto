@@ -61,4 +61,17 @@ export const codingProblem = trpc
         .filter((cp) => cp.distance > 0);
       return learningStandards;
     }
+  })
+  .mutation('updateProblemAttemptHistory', {
+    input: z.object({
+      problemId: z.number(),
+      userId: z.string(),
+      isCorrect: z.boolean()
+    }),
+    async resolve({ input }) {
+      const { problemId, userId, isCorrect } = input;
+      const sbClient = new SbClient();
+      const result = await sbClient.updateCodingProblemAttemptHistory(problemId, userId, isCorrect);
+      return result;
+    }
   });

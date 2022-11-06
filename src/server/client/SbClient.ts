@@ -78,4 +78,18 @@ export default class SbClient {
     const { data } = await this.supabaseClient.from('topic_unit_relationship').select();
     return data;
   }
+
+  async updateCodingProblemAttemptHistory(problemId: number, userId: string, isCorrect: boolean) {
+    const timestamp = new Date().toISOString();
+    const { data } = await this.supabaseClient
+      .from('user_problem_attempt_history')
+      .insert({
+        problem_id: problemId,
+        user_id: userId,
+        is_successful_attempt: isCorrect,
+        attempt_timestamp: timestamp
+      })
+      .select();
+    return data;
+  }
 }
