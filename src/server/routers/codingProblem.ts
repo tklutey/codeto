@@ -25,9 +25,28 @@ const transformCodingProblem = (codingProblem: any) => {
   };
 };
 
-const problemSortingFunction = (a: any, b: any) => {
-  if (a.distance < b.distance) return 1;
-  if (a.distance > b.distance) return -1;
+const sortProblems = (a: any, b: any) => {
+  const hasSuccessfulAttempt = (problem: any) => {
+    return problem.user_problem_attempt_history.some((attempt: any) => attempt.is_successful_attempt);
+  };
+  const getMostRecentAttemptTimestamp = (problem: any) => {
+    const timestamps = problem.user_problem_attempt_history.map((attempt: any) => attempt.attempt_timestamp);
+    return Math.max(...timestamps);
+  };
+
+  // sort by fringe distance
+  if (a.distance < b.distance) return -1;
+  if (a.distance > b.distance) return 1;
+
+  // Next, sort by whether there is a successful attempt
+  if (!hasSuccessfulAttempt(a) && hasSuccessfulAttempt(b)) return -1;
+  if (hasSuccessfulAttempt(a) && !hasSuccessfulAttempt(b)) return 1;
+
+  // Next, sort by most recent attempt
+  if (getMostRecentAttemptTimestamp(a) < getMostRecentAttemptTimestamp(b)) return -1;
+  if (getMostRecentAttemptTimestamp(a) > getMostRecentAttemptTimestamp(b)) return 1;
+
+  return 0;
 };
 export const codingProblem = trpc
   .router()
@@ -62,7 +81,7 @@ export const codingProblem = trpc
             distance
           };
         })
-        .sort((a, b) => a.distance - b.distance)
+        .sort(sortProblems)
         .filter((cp) => cp.distance > 0);
       return sortedLearningStandards;
     }
