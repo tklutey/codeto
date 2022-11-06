@@ -39,6 +39,11 @@ export default class SbClient {
     return data;
   }
 
+  async deleteUserProblemAttemptHistory(userId: string) {
+    const { data } = await this.supabaseClient.from('user_problem_attempt_history').delete().eq('user_id', userId);
+    return data;
+  }
+
   async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {
     const masteredStandards = await this.getMasteredStandardsForUser(userUuid);
     const existingLearningStandardsSet = new Set(masteredStandards?.map((x) => x.learning_standard_id));

@@ -87,6 +87,7 @@ export const knowledgeState = trpc
     async resolve({ input }) {
       const { userId } = input;
       const sbClient = new SbClient();
+      await sbClient.deleteUserProblemAttemptHistory(userId);
       return sbClient.deleteUserMasteredStandards(userId);
     }
   })
