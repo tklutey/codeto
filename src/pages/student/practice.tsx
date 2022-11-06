@@ -30,6 +30,7 @@ const Practice = () => {
   const codingProblem = problemsByDistance?.[0];
 
   const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
+  const updateProblemAttemptHistory = trpc.useMutation('codingProblem.updateProblemAttemptHistory');
   useEffect(() => {
     if (drawerOpen) {
       dispatch(openDrawer(false));
@@ -40,14 +41,19 @@ const Practice = () => {
   const goToNextProblem = (isCorrect: boolean) => {
     return (learningStandards: number[]) => {
       return async () => {
-        const input = {
-          learningStandards,
-          userId: user.id
-        };
-        // @ts-ignore
-        await updateKnowledgeStateMutation.mutateAsync(input);
-        const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
-        setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
+        await updateProblemAttemptHistory.mutateAsync({
+          userId: user.id as string,
+          problemId: codingProblem.id,
+          isCorrect
+        });
+        if (isCorrect) {
+          await updateKnowledgeStateMutation.mutateAsync({
+            learningStandards,
+            userId: user.id as string
+          });
+          const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
+          setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
+        }
       };
     };
   };
