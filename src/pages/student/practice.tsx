@@ -1,12 +1,11 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { trpc } from 'utils/trpc';
 import { ExerciseTests } from 'server/routers/codingProblem';
-import { openDrawer } from 'store/slices/menu';
-import { dispatch, useSelector } from 'store';
 import useAuth from 'hooks/useAuth';
 import Page from 'ui-component/Page';
+import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -14,11 +13,11 @@ const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
 
 const Practice = () => {
   const { user } = useAuth();
+  useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
-  const { drawerOpen } = useSelector((state) => state.menu);
   const [knowledgeState, setKnowledgeState] = useState<number[]>([]);
   const { refetch: refetchMasteredLearningStandards } = trpc.useQuery(['knowledgeState.getMasteredLearningStandards', user.id], {
     onSuccess: (data) => {
@@ -46,12 +45,6 @@ const Practice = () => {
 
   const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
   const updateProblemAttemptHistory = trpc.useMutation('codingProblem.updateProblemAttemptHistory');
-  useEffect(() => {
-    if (drawerOpen) {
-      dispatch(openDrawer(false));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const goToNextProblem = (isCorrect: boolean) => {
     return (learningStandards: number[]) => {
