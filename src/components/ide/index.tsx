@@ -101,7 +101,14 @@ const IDE = (props: Props) => {
       }}
     >
       <div style={{ height: '100%', width: '100%', display: 'flex', position: 'relative' }}>
-        <CodeEditor language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={startingCode} />
+        <CodeEditor
+          key={startingCode}
+          language={language}
+          updateCode={updateCode}
+          width={'50%'}
+          height={'100%'}
+          startingCode={startingCode}
+        />
         <RunButton run={executeCode} isExecuting={isExecuting} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
