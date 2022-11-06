@@ -30,7 +30,10 @@ const sortProblems = (a: any, b: any) => {
     return problem.user_problem_attempt_history.some((attempt: any) => attempt.is_successful_attempt);
   };
   const getMostRecentAttemptTimestamp = (problem: any) => {
-    const timestamps = problem.user_problem_attempt_history.map((attempt: any) => attempt.attempt_timestamp);
+    const timestamps = problem.user_problem_attempt_history.map((attempt: any) => new Date(attempt.attempt_timestamp));
+    if (timestamps.length === 0) {
+      return 0;
+    }
     return Math.max(...timestamps);
   };
 

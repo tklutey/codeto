@@ -14,6 +14,7 @@ const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
 
 const Practice = () => {
   const { user } = useAuth();
+  const [codingProblem, setCodingProblem] = useState<any>(null);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
@@ -26,8 +27,22 @@ const Practice = () => {
       }
     }
   });
-  const { data: problemsByDistance } = trpc.useQuery(['codingProblem.getProblemsByDistance', knowledgeState]);
-  const codingProblem = problemsByDistance?.[0];
+  const { refetch: refetchProblemsByDistance } = trpc.useQuery(
+    [
+      'codingProblem.getProblemsByDistance',
+      JSON.stringify({
+        learningStandards: knowledgeState,
+        userId: user.id
+      })
+    ],
+    {
+      onSuccess: (data) => {
+        if (data) {
+          setCodingProblem(data[0]);
+        }
+      }
+    }
+  );
 
   const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
   const updateProblemAttemptHistory = trpc.useMutation('codingProblem.updateProblemAttemptHistory');
@@ -43,7 +58,7 @@ const Practice = () => {
       return async () => {
         await updateProblemAttemptHistory.mutateAsync({
           userId: user.id as string,
-          problemId: codingProblem.id,
+          problemId: codingProblem?.id,
           isCorrect
         });
         if (isCorrect) {
@@ -53,6 +68,8 @@ const Practice = () => {
           });
           const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
           setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
+        } else {
+          await refetchProblemsByDistance();
         }
       };
     };

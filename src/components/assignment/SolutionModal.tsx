@@ -20,6 +20,10 @@ const style = {
 const SolutionModal = (props: Props) => {
   const { isOpen, handleClose, solutionCode, language, onNextClicked } = props;
   const theme = useTheme();
+  const goToNextProblem = () => {
+    handleClose();
+    onNextClicked();
+  };
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
@@ -36,7 +40,7 @@ const SolutionModal = (props: Props) => {
               background: theme.palette.warning.dark,
               '&:hover': { background: theme.palette.warning.main }
             }}
-            onClick={onNextClicked}
+            onClick={goToNextProblem}
           >
             Next
           </Button>
