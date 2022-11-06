@@ -24,6 +24,11 @@ const transformCodingProblem = (codingProblem: any) => {
     learning_standards: learningStandards
   };
 };
+
+const problemSortingFunction = (a: any, b: any) => {
+  if (a.distance < b.distance) return 1;
+  if (a.distance > b.distance) return -1;
+};
 export const codingProblem = trpc
   .router()
   .query('getById', {
@@ -40,16 +45,16 @@ export const codingProblem = trpc
     }
   })
   .query('getProblemsByDistance', {
-    input: z.array(z.number()),
+    input: z.string(),
     async resolve({ input }) {
-      const arr = input;
+      const { userId, learningStandards } = JSON.parse(input);
       const sbClient = new SbClient();
-      const allCodingProblems = await sbClient.getAllCodingProblems();
+      const allCodingProblems = await sbClient.getAllCodingProblems(userId);
       const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
-      const learningStandards = transformedCodingProblems
+      const sortedLearningStandards = transformedCodingProblems
         ?.map((cp) => {
           const { learning_standards, ...rest } = cp;
-          const intersection = arr.filter((x) => learning_standards?.includes(x));
+          const intersection = learningStandards.filter((x: any) => learning_standards?.includes(x));
           const distance = learning_standards.length - intersection.length;
           return {
             ...rest,
@@ -59,7 +64,7 @@ export const codingProblem = trpc
         })
         .sort((a, b) => a.distance - b.distance)
         .filter((cp) => cp.distance > 0);
-      return learningStandards;
+      return sortedLearningStandards;
     }
   })
   .mutation('updateProblemAttemptHistory', {

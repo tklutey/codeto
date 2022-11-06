@@ -21,8 +21,13 @@ export default class SbClient {
     return data;
   }
 
-  async getAllCodingProblems() {
-    let { data } = await this.supabaseClient.from('coding_problem').select('*, basis_knowledge_state(id, standard_basis_relationship(*))');
+  async getAllCodingProblems(userId: string) {
+    let { data } = await this.supabaseClient
+      .from('coding_problem')
+      .select(
+        '*, basis_knowledge_state(id, standard_basis_relationship(*)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt)'
+      )
+      .eq('user_problem_attempt_history.user_id', userId);
     return data;
   }
 
