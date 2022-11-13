@@ -15,7 +15,7 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   marginRight: '-20px'
 }));
 const AssignmentFooter = (props: Props) => {
-  const { disabled, onNextClicked, setShowSolution } = props;
+  const { disabled, onNextClicked, onShowSolutionClicked } = props;
   const theme = useTheme();
   return (
     <FooterStrip>
@@ -25,7 +25,7 @@ const AssignmentFooter = (props: Props) => {
           sx={{
             margin: '14px'
           }}
-          onClick={() => setShowSolution(true)}
+          onClick={onShowSolutionClicked}
         >
           <HelpOutlineIcon fontSize={'small'} />
           &nbsp;&nbsp;&nbsp;Solution
@@ -51,7 +51,7 @@ const AssignmentFooter = (props: Props) => {
 type Props = {
   disabled: boolean;
   onNextClicked?: () => void;
-  setShowSolution: (show: boolean) => void;
+  onShowSolutionClicked?: () => void;
 };
 
 export default AssignmentFooter;

@@ -11,6 +11,17 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
+  const [isProblemCorrect, setIsProblemCorrect] = useState(true);
+
+  const handleShowSolution = () => {
+    setShowSolution(true);
+    setIsProblemCorrect(false);
+  };
+
+  const handleGoToNextProblem = () => {
+    goToNextProblem(isProblemCorrect);
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
@@ -19,7 +30,6 @@ const ProgrammingActivityLayout = (props: Props) => {
           handleClose={() => setShowSolution(false)}
           language={language}
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
-          onNextClicked={goToNextProblem(false)}
           userCode={userCode}
           setUserCode={setUserCode}
         />
@@ -41,7 +51,11 @@ const ProgrammingActivityLayout = (props: Props) => {
           setUserCode={setUserCode}
         />
       </div>
-      <AssignmentFooter disabled={!canMoveOnToNextProblem} onNextClicked={goToNextProblem(true)} setShowSolution={setShowSolution} />
+      <AssignmentFooter
+        disabled={!canMoveOnToNextProblem}
+        onNextClicked={handleGoToNextProblem}
+        onShowSolutionClicked={handleShowSolution}
+      />
     </div>
   );
 };

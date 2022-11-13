@@ -18,12 +18,11 @@ const style = {
 };
 
 const SolutionModal = (props: Props) => {
-  const { isOpen, handleClose, solutionCode, language, onNextClicked, userCode, setUserCode } = props;
+  const { isOpen, handleClose, solutionCode, language, userCode, setUserCode } = props;
   const [isUserCodeCorrect, setIsUserCodeCorrect] = useState(false);
   const theme = useTheme();
   const goToNextProblem = () => {
     handleClose();
-    onNextClicked();
   };
 
   const updateCode = (newCode?: string, _?: any) => {
@@ -31,6 +30,8 @@ const SolutionModal = (props: Props) => {
       setUserCode(newCode);
       if (newCode === solutionCode) {
         setIsUserCodeCorrect(true);
+      } else {
+        setIsUserCodeCorrect(false);
       }
     }
   };
@@ -62,7 +63,7 @@ const SolutionModal = (props: Props) => {
             }}
             onClick={goToNextProblem}
           >
-            Next
+            Test Your Solution
           </Button>
         </Box>
       </Box>
@@ -75,7 +76,6 @@ type Props = {
   handleClose: () => void;
   solutionCode: string;
   language: string;
-  onNextClicked: () => void;
   userCode?: string;
   setUserCode: (code: string) => void;
 };
