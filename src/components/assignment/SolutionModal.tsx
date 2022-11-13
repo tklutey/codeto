@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal';
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@mui/styles';
 import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
 
@@ -19,6 +19,7 @@ const style = {
 
 const SolutionModal = (props: Props) => {
   const { isOpen, handleClose, solutionCode, language, onNextClicked, userCode, setUserCode } = props;
+  const [isUserCodeCorrect, setIsUserCodeCorrect] = useState(false);
   const theme = useTheme();
   const goToNextProblem = () => {
     handleClose();
@@ -28,6 +29,9 @@ const SolutionModal = (props: Props) => {
   const updateCode = (newCode?: string, _?: any) => {
     if (newCode !== undefined) {
       setUserCode(newCode);
+      if (newCode === solutionCode) {
+        setIsUserCodeCorrect(true);
+      }
     }
   };
   return (
@@ -49,6 +53,7 @@ const SolutionModal = (props: Props) => {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
+            disabled={!isUserCodeCorrect}
             sx={{
               marginTop: '8px',
               color: theme.palette.common.black,
