@@ -1,5 +1,6 @@
 import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
+import { CodeEditorOptions } from 'components/ide/editor/CodeEditorOptions';
 
 const CodeEditor = (props: Props) => {
   const { updateCode, language, startingCode } = props;
@@ -10,16 +11,7 @@ const CodeEditor = (props: Props) => {
       onChange={updateCode}
       onMount={() => console.log('mounted')}
       theme={'vs-dark'}
-      options={{
-        automaticLayout: true,
-        fontFamily: 'monaco',
-        fontSize: '14px',
-        fontWeight: 600,
-        lineNumbersMinChars: 3,
-        minimap: { enabled: false },
-        scrollBeyondLastLine: false,
-        wordWrap: 'on'
-      }}
+      options={CodeEditorOptions}
       {...props}
     />
   );

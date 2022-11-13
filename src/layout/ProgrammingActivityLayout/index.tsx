@@ -10,6 +10,7 @@ const ProgrammingActivityLayout = (props: Props) => {
     props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
+  const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
@@ -19,6 +20,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           language={language}
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
           onNextClicked={goToNextProblem(false)}
+          userCode={userCode}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
@@ -34,6 +36,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           startingCode={startingCode}
           tests={tests}
           setIsProblemComplete={setCanMoveOnToNextProblem}
+          setUserCode={setUserCode}
         />
       </div>
       <AssignmentFooter disabled={!canMoveOnToNextProblem} onNextClicked={goToNextProblem(true)} setShowSolution={setShowSolution} />

@@ -1,15 +1,15 @@
 import Modal from '@mui/material/Modal';
 import { Box, Button, Typography } from '@mui/material';
-import CodeEditor from 'components/ide/CodeEditor';
 import React from 'react';
 import { useTheme } from '@mui/styles';
+import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '40%',
+  width: '60%',
   height: '70%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -18,7 +18,7 @@ const style = {
 };
 
 const SolutionModal = (props: Props) => {
-  const { isOpen, handleClose, solutionCode, language, onNextClicked } = props;
+  const { isOpen, handleClose, solutionCode, language, onNextClicked, userCode } = props;
   const theme = useTheme();
   const goToNextProblem = () => {
     handleClose();
@@ -27,10 +27,19 @@ const SolutionModal = (props: Props) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h2" component="h2">
-          Solution
-        </Typography>
-        <CodeEditor language={language} startingCode={solutionCode} width={'100%'} height={'90%'} />
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ width: '50%' }}>
+            <Typography id="modal-modal-title" variant="h2" component="h2">
+              Solution
+            </Typography>
+          </Box>
+          <Box sx={{ width: '50%' }}>
+            <Typography id="modal-modal-title" variant="h2" component="h2">
+              Your Code
+            </Typography>
+          </Box>
+        </Box>
+        <ThemedDiffEditor language={language} originalCode={solutionCode} modifiedCode={userCode} />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
@@ -56,6 +65,7 @@ type Props = {
   solutionCode: string;
   language: string;
   onNextClicked: () => void;
+  userCode?: string;
 };
 
 export default SolutionModal;

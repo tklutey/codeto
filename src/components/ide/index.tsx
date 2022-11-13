@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import CodeEditor from 'components/ide/CodeEditor';
+import CodeEditor from 'components/ide/editor/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
@@ -15,7 +15,7 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, tests, setIsProblemComplete } = props;
+  const { width, height, language, startingCode, tests, setIsProblemComplete, setUserCode } = props;
   const codeRef = useRef<string | undefined>(startingCode);
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = useState<string>('');
@@ -87,6 +87,7 @@ const IDE = (props: Props) => {
 
   const updateCode = (newCode?: string, _?: any) => {
     codeRef.current = newCode;
+    setUserCode(newCode);
   };
 
   return (
@@ -126,5 +127,6 @@ type Props = {
   width?: string;
   tests?: ExerciseTests;
   setIsProblemComplete: (isComplete: boolean) => void;
+  setUserCode: (code: string) => void;
 };
 export default IDE;
