@@ -21,6 +21,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
           onNextClicked={goToNextProblem(false)}
           userCode={userCode}
+          setUserCode={setUserCode}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}

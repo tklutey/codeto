@@ -18,11 +18,17 @@ const style = {
 };
 
 const SolutionModal = (props: Props) => {
-  const { isOpen, handleClose, solutionCode, language, onNextClicked, userCode } = props;
+  const { isOpen, handleClose, solutionCode, language, onNextClicked, userCode, setUserCode } = props;
   const theme = useTheme();
   const goToNextProblem = () => {
     handleClose();
     onNextClicked();
+  };
+
+  const updateCode = (newCode?: string, _?: any) => {
+    if (newCode !== undefined) {
+      setUserCode(newCode);
+    }
   };
   return (
     <Modal open={isOpen} onClose={handleClose}>
@@ -39,7 +45,7 @@ const SolutionModal = (props: Props) => {
             </Typography>
           </Box>
         </Box>
-        <ThemedDiffEditor language={language} originalCode={solutionCode} modifiedCode={userCode} />
+        <ThemedDiffEditor language={language} originalCode={solutionCode} modifiedCode={userCode} updateCode={updateCode} />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
@@ -66,6 +72,7 @@ type Props = {
   language: string;
   onNextClicked: () => void;
   userCode?: string;
+  setUserCode: (code: string) => void;
 };
 
 export default SolutionModal;
