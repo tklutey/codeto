@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
@@ -19,16 +19,18 @@ const AssignmentFooter = (props: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
-      <Button
-        variant="outlined"
-        sx={{
-          margin: '14px'
-        }}
-        onClick={() => setShowSolution(true)}
-      >
-        <HelpOutlineIcon fontSize={'small'} />
-        &nbsp;&nbsp;&nbsp;Solution
-      </Button>
+      <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
+        <Button
+          variant="outlined"
+          sx={{
+            margin: '14px'
+          }}
+          onClick={() => setShowSolution(true)}
+        >
+          <HelpOutlineIcon fontSize={'small'} />
+          &nbsp;&nbsp;&nbsp;Solution
+        </Button>
+      </Tooltip>
       <Button
         variant="contained"
         disabled={disabled}

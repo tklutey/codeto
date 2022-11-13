@@ -87,7 +87,7 @@ const IDE = (props: Props) => {
 
   const updateCode = (newCode?: string, _?: any) => {
     codeRef.current = newCode;
-    setUserCode(newCode);
+    setUserCode(newCode as string);
   };
 
   return (
