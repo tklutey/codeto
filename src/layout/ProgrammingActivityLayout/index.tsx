@@ -36,6 +36,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           startingCode={startingCode}
           tests={tests}
           setIsProblemComplete={setCanMoveOnToNextProblem}
+          userCode={userCode}
           setUserCode={setUserCode}
         />
       </div>

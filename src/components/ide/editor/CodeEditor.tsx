@@ -7,7 +7,7 @@ const CodeEditor = (props: Props) => {
   return (
     <MonacoEditor
       defaultLanguage={language}
-      defaultValue={startingCode}
+      value={startingCode}
       onChange={updateCode}
       onMount={() => console.log('mounted')}
       theme={'vs-dark'}

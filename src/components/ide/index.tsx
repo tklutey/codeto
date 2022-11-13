@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import CodeEditor from 'components/ide/editor/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
@@ -15,8 +15,7 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, tests, setIsProblemComplete, setUserCode } = props;
-  const codeRef = useRef<string | undefined>(startingCode);
+  const { width, height, language, startingCode, tests, setIsProblemComplete, userCode, setUserCode } = props;
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
@@ -24,9 +23,9 @@ const IDE = (props: Props) => {
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);
     setTerminalText('Running...');
-    if (codeRef.current) {
+    if (userCode) {
       const input = {
-        script: codeRef.current,
+        script: userCode,
         language: language,
         doMock: false
       };
@@ -62,7 +61,7 @@ const IDE = (props: Props) => {
   const handleTestCode = async (): Promise<TestResult[]> => {
     const testResults: TestResult[] = [];
     if (tests?.expectedSourceCode) {
-      runAndPush(testResults, tests.expectedSourceCode, codeRef.current || '');
+      runAndPush(testResults, tests.expectedSourceCode, userCode || '');
     }
     await executeCode((output) => {
       if (tests?.expectedOutput) {
@@ -86,7 +85,6 @@ const IDE = (props: Props) => {
   };
 
   const updateCode = (newCode?: string, _?: any) => {
-    codeRef.current = newCode;
     setUserCode(newCode as string);
   };
 
@@ -102,14 +100,7 @@ const IDE = (props: Props) => {
       }}
     >
       <div style={{ height: '100%', width: '100%', display: 'flex', position: 'relative' }}>
-        <CodeEditor
-          key={startingCode}
-          language={language}
-          updateCode={updateCode}
-          width={'50%'}
-          height={'100%'}
-          startingCode={startingCode}
-        />
+        <CodeEditor key={startingCode} language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={userCode} />
         <RunButton run={executeCode} isExecuting={isExecuting} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
@@ -127,6 +118,7 @@ type Props = {
   width?: string;
   tests?: ExerciseTests;
   setIsProblemComplete: (isComplete: boolean) => void;
+  userCode?: string;
   setUserCode: (code: string) => void;
 };
 export default IDE;
