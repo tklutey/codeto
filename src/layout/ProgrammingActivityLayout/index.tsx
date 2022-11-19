@@ -19,7 +19,7 @@ const ProgrammingActivityLayout = (props: Props) => {
   };
 
   const handleGoToNextProblem = () => {
-    goToNextProblem(isProblemCorrect);
+    goToNextProblem(isProblemCorrect)();
   };
 
   return (
