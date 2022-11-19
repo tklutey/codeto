@@ -20,9 +20,13 @@ const IDE = (props: Props) => {
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
 
-  useEffect(() => {
-    registerResetEventHandler(() => setTerminalText(''));
-  }, []);
+  useEffect(
+    () => {
+      registerResetEventHandler(() => setTerminalText(''));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);

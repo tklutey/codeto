@@ -10,9 +10,13 @@ const Tests = (props: Props) => {
     setSuites(await handleRunTests());
   };
 
-  useEffect(() => {
-    registerResetEventHandler(() => setSuites([]));
-  }, []);
+  useEffect(
+    () => {
+      registerResetEventHandler(() => setSuites([]));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <div>
