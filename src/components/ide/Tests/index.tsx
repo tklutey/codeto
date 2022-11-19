@@ -12,6 +12,7 @@ const Tests = (props: Props) => {
 
   useEffect(
     () => {
+      console.log('registering test event handler');
       registerResetEventHandler(() => setSuites([]));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

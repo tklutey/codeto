@@ -15,6 +15,7 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
 
   useEffect(() => {
+    console.log('resetting user code');
     setUserCode(startingCode);
   }, [startingCode]);
 
@@ -25,7 +26,16 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   const handleGoToNextProblem = () => {
     goToNextProblem(isProblemCorrect)();
+    console.log(resetEventHandlers);
     resetEventHandlers.forEach((handler) => handler());
+  };
+
+  const registerResetEventHandler = (handler: () => void) => {
+    setResetEventHandlers((prevResetEventHandlers) => {
+      console.log('registering reset event handler: ', handler);
+      console.log('pre-existing reset event handlers: ', prevResetEventHandlers);
+      return [...prevResetEventHandlers, handler];
+    });
   };
 
   return (
@@ -55,7 +65,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           setIsProblemComplete={setCanMoveOnToNextProblem}
           userCode={userCode}
           setUserCode={setUserCode}
-          registerResetEventHandler={(handler: () => void) => setResetEventHandlers([...resetEventHandlers, handler])}
+          registerResetEventHandler={registerResetEventHandler}
         />
       </div>
       <AssignmentFooter
