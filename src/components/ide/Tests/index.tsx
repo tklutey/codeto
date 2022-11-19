@@ -1,14 +1,19 @@
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TestResult } from 'components/ide/index';
 
 const Tests = (props: Props) => {
-  const { handleRunTests } = props;
+  const { handleRunTests, registerResetEventHandler } = props;
   const [suites, setSuites] = useState<TestResult[]>();
 
   const doRunTests = async () => {
     setSuites(await handleRunTests());
   };
+
+  useEffect(() => {
+    registerResetEventHandler(() => setSuites([]));
+  }, []);
+
   return (
     <div>
       <div>
@@ -34,6 +39,7 @@ const Tests = (props: Props) => {
 
 type Props = {
   handleRunTests: () => Promise<TestResult[]>;
+  registerResetEventHandler: (handler: () => void) => void;
 };
 
 export default Tests;

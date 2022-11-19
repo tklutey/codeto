@@ -1,5 +1,5 @@
 import IDE from 'components/ide';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExerciseTests } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
@@ -12,6 +12,11 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [showSolution, setShowSolution] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [isProblemCorrect, setIsProblemCorrect] = useState(true);
+  const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
+
+  useEffect(() => {
+    setUserCode(startingCode);
+  }, [startingCode]);
 
   const handleShowSolution = () => {
     setShowSolution(true);
@@ -20,6 +25,7 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   const handleGoToNextProblem = () => {
     goToNextProblem(isProblemCorrect)();
+    resetEventHandlers.forEach((handler) => handler());
   };
 
   return (
@@ -49,6 +55,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           setIsProblemComplete={setCanMoveOnToNextProblem}
           userCode={userCode}
           setUserCode={setUserCode}
+          registerResetEventHandler={(handler: () => void) => setResetEventHandlers([...resetEventHandlers, handler])}
         />
       </div>
       <AssignmentFooter

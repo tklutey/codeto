@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CodeEditor from 'components/ide/editor/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
@@ -15,10 +15,14 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, tests, setIsProblemComplete, userCode, setUserCode } = props;
+  const { width, height, language, startingCode, tests, setIsProblemComplete, userCode, setUserCode, registerResetEventHandler } = props;
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
+
+  useEffect(() => {
+    registerResetEventHandler(() => setTerminalText(''));
+  }, []);
 
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);
@@ -104,7 +108,7 @@ const IDE = (props: Props) => {
         <RunButton run={executeCode} isExecuting={isExecuting} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
-          <Tests handleRunTests={handleTestCode} />
+          <Tests handleRunTests={handleTestCode} registerResetEventHandler={registerResetEventHandler} />
         </div>
       </div>
     </div>
@@ -120,5 +124,6 @@ type Props = {
   setIsProblemComplete: (isComplete: boolean) => void;
   userCode?: string;
   setUserCode: (code: string) => void;
+  registerResetEventHandler: (handler: () => void) => void;
 };
 export default IDE;
