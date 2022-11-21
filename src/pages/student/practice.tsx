@@ -13,6 +13,7 @@ const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
 
 const Practice = () => {
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
   if (!user || !user.id) {
@@ -38,6 +39,7 @@ const Practice = () => {
       onSuccess: (data) => {
         if (data) {
           setCodingProblem(data[0]);
+          setIsLoading(false);
         }
       }
     }
@@ -49,6 +51,7 @@ const Practice = () => {
   const goToNextProblem = (isCorrect: boolean) => {
     return (learningStandards: number[]) => {
       return async () => {
+        setIsLoading(true);
         await updateProblemAttemptHistory.mutateAsync({
           userId: user.id as string,
           problemId: codingProblem?.id,
@@ -90,6 +93,7 @@ const Practice = () => {
           tests={tests as ExerciseTests}
           youtubeTutorialUrl={youtubeTutorialUrl}
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
+          isLoading={isLoading}
         />
       );
     }

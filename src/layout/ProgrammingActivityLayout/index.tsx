@@ -6,8 +6,17 @@ import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
 
 const ProgrammingActivityLayout = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, language, startingCode, solutionCode, tests, youtubeTutorialUrl, goToNextProblem } =
-    props;
+  const {
+    assignmentTitle,
+    assignmentDescription,
+    language,
+    startingCode,
+    solutionCode,
+    tests,
+    youtubeTutorialUrl,
+    goToNextProblem,
+    isLoading
+  } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
@@ -55,6 +64,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           youtubeTutorialUrl={youtubeTutorialUrl}
           width={'20%'}
           height={'100%'}
+          isLoading={isLoading}
         />
         <IDE
           width={'80%'}
@@ -86,6 +96,7 @@ type Props = {
   tests?: ExerciseTests;
   youtubeTutorialUrl?: string;
   goToNextProblem: (isCorrect: boolean) => () => void;
+  isLoading: boolean;
 };
 
 export default ProgrammingActivityLayout;

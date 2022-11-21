@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
+import { Skeleton } from '@mui/material';
 
 const ColumnFlexDiv = styled('div')({
   display: 'flex',
@@ -9,20 +10,32 @@ const ColumnFlexDiv = styled('div')({
   width: '100%'
 });
 
+type ContainerProps = {
+  width: string;
+  height: string;
+};
+
+const Container = styled('div')<ContainerProps>((props) => ({
+  width: props.width,
+  height: props.height,
+  display: 'flex',
+  flexDirection: 'column',
+  alignSelf: 'flex-start',
+  paddingRight: '20px',
+  justifyContent: 'space-between'
+}));
+
 const AssignmentSidebar = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, youtubeTutorialUrl, height, width } = props;
+  const { assignmentTitle, assignmentDescription, youtubeTutorialUrl, height, width, isLoading } = props;
+  if (isLoading) {
+    return (
+      <Container width={width} height={height}>
+        <Skeleton variant="rectangular" width={'100%'} height={'100%'} />
+      </Container>
+    );
+  }
   return (
-    <div
-      style={{
-        width: width,
-        height: height,
-        display: 'flex',
-        flexDirection: 'column',
-        alignSelf: 'flex-start',
-        paddingRight: '20px',
-        justifyContent: 'space-between'
-      }}
-    >
+    <Container width={width} height={height}>
       <ColumnFlexDiv style={{ height: '65%' }}>
         <div style={{ height: '15%' }}>
           <h1> {assignmentTitle} </h1>
@@ -46,7 +59,7 @@ const AssignmentSidebar = (props: Props) => {
           allowFullScreen
         ></iframe>
       </ColumnFlexDiv>
-    </div>
+    </Container>
   );
 };
 
@@ -54,8 +67,9 @@ type Props = {
   assignmentTitle: string;
   assignmentDescription: string;
   youtubeTutorialUrl?: string;
-  width?: string;
-  height?: string;
+  width: string;
+  height: string;
+  isLoading: boolean;
 };
 
 export default AssignmentSidebar;
