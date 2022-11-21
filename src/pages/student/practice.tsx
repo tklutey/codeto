@@ -6,6 +6,7 @@ import { ExerciseTests } from 'server/routers/codingProblem';
 import useAuth from 'hooks/useAuth';
 import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
+import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -16,6 +17,7 @@ const Practice = () => {
   const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
+  const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
@@ -38,7 +40,11 @@ const Practice = () => {
     {
       onSuccess: (data) => {
         if (data) {
-          setCodingProblem(data[0]);
+          if (data.length > 0) {
+            setCodingProblem(data[0]);
+          } else {
+            setIsAllProblemsComplete(true);
+          }
           setIsLoading(false);
         }
       }
@@ -72,7 +78,9 @@ const Practice = () => {
   };
 
   const getPageContent = (problem: any) => {
-    if (problem) {
+    if (isAllProblemsComplete) {
+      return <AssignmentsCompleteModal />;
+    } else if (problem) {
       const {
         title: assignmentTitle,
         description: assignmentDescription,
