@@ -38,8 +38,10 @@ const sortProblems = (a: any, b: any) => {
   };
 
   // sort by fringe distance
-  if (a.distance < b.distance) return -1;
-  if (a.distance > b.distance) return 1;
+  if (a.distance > 0 && b.distance > 0) {
+    if (a.distance < b.distance) return -1;
+    if (a.distance > b.distance) return 1;
+  }
 
   // Next, sort by whether there is a successful attempt
   if (!hasSuccessfulAttempt(a) && hasSuccessfulAttempt(b)) return -1;
@@ -84,8 +86,7 @@ export const codingProblem = trpc
             distance
           };
         })
-        .sort(sortProblems)
-        .filter((cp) => cp.distance > 0);
+        .sort(sortProblems);
       return sortedLearningStandards;
     }
   })
