@@ -19,7 +19,7 @@ const Problem = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { lesson, isLoading } = trpc.useQuery(['codingProblem.getById', Number(id)]);
+  const { data: lesson, isLoading } = trpc.useQuery(['codingProblem.getById', Number(id)]);
   const getPageContent = (problem: any) => {
     if (problem) {
       const {
