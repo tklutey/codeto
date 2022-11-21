@@ -3,11 +3,13 @@ import * as trpcNext from '@trpc/server/adapters/next';
 import { executeCode } from 'server/routers/executeCode';
 import { knowledgeState } from 'server/routers/knowledgeState';
 import { codingProblem } from 'server/routers/codingProblem';
+import { userHistory } from 'server/routers/userHistory';
 
 const appRouter = trpc
   .router()
   .merge('knowledgeState.', knowledgeState)
   .merge('codingProblem.', codingProblem)
+  .merge('userHistory.', userHistory)
   .merge('executeCode.', executeCode);
 
 // export type definition of API

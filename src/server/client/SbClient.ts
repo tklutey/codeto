@@ -102,4 +102,9 @@ export default class SbClient {
       .select();
     return data;
   }
+
+  async getUserProblemAttemptHistory(userId: string) {
+    const { data } = await this.supabaseClient.from('user_problem_attempt_history').select().eq('user_id', userId);
+    return data;
+  }
 }
