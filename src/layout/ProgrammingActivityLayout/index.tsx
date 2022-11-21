@@ -24,7 +24,6 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
 
   useEffect(() => {
-    console.log('resetting user code');
     setUserCode(startingCode);
   }, [startingCode]);
 
@@ -46,6 +45,11 @@ const ProgrammingActivityLayout = (props: Props) => {
       return [...prevResetEventHandlers, handler];
     });
   };
+
+  useEffect(() => {
+    registerResetEventHandler(() => setUserCode(''));
+    registerResetEventHandler(() => setCanMoveOnToNextProblem(false));
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
