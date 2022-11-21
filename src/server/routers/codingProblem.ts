@@ -49,6 +49,10 @@ const sortProblems = (a: any, b: any) => {
   if (getMostRecentAttemptTimestamp(a) < getMostRecentAttemptTimestamp(b)) return -1;
   if (getMostRecentAttemptTimestamp(a) > getMostRecentAttemptTimestamp(b)) return 1;
 
+  // sort by number of standards mapped to problem, i.e. the more standards, the more difficult
+  if (a.learning_standards.length < b.learning_standards.length) return -1;
+  if (a.learning_standards.length > b.learning_standards.length) return 1;
+
   return 0;
 };
 export const codingProblem = trpc
