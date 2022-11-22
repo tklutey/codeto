@@ -84,11 +84,11 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Output Tests
             </Typography>
-            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} />
+            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} regexTestText={'ababc'} />
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Source Code Tests
             </Typography>
-            <CodeTestInput tests={sourceCodeTests} setTests={setSourceCodeTests} />
+            <CodeTestInput tests={sourceCodeTests} setTests={setSourceCodeTests} regexTestText={solutionCode} />
 
             <FormControl error={Boolean(touched.youtubeUrl && errors.youtubeUrl)} fullWidth sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-youtubeUrl">YouTube URL</InputLabel>
