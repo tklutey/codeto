@@ -6,11 +6,14 @@ import { Formik } from 'formik';
 import { useTheme } from '@mui/styles';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import CodeEditor from 'components/ide/editor/CodeEditor';
+import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
 
 const NewProblem = () => {
   const theme = useTheme();
   const [startingCode, setStartingCode] = useState('');
   const [solutionCode, setSolutionCode] = useState('');
+  const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
+  const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
   const updateStartingCode = (newCode?: string, _?: any) => {
     setStartingCode(newCode as string);
   };
@@ -28,7 +31,7 @@ const NewProblem = () => {
           source: 'none'
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const mergedValues = { ...values, startingCode, solutionCode };
+          const mergedValues = { ...values, startingCode, solutionCode, sourceCodeTests, expectedOutputTests };
           console.log(mergedValues);
         }}
       >
@@ -74,6 +77,18 @@ const NewProblem = () => {
               Solution Code
             </Typography>
             <CodeEditor language={'java'} startingCode={solutionCode} updateCode={updateSolutionCode} width={'900px'} height={'500px'} />
+
+            <Typography variant="h4" sx={{ mt: 2, mb: 1 }}>
+              Tests
+            </Typography>
+            <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+              Expected Output Tests
+            </Typography>
+            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} />
+            <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+              Expected Source Code Tests
+            </Typography>
+            <CodeTestInput tests={sourceCodeTests} setTests={setSourceCodeTests} />
 
             <FormControl error={Boolean(touched.youtubeUrl && errors.youtubeUrl)} fullWidth sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-youtubeUrl">YouTube URL</InputLabel>
