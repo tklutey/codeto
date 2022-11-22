@@ -2,7 +2,7 @@ import { z } from 'zod';
 import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
 
-const getCurrentUserStreak = async (userId: string) => {
+export const getCurrentUserStreak = async (userId: string) => {
   const sbClient = new SbClient();
   const result = await sbClient.getUserProblemAttemptHistory(userId);
   const sortedAttempts = result?.sort((a: any, b: any) => {

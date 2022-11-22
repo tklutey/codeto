@@ -1,6 +1,7 @@
 import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
+import { getCurrentUserStreak } from 'server/routers/userHistory';
 
 export type TestInstance = {
   summary: string;
@@ -9,6 +10,10 @@ export type TestInstance = {
 export type ExerciseTests = {
   expectedOutput: TestInstance[];
   expectedSourceCode: TestInstance[];
+};
+
+const streakToTargetDistance = (streak: number) => {
+  return 2 ** streak;
 };
 
 const transformCodingProblem = (codingProblem: any) => {
@@ -38,8 +43,8 @@ const sortProblems = (a: any, b: any) => {
   };
 
   // sort by fringe distance
-  if (a.distance < b.distance) return -1;
-  if (a.distance > b.distance) return 1;
+  if (a.distanceFromTarget < b.distanceFromTarget) return -1;
+  if (a.distanceFromTarget > b.distanceFromTarget) return 1;
 
   // Next, sort by whether there is a successful attempt
   if (!hasSuccessfulAttempt(a) && hasSuccessfulAttempt(b)) return -1;
@@ -75,6 +80,8 @@ export const codingProblem = trpc
     async resolve({ input }) {
       const { userId, learningStandards } = JSON.parse(input);
       const sbClient = new SbClient();
+      const currentStreak = await getCurrentUserStreak(userId);
+      const targetDistance = streakToTargetDistance(currentStreak);
       const allCodingProblems = await sbClient.getAllCodingProblems(userId);
       const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
       const sortedLearningStandards = transformedCodingProblems
@@ -82,10 +89,12 @@ export const codingProblem = trpc
           const { learning_standards, ...rest } = cp;
           const intersection = learningStandards.filter((x: any) => learning_standards?.includes(x));
           const distance = learning_standards.length - intersection.length;
+          const distanceFromTarget = Math.abs(targetDistance - distance);
           return {
             ...rest,
             learning_standards,
-            distance
+            distance,
+            distanceFromTarget
           };
         })
         .sort(sortProblems)
