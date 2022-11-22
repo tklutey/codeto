@@ -15,7 +15,18 @@ export type TestResult = {
   message: string;
 };
 const IDE = (props: Props) => {
-  const { width, height, language, startingCode, tests, setIsProblemComplete, userCode, setUserCode, registerResetEventHandler } = props;
+  const {
+    width,
+    height,
+    language,
+    startingCode,
+    tests,
+    setIsProblemComplete,
+    userCode,
+    setUserCode,
+    registerResetEventHandler,
+    onTerminalTextChange
+  } = props;
   const mutation = trpc.useMutation('executeCode.post');
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
@@ -43,6 +54,7 @@ const IDE = (props: Props) => {
       const output = data.output;
       if (output !== undefined) {
         setTerminalText(output);
+        onTerminalTextChange(output);
         if (onSuccess) {
           onSuccess(output);
         }
@@ -129,5 +141,6 @@ type Props = {
   userCode?: string;
   setUserCode: (code: string) => void;
   registerResetEventHandler: (handler: () => void) => void;
+  onTerminalTextChange?: (terminalText: string) => void;
 };
 export default IDE;

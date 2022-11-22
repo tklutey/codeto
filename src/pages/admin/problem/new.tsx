@@ -7,11 +7,13 @@ import { useTheme } from '@mui/styles';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import CodeEditor from 'components/ide/editor/CodeEditor';
 import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
+import IDE from 'components/ide';
 
 const NewProblem = () => {
   const theme = useTheme();
   const [startingCode, setStartingCode] = useState('');
   const [solutionCode, setSolutionCode] = useState('');
+  const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
   const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
   const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
   const updateStartingCode = (newCode?: string, _?: any) => {
@@ -76,7 +78,19 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Solution Code
             </Typography>
-            <CodeEditor language={'java'} startingCode={solutionCode} updateCode={updateSolutionCode} width={'900px'} height={'500px'} />
+            <div style={{ height: '700px', width: '1100px' }}>
+              <IDE
+                width={'100%'}
+                height={'100%'}
+                language={'java'}
+                startingCode={startingCode}
+                setIsProblemComplete={() => {}}
+                userCode={solutionCode}
+                setUserCode={updateSolutionCode}
+                registerResetEventHandler={() => {}}
+                onTerminalTextChange={setSolutionCodeTerminalText}
+              />
+            </div>
 
             <Typography variant="h4" sx={{ mt: 2, mb: 1 }}>
               Tests
@@ -84,7 +98,7 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Output Tests
             </Typography>
-            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} regexTestText={'ababc'} />
+            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} regexTestText={solutionCodeTerminalText} />
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Source Code Tests
             </Typography>
