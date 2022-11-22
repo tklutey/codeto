@@ -31,7 +31,7 @@ const Practice = () => {
   });
   const { refetch: refetchProblemsByDistance } = trpc.useQuery(
     [
-      'codingProblem.getProblemsByDistance',
+      'engine.getProblemsByDistance',
       JSON.stringify({
         learningStandards: knowledgeState,
         userId: user.id
