@@ -27,6 +27,45 @@ export const codingProblem = trpc
       return transformedResult;
     }
   })
+  .mutation('create', {
+    input: z.object({
+      title: z.string(),
+      description: z.string(),
+      startingCode: z.string(),
+      solutionCode: z.string(),
+      expectedOutputTests: z.array(
+        z.object({
+          message: z.string(),
+          regex: z.string()
+        })
+      ),
+      sourceCodeTests: z.array(
+        z.object({
+          message: z.string(),
+          regex: z.string()
+        })
+      ),
+      source: z.string(),
+      youtubeUrl: z.string()
+    }),
+    async resolve({ input }) {
+      const { title, description, startingCode, solutionCode, expectedOutputTests, sourceCodeTests, source, youtubeUrl } = input;
+      const tests = { expectedOutput: expectedOutputTests, expectedSourceCode: sourceCodeTests };
+      const sbClient = new SbClient();
+      const problem = {
+        title,
+        description,
+        language: 'java',
+        starting_code: startingCode,
+        solution_code: solutionCode,
+        tests,
+        youtube_tutorial_url: youtubeUrl,
+        source
+      };
+      const result = await sbClient.createCodingProblem(problem);
+      return result;
+    }
+  })
   .mutation('updateProblemAttemptHistory', {
     input: z.object({
       problemId: z.number(),

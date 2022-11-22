@@ -107,4 +107,19 @@ export default class SbClient {
     const { data } = await this.supabaseClient.from('user_problem_attempt_history').select().eq('user_id', userId);
     return data;
   }
+
+  async createCodingProblem(codingProblem: any) {
+    const { count } = await this.supabaseClient.from('coding_problem').select('*', {
+      count: 'exact',
+      head: true
+    });
+    const id = count ? count + 1 : 9999999;
+    const timestamp = new Date().toISOString();
+
+    const { data } = await this.supabaseClient
+      .from('coding_problem')
+      .insert({ ...codingProblem, id, created_at: timestamp })
+      .select();
+    return data;
+  }
 }

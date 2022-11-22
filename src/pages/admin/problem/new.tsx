@@ -8,6 +8,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import CodeEditor from 'components/ide/editor/CodeEditor';
 import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
 import IDE from 'components/ide';
+import { trpc } from 'utils/trpc';
 
 const NewProblem = () => {
   const theme = useTheme();
@@ -23,6 +24,8 @@ const NewProblem = () => {
     setSolutionCode(newCode as string);
   };
 
+  const createProblem = trpc.useMutation('codingProblem.create');
+
   return (
     <Page title={'New Problem'}>
       <Formik
@@ -35,6 +38,7 @@ const NewProblem = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const mergedValues = { ...values, startingCode, solutionCode, sourceCodeTests, expectedOutputTests };
           console.log(mergedValues);
+          createProblem.mutate(mergedValues);
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
