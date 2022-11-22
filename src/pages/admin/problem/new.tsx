@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select, Typography } from '@mui/material';
 import Layout from 'layout';
 import { ReactElement, useState } from 'react';
 import Page from 'ui-component/Page';
@@ -23,7 +23,9 @@ const NewProblem = () => {
       <Formik
         initialValues={{
           title: '',
-          description: ''
+          description: '',
+          youtubeUrl: '',
+          source: 'none'
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const mergedValues = { ...values, startingCode, solutionCode };
@@ -73,6 +75,28 @@ const NewProblem = () => {
             </Typography>
             <CodeEditor language={'java'} startingCode={solutionCode} updateCode={updateSolutionCode} width={'900px'} height={'500px'} />
 
+            <FormControl error={Boolean(touched.youtubeUrl && errors.youtubeUrl)} fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-youtubeUrl">YouTube URL</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-youtubeUrl"
+                type="text"
+                value={values.youtubeUrl}
+                name="youtubeUrl"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label="YouTube URL"
+                inputProps={{}}
+              />
+              {touched.youtubeUrl && errors.youtubeUrl && <FormHelperText error>{errors.youtubeUrl}</FormHelperText>}
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel htmlFor="source">Source</InputLabel>
+              <Select id="source" name="source" value={values.source} label="Source" onChange={handleChange}>
+                <MenuItem value={'none'}>None</MenuItem>
+                <MenuItem value={'codehs'}>CodeHS</MenuItem>
+              </Select>
+            </FormControl>
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
