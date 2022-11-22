@@ -18,19 +18,19 @@ const TestInputRow = ({ message, regex, onChange, regexTestText }: Props) => {
     console.log(e);
   }
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '500px' }}>
-      <div>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      <Box width={'50%'}>
         <InputLabel htmlFor="outlined-adornment-title">Message</InputLabel>
-        <OutlinedInput multiline id="outlined-adornment-title" type="text" value={message} onChange={handleChange('message')} />
-      </div>
-      <div>
+        <OutlinedInput fullWidth multiline id="outlined-adornment-title" type="text" value={message} onChange={handleChange('message')} />
+      </Box>
+      <Box width={'30%'}>
         <InputLabel htmlFor="outlined-adornment-title">Regex</InputLabel>
-        <OutlinedInput id="outlined-adornment-title" type="text" value={regex} onChange={handleChange('regex')} />
-      </div>
-      <div>
+        <OutlinedInput fullWidth id="outlined-adornment-title" type="text" value={regex} onChange={handleChange('regex')} />
+      </Box>
+      <Box width={'10%'}>
         <InputLabel htmlFor="outlined-adornment-title">Is Passing</InputLabel>
         {status === 'pass' ? <>✅</> : <>❌</>}
-      </div>
+      </Box>
     </Box>
   );
 };

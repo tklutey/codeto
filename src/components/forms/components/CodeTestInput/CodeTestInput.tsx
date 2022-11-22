@@ -17,9 +17,17 @@ const CodeTestInput = ({ tests, setTests, regexTestText }: Props) => {
   };
   return (
     <Box>
-      {tests.map((test, index) => (
-        <TestInputRow key={index} message={test.message} regex={test.regex} onChange={handleChange(index)} regexTestText={regexTestText} />
-      ))}
+      <Box width={'100%'} display={'flex'}>
+        {tests.map((test, index) => (
+          <TestInputRow
+            key={index}
+            message={test.message}
+            regex={test.regex}
+            onChange={handleChange(index)}
+            regexTestText={regexTestText}
+          />
+        ))}
+      </Box>
       <Button onClick={handleClick}>Add Test</Button>
     </Box>
   );
