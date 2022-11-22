@@ -1,13 +1,22 @@
 import { Box, InputLabel, OutlinedInput } from '@mui/material';
+import { useState } from 'react';
 
 const TestInputRow = ({ message, regex, onChange, regexTestText }: Props) => {
+  const [status, setStatus] = useState('fail');
   const handleChange = (key: string) => {
     return (e: any) => {
       onChange({ ...{ message, regex }, [key]: e.target.value });
     };
   };
 
-  const status = regexTestText.match(regex) && regex.length > 0 ? 'pass' : 'fail';
+  try {
+    const currentStatus = regexTestText.match(regex) && regex.length > 0 ? 'pass' : 'fail';
+    if (currentStatus !== status) {
+      setStatus(currentStatus);
+    }
+  } catch (e) {
+    console.log(e);
+  }
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '500px' }}>
       <div>
