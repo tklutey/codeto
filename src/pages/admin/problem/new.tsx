@@ -21,6 +21,7 @@ import CodeEditor from 'components/ide/editor/CodeEditor';
 import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
 import IDE from 'components/ide';
 import { trpc } from 'utils/trpc';
+import CodingProblemSkillChooser from 'components/forms/components/CodingProblemSkillChooser/CodingProblemSkillChooser';
 
 const NewProblem = () => {
   const theme = useTheme();
@@ -157,6 +158,10 @@ const NewProblem = () => {
                 <MenuItem value={'codehs'}>CodeHS</MenuItem>
               </Select>
             </FormControl>
+            <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+              Associated Skills
+            </Typography>
+            <CodingProblemSkillChooser />
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
