@@ -58,8 +58,7 @@ const NewProblem = () => {
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const mergedValues = { ...values, startingCode, solutionCode, sourceCodeTests, expectedOutputTests };
-          console.log(mergedValues);
-          const { data, error } = await createProblem.mutateAsync(mergedValues);
+          const { error } = await createProblem.mutateAsync(mergedValues);
           if (error) {
             setStatus({ success: false });
           } else {
