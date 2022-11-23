@@ -113,7 +113,7 @@ export default class SbClient {
     return data;
   }
 
-  async createCodingProblem(codingProblem: any) {
+  async createCodingProblem(codingProblem: any, basisIds: number[]) {
     const { count } = await this.supabaseClient.from('coding_problem').select('*', {
       count: 'exact',
       head: true
@@ -125,6 +125,15 @@ export default class SbClient {
       .from('coding_problem')
       .insert({ ...codingProblem, id, created_at: timestamp })
       .select();
+    if (!error) {
+      const records = basisIds.map((basisId) => {
+        return {
+          coding_problem_id: id,
+          basis_id: basisId
+        };
+      });
+      await this.supabaseClient.from('coding_problem_basis_relationship').insert(records).select();
+    }
     return { data, error };
   }
 }

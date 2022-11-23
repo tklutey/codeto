@@ -31,7 +31,6 @@ const NewProblem = () => {
   const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
   const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
   const [basisIds, setBasisIds] = useState<number[]>([]);
-  console.log(basisIds);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const updateStartingCode = (newCode?: string, _?: any) => {
@@ -60,7 +59,14 @@ const NewProblem = () => {
           source: 'none'
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const mergedValues = { ...values, startingCode, solutionCode, sourceCodeTests, expectedOutputTests };
+          const mergedValues = {
+            ...values,
+            startingCode,
+            solutionCode,
+            sourceCodeTests,
+            expectedOutputTests,
+            basisIds
+          };
           const { error } = await createProblem.mutateAsync(mergedValues);
           if (error) {
             setStatus({ success: false });
