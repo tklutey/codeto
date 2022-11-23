@@ -16,7 +16,7 @@ export default class SbClient {
   async getCodingProblemById(id: number) {
     let { data } = await this.supabaseClient
       .from('coding_problem')
-      .select('*, basis_knowledge_state(id, standard_basis_relationship(*))')
+      .select('*, basis_knowledge_state(id, standard_basis_relationship(*, learning_standard(*)))')
       .eq('id', id);
     return data;
   }
