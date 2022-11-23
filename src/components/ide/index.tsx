@@ -54,7 +54,9 @@ const IDE = (props: Props) => {
       const output = data.output;
       if (output !== undefined) {
         setTerminalText(output);
-        onTerminalTextChange(output);
+        if (onTerminalTextChange) {
+          onTerminalTextChange(output);
+        }
         if (onSuccess) {
           onSuccess(output);
         }
