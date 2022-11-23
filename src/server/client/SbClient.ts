@@ -1,5 +1,10 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
+type QueryJoinArg = {
+  queryResult: any;
+  joinKey: string;
+};
+
 export default class SbClient {
   private supabaseClient: SupabaseClient;
 
@@ -11,6 +16,16 @@ export default class SbClient {
     } else {
       throw new Error('Missing Supabase URL or key');
     }
+  }
+
+  join(
+    { queryResult: queryResult1, joinKey: query1JoinKey }: QueryJoinArg,
+    { queryResult: queryResult2, joinKey: query2JoinKey }: QueryJoinArg
+  ) {
+    return queryResult1?.map((query1Element: any) => {
+      const query2Match = queryResult2?.find((query2Element: any) => query2Element[query2JoinKey] === query1Element[query1JoinKey]);
+      return { ...query1Element, ...query2Match };
+    });
   }
 
   async getCodingProblemById(id: number) {
@@ -92,6 +107,35 @@ export default class SbClient {
   async getStandardBasisRelationships() {
     const { data } = await this.supabaseClient.from('standard_basis_relationship').select();
     return data;
+  }
+
+  async getLearningStandards() {
+    const { data: standard_objective } = await this.supabaseClient
+      .from('standard_relationship')
+      .select('objective:parent_id(*), standard:child_id!inner(*)')
+      .eq('standard.type', 'standard');
+
+    const { data: objective_topic } = await this.supabaseClient
+      .from('standard_relationship')
+      .select('topic:parent_id(*, topic_unit_relationship(learning_unit(*))), objective:child_id!inner(*)')
+      .eq('objective.type', 'objective');
+
+    const fullStandardsJoin = this.join(
+      { queryResult: standard_objective, joinKey: 'objective.id' },
+      {
+        queryResult: objective_topic,
+        joinKey: 'objective.id'
+      }
+    ).map((x: any) => {
+      const { topic_unit_relationship, ...topic } = x.topic;
+      return {
+        standard: x.standard,
+        objective: x.objective,
+        topic: topic,
+        unit: topic_unit_relationship[0].learning_unit
+      };
+    });
+    return fullStandardsJoin;
   }
 
   async updateCodingProblemAttemptHistory(problemId: number, userId: string, isCorrect: boolean) {
