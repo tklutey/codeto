@@ -5,6 +5,7 @@ import { z } from 'zod';
 const getCourseSummary = async () => {
   const sbClient = new SbClient();
   const topicUnitRelationshipsPromise = sbClient.getTopicUnitRelationships();
+  const standardBasisRelationshipPromise = sbClient.getStandardBasisRelationships();
   const learningStandardRelationships = await sbClient.getLearningStandardRelationships();
   const learningStandards = await sbClient.getAllLearningStandards();
   const unitsPromise = sbClient.getAllCourseUnits();
@@ -42,9 +43,17 @@ const getCourseSummary = async () => {
         topic_description: topic.description
       };
     });
+  const standardBasisRelationships = await standardBasisRelationshipPromise;
+  const learningStandardsWithBasis = learningStandardsWithUnits?.map((ls) => {
+    const basis = standardBasisRelationships?.find((sbr) => sbr.standard_id === ls.objective_id);
+    return {
+      ...ls,
+      basis_id: basis?.basis_id
+    };
+  });
   const units = await unitsPromise;
   const unitStandardDetails = units?.map((unit) => {
-    const unitLearningStandards = learningStandardsWithUnits?.filter((ls) => ls.unitId === unit.id);
+    const unitLearningStandards = learningStandardsWithBasis?.filter((ls) => ls.unitId === unit.id);
     return {
       unit_id: unit.id,
       unit_name: unit.unit_name,

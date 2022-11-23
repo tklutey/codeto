@@ -30,6 +30,8 @@ const NewProblem = () => {
   const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
   const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
   const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
+  const [basisIds, setBasisIds] = useState<number[]>([]);
+  console.log(basisIds);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const updateStartingCode = (newCode?: string, _?: any) => {
@@ -161,7 +163,7 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Associated Skills
             </Typography>
-            <CodingProblemSkillChooser />
+            <CodingProblemSkillChooser setBasisIds={setBasisIds} />
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">

@@ -89,6 +89,11 @@ export default class SbClient {
     return data;
   }
 
+  async getStandardBasisRelationships() {
+    const { data } = await this.supabaseClient.from('standard_basis_relationship').select();
+    return data;
+  }
+
   async updateCodingProblemAttemptHistory(problemId: number, userId: string, isCorrect: boolean) {
     const timestamp = new Date().toISOString();
     const { data } = await this.supabaseClient

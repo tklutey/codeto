@@ -7,19 +7,30 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import { trpc } from 'utils/trpc';
 
-const CodingProblemSkillChooser = () => {
-  const [checked, setChecked] = React.useState([0]);
+const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
+  const [checked, setChecked] = React.useState<number[]>([]);
 
   const courseStandards = trpc.useQuery(['knowledgeState.getLearningStandardsForCourse']);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggle = (value: number, standard: any) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
       newChecked.push(value);
+      setBasisIds((prevBasisIds: number[]) => {
+        if (!prevBasisIds.includes(standard.basis_id)) {
+          return [...prevBasisIds, standard.basis_id];
+        } else {
+          return prevBasisIds;
+        }
+      });
     } else {
       newChecked.splice(currentIndex, 1);
+      setBasisIds((prevBasisIds: number[]) => {
+        // remove standard.basis_id from prevBasisIds
+        return prevBasisIds.filter((basisId) => basisId !== standard.basis_id);
+      });
     }
 
     setChecked(newChecked);
@@ -52,7 +63,7 @@ const CodingProblemSkillChooser = () => {
 
             return (
               <ListItem key={index} disablePadding>
-                <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
+                <ListItemButton role={undefined} onClick={handleToggle(index, value)} dense>
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
@@ -72,6 +83,10 @@ const CodingProblemSkillChooser = () => {
     }
   }
   return <div> Loading... </div>;
+};
+
+type Props = {
+  setBasisIds: (basisIds: (prevBasisIds: number[]) => any[]) => void;
 };
 
 export default CodingProblemSkillChooser;
