@@ -1,4 +1,16 @@
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Snackbar,
+  Typography
+} from '@mui/material';
 import Layout from 'layout';
 import { ReactElement, useState } from 'react';
 import Page from 'ui-component/Page';
@@ -17,11 +29,20 @@ const NewProblem = () => {
   const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
   const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
   const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const updateStartingCode = (newCode?: string, _?: any) => {
     setStartingCode(newCode as string);
   };
   const updateSolutionCode = (newCode?: string, _?: any) => {
     setSolutionCode(newCode as string);
+  };
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
   };
 
   const createProblem = trpc.useMutation('codingProblem.create');
@@ -38,10 +59,17 @@ const NewProblem = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const mergedValues = { ...values, startingCode, solutionCode, sourceCodeTests, expectedOutputTests };
           console.log(mergedValues);
-          createProblem.mutate(mergedValues);
+          const { data, error } = await createProblem.mutateAsync(mergedValues);
+          if (error) {
+            setStatus({ success: false });
+          } else {
+            setStatus({ success: true });
+          }
+          setSubmitting(false);
+          setSnackbarOpen(true);
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, status, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <FormControl error={Boolean(touched.title && errors.title)} fullWidth sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-title">Title</InputLabel>
@@ -137,6 +165,11 @@ const NewProblem = () => {
                 </Button>
               </AnimateButton>
             </Box>
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity={status?.success === true ? 'success' : 'error'} sx={{ width: '100%' }}>
+                {status?.success === true ? 'Saved coding problem successfully!' : 'Error saving coding problem.'}
+              </Alert>
+            </Snackbar>
           </form>
         )}
       </Formik>

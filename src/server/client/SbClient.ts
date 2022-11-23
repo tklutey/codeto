@@ -116,10 +116,10 @@ export default class SbClient {
     const id = count ? count + 1 : 9999999;
     const timestamp = new Date().toISOString();
 
-    const { data } = await this.supabaseClient
+    const { data, error } = await this.supabaseClient
       .from('coding_problem')
       .insert({ ...codingProblem, id, created_at: timestamp })
       .select();
-    return data;
+    return { data, error };
   }
 }
