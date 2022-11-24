@@ -27,6 +27,23 @@ export const getCourseStandards = async () => {
   });
 };
 
+export const transformCodingProblemV2 = (codingProblem: any) => {
+  const { problem_standard_relationship, ...rest } = codingProblem;
+  const learningStandards = problem_standard_relationship?.flatMap((psr: any) => {
+    if (psr.learning_standard) {
+      const ls = psr.learning_standard;
+      return {
+        standard_id: ls.id,
+        standard_code: ls.code,
+        standard_description: ls.description
+      };
+    }
+  });
+  return {
+    ...rest,
+    learning_standards: learningStandards
+  };
+};
 export const transformCodingProblem = (codingProblem: any) => {
   const { basis_knowledge_state, ...rest } = codingProblem;
   // @ts-ignore

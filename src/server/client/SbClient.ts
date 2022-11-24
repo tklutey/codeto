@@ -31,7 +31,7 @@ export default class SbClient {
   async getCodingProblemById(id: number) {
     let { data } = await this.supabaseClient
       .from('coding_problem')
-      .select('*, basis_knowledge_state(id, standard_basis_relationship(*, learning_standard(*)))')
+      .select('*, problem_standard_relationship(learning_standard(id, code, description))')
       .eq('id', id);
     return data;
   }
@@ -40,7 +40,7 @@ export default class SbClient {
     let { data } = await this.supabaseClient
       .from('coding_problem')
       .select(
-        '*, basis_knowledge_state(id, standard_basis_relationship(*)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt)'
+        '*, problem_standard_relationship(learning_standard(id, code, description)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt)'
       )
       .eq('user_problem_attempt_history.user_id', userId);
     return data;

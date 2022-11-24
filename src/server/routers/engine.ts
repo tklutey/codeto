@@ -2,7 +2,7 @@ import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
-import { transformCodingProblem } from 'server/routers/util';
+import { transformCodingProblemV2 } from './util';
 
 const streakToTargetDistance = (streak: number) => {
   return 2 ** streak;
@@ -46,7 +46,7 @@ export const engine = trpc.router().query('getProblemsByDistance', {
     const currentStreak = await getCurrentUserStreak(userId);
     const targetDistance = streakToTargetDistance(currentStreak);
     const allCodingProblems = await sbClient.getAllCodingProblems(userId);
-    const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
+    const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblemV2(cp));
     const sortedLearningStandards = transformedCodingProblems
       ?.map((cp) => {
         const { learning_standards, ...rest } = cp;
