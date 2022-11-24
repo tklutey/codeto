@@ -1,3 +1,5 @@
+import SbClient from 'server/client/SbClient';
+
 export const getCourseStandards = async () => {
   const sbClient = new SbClient();
   const rawLearningStandards = await sbClient.getLearningStandards();
