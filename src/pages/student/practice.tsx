@@ -55,7 +55,7 @@ const Practice = () => {
   const updateProblemAttemptHistory = trpc.useMutation('codingProblem.updateProblemAttemptHistory');
 
   const goToNextProblem = (isCorrect: boolean) => {
-    return (learningStandards: number[]) => {
+    return (learningStandards: any[]) => {
       return async () => {
         setIsLoading(true);
         await updateProblemAttemptHistory.mutateAsync({
@@ -64,8 +64,9 @@ const Practice = () => {
           isCorrect
         });
         if (isCorrect) {
+          const learningStandardsNumeric = learningStandards.map((ls) => ls.standard_id);
           await updateKnowledgeStateMutation.mutateAsync({
-            learningStandards,
+            learningStandards: learningStandardsNumeric,
             userId: user.id as string
           });
           const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
