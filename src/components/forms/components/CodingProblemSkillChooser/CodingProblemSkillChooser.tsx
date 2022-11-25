@@ -41,11 +41,29 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
   trpc.useQuery(['learningStandards.getCourseStandards'], { onSuccess: transformStandards });
 
   const handleToggle = (value: number, standard: any) => () => {
+    // handle toggled standard
     const isChecked = standard.isChecked ? !standard.isChecked : true;
     const standardIndex = standards.findIndex((s) => s.standard_id === standard.standard_id);
     const modifiedStandard = { ...standard, isChecked };
     const newStandards = [...standards];
     newStandards[standardIndex] = modifiedStandard;
+
+    // handle dependencies
+    const dependencies = standard.dependencies;
+    if (dependencies) {
+      dependencies.forEach((dependency: number) => {
+        const dependencyIndex = standards.findIndex((s) => s.standard_id === dependency);
+        const dependencyStandard = standards[dependencyIndex];
+        const isDependencyChecked = dependencyStandard.isChecked ? !dependencyStandard.isChecked : true;
+        const isDependencyDisabled = dependencyStandard.isDisabled ? !dependencyStandard.isDisabled : true;
+        const modifiedDependency = {
+          ...dependencyStandard,
+          isChecked: isDependencyChecked,
+          isDisabled: isDependencyDisabled
+        };
+        newStandards[dependencyIndex] = modifiedDependency;
+      });
+    }
     setStandards(newStandards);
   };
 
@@ -70,6 +88,7 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
                   <Checkbox
                     edge="start"
                     checked={value.isChecked === true ? true : false}
+                    disabled={value.isDisabled === true ? true : false}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
