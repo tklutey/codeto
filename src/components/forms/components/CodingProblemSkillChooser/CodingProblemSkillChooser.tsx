@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -8,80 +9,79 @@ import Checkbox from '@mui/material/Checkbox';
 import { trpc } from 'utils/trpc';
 
 const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
-  const [checked, setChecked] = React.useState<number[]>([]);
+  const [standards, setStandards] = useState<any[]>([]);
 
-  const courseStandards = trpc.useQuery(['learningStandards.getCourseStandards']);
-
-  const handleToggle = (value: number, standard: any) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-      setBasisIds((prevBasisIds: number[]) => {
-        if (!prevBasisIds.includes(standard.basis_id)) {
-          return [...prevBasisIds, standard.basis_id];
-        } else {
-          return prevBasisIds;
-        }
-      });
-    } else {
-      newChecked.splice(currentIndex, 1);
-      setBasisIds((prevBasisIds: number[]) => {
-        // remove standard.basis_id from prevBasisIds
-        return prevBasisIds.filter((basisId) => basisId !== standard.basis_id);
-      });
+  const transformStandards = (data: any) => {
+    if (data && data.length > 0) {
+      const unitOneStandards = data[0].standards;
+      const sortedUnitOneStandards = unitOneStandards
+        ? unitOneStandards
+            .map((standard: any) => {
+              const standardCodeString = standard.standard_code;
+              const standardCodeNumeric = parseInt(standardCodeString.charAt(standardCodeString.length - 1));
+              return { ...standard, standardCodeNumeric };
+            })
+            .sort((a: any, b: any) => a.standardCodeNumeric - b.standardCodeNumeric)
+        : null;
+      if (sortedUnitOneStandards) {
+        const a = sortedUnitOneStandards.map((standard: any) => {
+          if (standard.standard_id > 1) {
+            return {
+              ...standard,
+              dependencies: [standard.standard_id - 1]
+            };
+          }
+          return standard;
+        });
+        setStandards(a);
+      }
     }
-
-    setChecked(newChecked);
   };
 
-  if (courseStandards.data && courseStandards.data.length > 0) {
-    const unitOneStandards = courseStandards.data[0].standards;
-    const sortedUnitOneStandards = unitOneStandards
-      ? unitOneStandards
-          .map((standard: any) => {
-            const standardCodeString = standard.standard_code;
-            const standardCodeNumeric = parseInt(standardCodeString.charAt(standardCodeString.length - 1));
-            return { ...standard, standardCodeNumeric };
-          })
-          .sort((a: any, b: any) => a.standardCodeNumeric - b.standardCodeNumeric)
-      : null;
-    console.log(sortedUnitOneStandards);
-    if (sortedUnitOneStandards) {
-      return (
-        <List
-          sx={{
-            width: '100%',
-            maxWidth: 900,
-            maxHeight: 300,
-            overflow: 'auto',
-            bgcolor: 'background.paper'
-          }}
-        >
-          {sortedUnitOneStandards.map((value: any, index: number) => {
-            const labelId = `checkbox-list-label-${value}`;
+  trpc.useQuery(['learningStandards.getCourseStandards'], { onSuccess: transformStandards });
 
-            return (
-              <ListItem key={index} disablePadding>
-                <ListItemButton role={undefined} onClick={handleToggle(index, value)} dense>
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(index) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText id={labelId} primary={`${value.topic_code} | ${value.standard_code} - ${value.standard_description}`} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      );
-    }
+  const handleToggle = (value: number, standard: any) => () => {
+    const isChecked = standard.isChecked ? !standard.isChecked : true;
+    const standardIndex = standards.findIndex((s) => s.standard_id === standard.standard_id);
+    const modifiedStandard = { ...standard, isChecked };
+    const newStandards = [...standards];
+    newStandards[standardIndex] = modifiedStandard;
+    setStandards(newStandards);
+  };
+
+  if (standards && standards.length > 0) {
+    return (
+      <List
+        sx={{
+          width: '100%',
+          maxWidth: 900,
+          maxHeight: 300,
+          overflow: 'auto',
+          bgcolor: 'background.paper'
+        }}
+      >
+        {standards.map((value: any, index: number) => {
+          const labelId = `checkbox-list-label-${value}`;
+
+          return (
+            <ListItem key={index} disablePadding>
+              <ListItemButton role={undefined} onClick={handleToggle(index, value)} dense>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={value.isChecked === true ? true : false}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={`${value.topic_code} | ${value.standard_code} - ${value.standard_description}`} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+    );
   }
   return <div> Loading... </div>;
 };
