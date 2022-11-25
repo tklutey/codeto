@@ -19,7 +19,7 @@ const StudentDashboard = () => {
       <MainCard title="Student Mastery" style={{ width: '100%' }}>
         {studentMasteryData?.data && (
           <Grid container spacing={2}>
-            {studentMasteryData.data.map((unitData) => (
+            {studentMasteryData.data.map((unitData: any) => (
               <Grid item key={unitData.unit_id} xs={12}>
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item sm zeroMinWidth>
