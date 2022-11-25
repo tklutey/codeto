@@ -41,7 +41,7 @@ const sortProblems = (a: any, b: any) => {
 export const engine = trpc.router().query('getProblemsByDistance', {
   input: z.string(),
   async resolve({ input }) {
-    const { userId, learningStandards } = JSON.parse(input);
+    const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
     const sbClient = new SbClient();
     const currentStreak = await getCurrentUserStreak(userId);
     const targetDistance = streakToTargetDistance(currentStreak);
@@ -50,7 +50,8 @@ export const engine = trpc.router().query('getProblemsByDistance', {
     const sortedLearningStandards = transformedCodingProblems
       ?.map((cp) => {
         const { learning_standards, ...rest } = cp;
-        const intersection = learningStandards.filter((x: any) => learning_standards?.includes(x));
+        const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
+        const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
         const distance = learning_standards.length - intersection.length;
         const distanceFromTarget = Math.abs(targetDistance - distance);
         return {
