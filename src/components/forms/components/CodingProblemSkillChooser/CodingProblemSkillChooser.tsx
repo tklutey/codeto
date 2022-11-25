@@ -10,7 +10,7 @@ import { trpc } from 'utils/trpc';
 const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
   const [checked, setChecked] = React.useState<number[]>([]);
 
-  const courseStandards = trpc.useQuery(['knowledgeState.getLearningStandardsForCourse']);
+  const courseStandards = trpc.useQuery(['learningStandards.getCourseStandards']);
 
   const handleToggle = (value: number, standard: any) => () => {
     const currentIndex = checked.indexOf(value);
@@ -40,13 +40,14 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
     const unitOneStandards = courseStandards.data[0].standards;
     const sortedUnitOneStandards = unitOneStandards
       ? unitOneStandards
-          .map((standard) => {
-            const topicCodeString = standard.topic_code;
-            const topicCodeNumeric = parseInt(topicCodeString.charAt(topicCodeString.length - 1));
-            return { ...standard, topicCodeNumeric };
+          .map((standard: any) => {
+            const standardCodeString = standard.standard_code;
+            const standardCodeNumeric = parseInt(standardCodeString.charAt(standardCodeString.length - 1));
+            return { ...standard, standardCodeNumeric };
           })
-          .sort((a, b) => a.topicCodeNumeric - b.topicCodeNumeric)
+          .sort((a: any, b: any) => a.standardCodeNumeric - b.standardCodeNumeric)
       : null;
+    console.log(sortedUnitOneStandards);
     if (sortedUnitOneStandards) {
       return (
         <List
@@ -58,7 +59,7 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
             bgcolor: 'background.paper'
           }}
         >
-          {sortedUnitOneStandards.map((value, index) => {
+          {sortedUnitOneStandards.map((value: any, index: number) => {
             const labelId = `checkbox-list-label-${value}`;
 
             return (
@@ -73,7 +74,7 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
                   </ListItemIcon>
-                  <ListItemText id={labelId} primary={`${value.topic_code}: ${value.objective_description}`} />
+                  <ListItemText id={labelId} primary={`${value.topic_code} | ${value.standard_code} - ${value.standard_description}`} />
                 </ListItemButton>
               </ListItem>
             );

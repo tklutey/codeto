@@ -3,67 +3,6 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCourseStandards } from 'server/routers/util';
 
-const getCourseSummary = async () => {
-  const sbClient = new SbClient();
-  const topicUnitRelationshipsPromise = sbClient.getTopicUnitRelationships();
-  const standardBasisRelationshipPromise = sbClient.getStandardBasisRelationships();
-  const learningStandardRelationships = await sbClient.getLearningStandardRelationships();
-  const learningStandards = await sbClient.getAllLearningStandards();
-  const unitsPromise = sbClient.getAllCourseUnits();
-  const decoratedLearningStandardRelationships = learningStandardRelationships
-    ?.map((lsr) => {
-      const parent = learningStandards?.find((ls) => ls.id === lsr.parent_id);
-      const child = learningStandards?.find((ls) => ls.id === lsr.child_id);
-      return {
-        parent,
-        child
-      };
-    })
-    .filter((lsr) => lsr.parent.type === 'topic');
-  const topicUnitRelationships = await topicUnitRelationshipsPromise;
-  const learningStandardsWithUnits = decoratedLearningStandardRelationships
-    ?.map((lsr) => {
-      const unit = topicUnitRelationships?.find((tur) => tur.topic_id === lsr.parent.id);
-      if (!unit) {
-        console.log('no unit found for topic', lsr.parent.code);
-      }
-      return {
-        ...lsr,
-        unitId: unit.unit_id
-      };
-    })
-    .map((lsr) => {
-      const { parent: topic, child: objective, unitId } = lsr;
-      return {
-        unitId: unitId,
-        objective_id: objective.id,
-        objective_code: objective.code,
-        objective_description: objective.description,
-        topic_id: topic.id,
-        topic_code: topic.code,
-        topic_description: topic.description
-      };
-    });
-  const standardBasisRelationships = await standardBasisRelationshipPromise;
-  const learningStandardsWithBasis = learningStandardsWithUnits?.map((ls) => {
-    const basis = standardBasisRelationships?.find((sbr) => sbr.standard_id === ls.objective_id);
-    return {
-      ...ls,
-      basis_id: basis?.basis_id
-    };
-  });
-  const units = await unitsPromise;
-  const unitStandardDetails = units?.map((unit) => {
-    const unitLearningStandards = learningStandardsWithBasis?.filter((ls) => ls.unitId === unit.id);
-    return {
-      unit_id: unit.id,
-      unit_name: unit.unit_name,
-      standards: unitLearningStandards
-    };
-  });
-  return unitStandardDetails;
-};
-
 export const knowledgeState = trpc
   .router()
   .mutation('update', {
@@ -83,11 +22,6 @@ export const knowledgeState = trpc
       const userId = input;
       const sbClient = new SbClient();
       return sbClient.getMasteredStandardsForUser(userId);
-    }
-  })
-  .query('getLearningStandardsForCourse', {
-    async resolve() {
-      return getCourseSummary();
     }
   })
   .mutation('resetUserMastery', {
