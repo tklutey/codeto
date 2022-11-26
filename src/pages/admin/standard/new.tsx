@@ -27,6 +27,7 @@ const NewStandardPage = () => {
   const theme = useTheme();
 
   const createStandard = trpc.useMutation('learningStandards.create');
+  const parentStandards = [];
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -107,6 +108,21 @@ const NewStandardPage = () => {
                   Dependent Skills
                 </Typography>
                 <CodingProblemSkillChooser standards={standards} setStandards={setStandards} />
+              </Box>
+            )}
+
+            {values.type !== 'topic' && (
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="parent-standard">Parent</InputLabel>
+                  <Select id="parent-standard" name="parent-standard" value={''} label="parent-standard" onChange={handleChange}>
+                    {parentStandards.map((s) => (
+                      <MenuItem key={s} value={s}>
+                        {s}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Box>
             )}
 
