@@ -180,4 +180,8 @@ export default class SbClient {
     }
     return { data, error };
   }
+
+  async createStandard(learningStandard: any) {
+    return this.supabaseClient.from('learning_standard').insert(learningStandard);
+  }
 }

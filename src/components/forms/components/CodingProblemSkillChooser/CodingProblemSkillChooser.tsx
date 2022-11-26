@@ -1,45 +1,12 @@
 import * as React from 'react';
-import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { trpc } from 'utils/trpc';
 
-const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
-  const [standards, setStandards] = useState<any[]>([]);
-
-  const transformStandards = (data: any) => {
-    if (data && data.length > 0) {
-      const unitOneStandards = data[0].standards;
-      const sortedUnitOneStandards = unitOneStandards
-        ? unitOneStandards
-            .map((standard: any) => {
-              const standardCodeString = standard.standard_code;
-              const standardCodeNumeric = parseInt(standardCodeString.charAt(standardCodeString.length - 1));
-              return { ...standard, standardCodeNumeric };
-            })
-            .sort((a: any, b: any) => a.standardCodeNumeric - b.standardCodeNumeric)
-        : null;
-      if (sortedUnitOneStandards) {
-        const a = sortedUnitOneStandards.map((standard: any) => {
-          if (standard.standard_id > 1) {
-            return {
-              ...standard,
-              dependencies: [standard.standard_id - 1]
-            };
-          }
-          return standard;
-        });
-        setStandards(a);
-      }
-    }
-  };
-
-  trpc.useQuery(['learningStandards.getCourseStandards'], { onSuccess: transformStandards });
-
+const CodingProblemSkillChooser = ({ standards, setStandards }: Props) => {
   const handleToggle = (value: number, standard: any) => () => {
     // handle toggled standard
     const isChecked = standard.isChecked ? !standard.isChecked : true;
@@ -106,7 +73,8 @@ const CodingProblemSkillChooser = ({ setBasisIds }: Props) => {
 };
 
 type Props = {
-  setBasisIds: (basisIds: (prevBasisIds: number[]) => any[]) => void;
+  standards: any[];
+  setStandards: (standards: any[]) => void;
 };
 
 export default CodingProblemSkillChooser;
