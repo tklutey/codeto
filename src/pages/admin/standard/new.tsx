@@ -3,28 +3,16 @@ import Layout from 'layout';
 import CodingProblemSkillChooser from 'components/forms/components/CodingProblemSkillChooser/CodingProblemSkillChooser';
 import Page from 'ui-component/Page';
 import { Formik } from 'formik';
-import {
-  Alert,
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Snackbar,
-  Typography
-} from '@mui/material';
+import { Alert, Box, Button, Snackbar, Typography } from '@mui/material';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import useLearningStandards from 'hooks/useLearningStandards';
-import { useTheme } from '@mui/styles';
 import { trpc } from 'utils/trpc';
+import FormTextInput from 'components/forms/components/FormInputs/FormTextInput';
+import FormSelectInput from 'components/forms/components/FormInputs/FormSelectInput';
 
 const NewStandardPage = () => {
   const { standards, setStandards } = useLearningStandards();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const theme = useTheme();
 
   const createStandard = trpc.useMutation('learningStandards.create');
   const parentStandards = [];
@@ -62,44 +50,30 @@ const NewStandardPage = () => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, status, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="type">Type</InputLabel>
-              <Select id="type" name="type" value={values.type} label="type" onChange={handleChange}>
-                <MenuItem value={'standard'}>Standard</MenuItem>
-                <MenuItem value={'objective'}>Objective</MenuItem>
-                <MenuItem value={'topic'}>Topic</MenuItem>
-              </Select>
-            </FormControl>
+            <FormSelectInput
+              fieldName={'type'}
+              values={values}
+              selectOptions={['standard', 'objective', 'topic']}
+              handleChange={handleChange}
+            />
 
-            <FormControl error={Boolean(touched.code && errors.code)} fullWidth sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-code">Code</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-code"
-                type="text"
-                value={values.code}
-                name="code"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                label="Code"
-                inputProps={{}}
-              />
-              {touched.code && errors.code && <FormHelperText>{errors.code}</FormHelperText>}
-            </FormControl>
+            <FormTextInput
+              fieldName={'code'}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
-            <FormControl error={Boolean(touched.description && errors.description)} fullWidth sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-description">Description</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-description"
-                type="text"
-                value={values.description}
-                name="description"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                label="Description"
-                inputProps={{}}
-              />
-              {touched.description && errors.description && <FormHelperText>{errors.description}</FormHelperText>}
-            </FormControl>
+            <FormTextInput
+              fieldName={'description'}
+              values={values}
+              errors={errors}
+              touched={touched}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+            />
 
             {values.type === 'standard' && (
               <Box>
