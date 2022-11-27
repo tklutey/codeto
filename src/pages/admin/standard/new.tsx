@@ -47,10 +47,9 @@ const NewStandardPage = () => {
           description: ''
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const dependentStandards = standards.filter((standard) => standard.isChecked);
+          const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
           const { standards: x, ...rest } = values;
           const mergedValues = { ...rest, dependentStandards };
-          console.log(mergedValues);
           const { error } = await createStandard.mutateAsync(mergedValues);
           if (error) {
             setStatus({ success: false });
@@ -111,20 +110,20 @@ const NewStandardPage = () => {
               </Box>
             )}
 
-            {values.type !== 'topic' && (
-              <Box>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="parent-standard">Parent</InputLabel>
-                  <Select id="parent-standard" name="parent-standard" value={''} label="parent-standard" onChange={handleChange}>
-                    {parentStandards.map((s) => (
-                      <MenuItem key={s} value={s}>
-                        {s}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            )}
+            {/*{values.type !== 'topic' && (*/}
+            {/*  <Box>*/}
+            {/*    <FormControl fullWidth>*/}
+            {/*      <InputLabel htmlFor="parent-standard">Parent</InputLabel>*/}
+            {/*      <Select id="parent-standard" name="parent-standard" value={''} label="parent-standard" onChange={handleChange}>*/}
+            {/*        {parentStandards.map((s) => (*/}
+            {/*          <MenuItem key={s} value={s}>*/}
+            {/*            {s}*/}
+            {/*          </MenuItem>*/}
+            {/*        ))}*/}
+            {/*      </Select>*/}
+            {/*    </FormControl>*/}
+            {/*  </Box>*/}
+            {/*)}*/}
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
@@ -136,7 +135,7 @@ const NewStandardPage = () => {
 
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleClose}>
               <Alert onClose={handleClose} severity={status?.success === true ? 'success' : 'error'} sx={{ width: '100%' }}>
-                {status?.success === true ? 'Saved coding problem successfully!' : 'Error saving coding problem.'}
+                {status?.success === true ? 'Saved standard successfully!' : 'Error saving standard.'}
               </Alert>
             </Snackbar>
           </form>

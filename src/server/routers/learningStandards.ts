@@ -18,8 +18,9 @@ export const learningStandards = trpc
       dependentStandards: z.array(z.number())
     }),
     async resolve({ input }) {
+      const { dependentStandards, ...learningStandard } = input;
       const sbClient = new SbClient();
-      const result = sbClient.createStandard(input);
+      const result = sbClient.createStandard(learningStandard, dependentStandards);
       return result;
     }
   });

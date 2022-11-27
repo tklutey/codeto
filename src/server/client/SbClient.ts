@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { generateIdAndTimestamp, join } from 'utils/pgUtil';
 
 type QueryJoinArg = {
   queryResult: any;
@@ -16,24 +17,6 @@ export default class SbClient {
     } else {
       throw new Error('Missing Supabase URL or key');
     }
-  }
-
-  join(
-    { queryResult: queryResult1, joinKey: query1JoinKey }: QueryJoinArg,
-    { queryResult: queryResult2, joinKey: query2JoinKey }: QueryJoinArg
-  ) {
-    return queryResult1?.map((query1Element: any) => {
-      const query2Match = queryResult2?.find((query2Element: any) => query2Element[query2JoinKey] === query1Element[query1JoinKey]);
-      return { ...query1Element, ...query2Match };
-    });
-  }
-
-  async getCodingProblemById(id: number) {
-    let { data } = await this.supabaseClient
-      .from('coding_problem')
-      .select('*, problem_standard_relationship(learning_standard(id, code, description))')
-      .eq('id', id);
-    return data;
   }
 
   async getAllCodingProblems(userId: string) {
@@ -120,7 +103,7 @@ export default class SbClient {
       .select('topic:parent_id(*, topic_unit_relationship(learning_unit(*))), objective:child_id!inner(*)')
       .eq('objective.type', 'objective');
 
-    const fullStandardsJoin = this.join(
+    const fullStandardsJoin = join(
       { queryResult: standard_objective, joinKey: 'objective.id' },
       {
         queryResult: objective_topic,
@@ -158,12 +141,7 @@ export default class SbClient {
   }
 
   async createCodingProblem(codingProblem: any, basisIds: number[]) {
-    const { count } = await this.supabaseClient.from('coding_problem').select('*', {
-      count: 'exact',
-      head: true
-    });
-    const id = count ? count + 1 : 9999999;
-    const timestamp = new Date().toISOString();
+    const { timestamp, id } = await generateIdAndTimestamp('coding_problem');
 
     const { data, error } = await this.supabaseClient
       .from('coding_problem')
@@ -181,7 +159,34 @@ export default class SbClient {
     return { data, error };
   }
 
-  async createStandard(learningStandard: any) {
-    return this.supabaseClient.from('learning_standard').insert(learningStandard);
+  async createStandard(learningStandard: any, dependentStandards: number[]) {
+    const { timestamp, id } = await generateIdAndTimestamp('learning_standard');
+    const { data, error } = await this.supabaseClient
+      .from('learning_standard')
+      .insert({
+        ...learningStandard,
+        id,
+        created_at: timestamp
+      })
+      .select();
+    if (!error) {
+      const records = dependentStandards.map((dependentStandardId) => {
+        return {
+          parent_id: id,
+          child_id: dependentStandardId,
+          created_at: timestamp
+        };
+      });
+      const { data: data2, error: error2 } = await this.supabaseClient.from('standard_relationship').insert(records).select();
+      if (error2) {
+        throw new Error(error2.message);
+      }
+    }
+    return { data, error };
+  }
+
+  async getMaxId(tableName: string) {
+    const { data, error } = await this.supabaseClient.from(tableName).select('id').order('id', { ascending: false }).limit(1);
+    return data ? data[0].id : null;
   }
 }
