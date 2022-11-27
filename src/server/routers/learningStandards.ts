@@ -10,6 +10,14 @@ export const learningStandards = trpc
       return getCourseStandards();
     }
   })
+  .query('getCourseStandardsByType', {
+    input: z.string(),
+    async resolve({ input }) {
+      const type = input;
+      const sbClient = new SbClient();
+      return sbClient.getLearningStandardByType(type);
+    }
+  })
   .mutation('create', {
     input: z.object({
       type: z.string(),

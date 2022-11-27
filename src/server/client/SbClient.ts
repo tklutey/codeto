@@ -189,4 +189,9 @@ export default class SbClient {
     const { data, error } = await this.supabaseClient.from(tableName).select('id').order('id', { ascending: false }).limit(1);
     return data ? data[0].id : null;
   }
+
+  async getLearningStandardByType(type: string) {
+    const { data } = await this.supabaseClient.from('learning_standard').select().eq('type', type);
+    return data;
+  }
 }

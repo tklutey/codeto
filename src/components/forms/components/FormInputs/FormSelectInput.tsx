@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { ChangeEvent } from 'react';
 
 const FormSelectInput = ({ fieldName, values, selectOptions, handleChange }: Props) => {
   // capitalize first letter of fieldName
