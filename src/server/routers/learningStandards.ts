@@ -29,7 +29,7 @@ export const learningStandards = trpc
     async resolve({ input }) {
       const { dependentStandards, parent, ...learningStandard } = input;
       const sbClient = new SbClient();
-      const result = sbClient.createStandard(learningStandard, parent);
+      const result = sbClient.createStandard(learningStandard, parent, dependentStandards);
       return result;
     }
   });

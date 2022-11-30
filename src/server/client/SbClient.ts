@@ -159,7 +159,7 @@ export default class SbClient {
     return { data, error };
   }
 
-  async createStandard(learningStandard: any, parentStandard: number) {
+  async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {
     const { timestamp, id } = await generateIdAndTimestamp('learning_standard');
     const { data, error } = await this.supabaseClient
       .from('learning_standard')
@@ -181,7 +181,20 @@ export default class SbClient {
       if (error2) {
         throw new Error(error2.message);
       }
+      if (!error2) {
+        const records = dependentStandards.map((dependentStandard) => {
+          return {
+            standard_id: id,
+            dependent_standard: dependentStandard
+          };
+        });
+        const { error: error3 } = await this.supabaseClient.from('standard_dependencies').insert(records).select();
+        if (error3) {
+          throw new Error(error3.message);
+        }
+      }
     }
+
     return { data, error };
   }
 
