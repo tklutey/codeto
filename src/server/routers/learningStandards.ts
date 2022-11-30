@@ -23,12 +23,13 @@ export const learningStandards = trpc
       type: z.string(),
       code: z.string(),
       description: z.string(),
-      dependentStandards: z.array(z.number())
+      dependentStandards: z.array(z.number()),
+      parent: z.number()
     }),
     async resolve({ input }) {
-      const { dependentStandards, ...learningStandard } = input;
+      const { dependentStandards, parent, ...learningStandard } = input;
       const sbClient = new SbClient();
-      const result = sbClient.createStandard(learningStandard, dependentStandards);
+      const result = sbClient.createStandard(learningStandard, parent);
       return result;
     }
   });
