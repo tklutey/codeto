@@ -3,7 +3,7 @@ import Layout from 'layout';
 import CodingProblemSkillChooser from 'components/forms/components/CodingProblemSkillChooser/CodingProblemSkillChooser';
 import Page from 'ui-component/Page';
 import { Formik } from 'formik';
-import { Alert, Box, Button, Snackbar, Typography } from '@mui/material';
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Snackbar, Typography } from '@mui/material';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import useLearningStandards from 'hooks/useLearningStandards';
 import { trpc } from 'utils/trpc';
@@ -28,6 +28,9 @@ const NewStandardPage = () => {
     setSnackbarOpen(false);
   };
 
+  if (!parentStandards) {
+    return <div>Loading...</div>;
+  }
   return (
     <Page title={'New Standard'}>
       <Formik
@@ -36,7 +39,7 @@ const NewStandardPage = () => {
           type: 'standard',
           code: '',
           description: '',
-          parents: ''
+          parent: parentStandards[0].id
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
@@ -83,12 +86,16 @@ const NewStandardPage = () => {
               </Box>
             )}
 
-            <FormSelectInput
-              fieldName={'parents'}
-              values={values}
-              selectOptions={parentStandards ? parentStandards.map((s) => mapStandardToString(s)) : []}
-              handleChange={handleChange}
-            />
+            <FormControl fullWidth>
+              <InputLabel htmlFor={'parent'}>Parent Standard</InputLabel>
+              <Select id={'parent'} name={'parent'} value={values.parent} label={'Parent'} onChange={handleChange}>
+                {(parentStandards ? parentStandards : []).map((o) => (
+                  <MenuItem key={o.id} value={o.id}>
+                    {mapStandardToString(o)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
