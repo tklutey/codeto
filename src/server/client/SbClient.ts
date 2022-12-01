@@ -98,19 +98,39 @@ export default class SbClient {
       .select('objective:parent_id(*), standard:child_id!inner(*)')
       .eq('standard.type', 'standard');
 
+    const { data: standard_dependencies } = await this.supabaseClient.from('standard_dependencies').select();
+
+    const standardObjectivesWithDeps = join(
+      { queryResult: standard_objective, joinKey: 'standard.id' },
+      {
+        queryResult: standard_dependencies,
+        joinKey: 'standard_id'
+      },
+      'dependencies'
+    );
+
+    const formattedStandardObjectivesWithDeps = standardObjectivesWithDeps.map((x: any) => {
+      const { dependencies, standard, objective } = x;
+      const formattedDependencies = dependencies.map((y: any) => y.dependent_standard);
+
+      const standardWithDependencies = { ...standard, dependencies: formattedDependencies };
+      return { standard: standardWithDependencies, objective };
+    });
+
     const { data: objective_topic } = await this.supabaseClient
       .from('standard_relationship')
       .select('topic:parent_id(*, topic_unit_relationship(learning_unit(*))), objective:child_id!inner(*)')
       .eq('objective.type', 'objective');
 
     const fullStandardsJoin = join(
-      { queryResult: standard_objective, joinKey: 'objective.id' },
+      { queryResult: formattedStandardObjectivesWithDeps, joinKey: 'objective.id' },
       {
         queryResult: objective_topic,
         joinKey: 'objective.id'
-      }
+      },
+      'topic_objective'
     ).map((x: any) => {
-      const { topic_unit_relationship, ...topic } = x.topic;
+      const { topic_unit_relationship, ...topic } = x.topic_objective[0].topic;
       return {
         standard: x.standard,
         objective: x.objective,

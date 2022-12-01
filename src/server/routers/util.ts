@@ -19,7 +19,8 @@ export const getCourseStandards = async () => {
         objective_description: ls.objective.description,
         standard_id: ls.standard.id,
         standard_code: ls.standard.code,
-        standard_description: ls.standard.description
+        standard_description: ls.standard.description,
+        standard_dependencies: ls.standard.dependencies
       };
     });
     const displayUnit = { id: unit.id, unit_name: unit.unit_name, standards: displayStandards };
