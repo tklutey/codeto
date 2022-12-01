@@ -16,7 +16,7 @@ const CodingProblemSkillChooser = ({ standards, setStandards }: Props) => {
     newStandards[standardIndex] = modifiedStandard;
 
     // handle dependencies
-    const dependencies = standard.dependencies;
+    const dependencies = standard.standard_dependencies;
     if (dependencies) {
       dependencies.forEach((dependency: number) => {
         const dependencyIndex = standards.findIndex((s) => s.standard_id === dependency);

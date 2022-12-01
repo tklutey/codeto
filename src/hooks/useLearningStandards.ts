@@ -17,16 +17,7 @@ const useLearningStandards = () => {
             .sort((a: any, b: any) => a.standardCodeNumeric - b.standardCodeNumeric)
         : null;
       if (sortedUnitOneStandards) {
-        const a = sortedUnitOneStandards.map((standard: any) => {
-          if (standard.standard_id > 1) {
-            return {
-              ...standard,
-              dependencies: [standard.standard_id - 1]
-            };
-          }
-          return standard;
-        });
-        setStandards(a);
+        setStandards(sortedUnitOneStandards);
       }
     }
   };
