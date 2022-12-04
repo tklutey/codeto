@@ -198,7 +198,7 @@ export default class SbClient {
 
   async getMaxId(tableName: string) {
     const { data } = await this.supabaseClient.from(tableName).select('id').order('id', { ascending: false }).limit(1);
-    return data ? data[0].id : null;
+    return data && data.length > 0 ? data[0].id : 0;
   }
 
   async getLearningStandardByType(type: string) {

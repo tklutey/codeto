@@ -46,7 +46,6 @@ const NewProblem = () => {
           description: '',
           youtubeUrl: '',
           source: 'none',
-          standards: standards,
           submit: null
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
