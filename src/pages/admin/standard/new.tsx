@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
-import CodingProblemSkillChooser from 'components/forms/components/CodingProblemSkillChooser/CodingProblemSkillChooser';
+import LearningStandardMultiselect from 'components/forms/components/CodingProblemSkillChooser/LearningStandardMultiselect';
 import Page from 'ui-component/Page';
 import { Formik } from 'formik';
 import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Snackbar, Typography } from '@mui/material';
@@ -83,7 +83,7 @@ const NewStandardPage = () => {
                 <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
                   Dependent Skills
                 </Typography>
-                <CodingProblemSkillChooser standards={standards} setStandards={setStandards} />
+                <LearningStandardMultiselect standards={standards} setStandards={setStandards} />
               </Box>
             )}
 

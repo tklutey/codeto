@@ -8,7 +8,7 @@ import CodeEditor from 'components/ide/editor/CodeEditor';
 import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
 import IDE from 'components/ide';
 import { trpc } from 'utils/trpc';
-import CodingProblemSkillChooser from 'components/forms/components/CodingProblemSkillChooser/CodingProblemSkillChooser';
+import LearningStandardMultiselect from 'components/forms/components/CodingProblemSkillChooser/LearningStandardMultiselect';
 import FormTextInput from 'components/forms/components/FormInputs/FormTextInput';
 import FormSelectInput from 'components/forms/components/FormInputs/FormSelectInput';
 import useLearningStandards from 'hooks/useLearningStandards';
@@ -148,7 +148,7 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Associated Skills
             </Typography>
-            <CodingProblemSkillChooser standards={standards} setStandards={setStandards} />
+            <LearningStandardMultiselect standards={standards} setStandards={setStandards} />
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
