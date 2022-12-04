@@ -2,13 +2,14 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconDashboard, IconPencil } from '@tabler/icons';
+import { Icon3dCubeSphere, IconDashboard, IconPencil } from '@tabler/icons';
 import { OverrideIcon } from 'types';
 
 // constant
 const icons = {
   IconDashboard,
-  IconPencil
+  IconPencil,
+  Icon3dCubeSphere
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -46,6 +47,14 @@ const student: StudentMenuProps = {
       type: 'item',
       url: '/student/practice',
       icon: icons.IconPencil,
+      breadcrumbs: false
+    },
+    {
+      id: 'sandbox',
+      title: <FormattedMessage id="Sandbox" />,
+      type: 'item',
+      url: '/student/sandbox',
+      icon: icons.Icon3dCubeSphere,
       breadcrumbs: false
     }
   ]

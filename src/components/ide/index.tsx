@@ -33,7 +33,9 @@ const IDE = (props: Props) => {
 
   useEffect(
     () => {
-      registerResetEventHandler(() => setTerminalText(''));
+      if (registerResetEventHandler) {
+        registerResetEventHandler(() => setTerminalText(''));
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -92,7 +94,7 @@ const IDE = (props: Props) => {
       const status = output.match('error') ? 'fail' : 'pass';
       testResults.push({ status: status, message: 'The test runs without any errors.' });
     });
-    if (allTestsPassed(testResults)) {
+    if (allTestsPassed(testResults) && setIsProblemComplete) {
       setIsProblemComplete(true);
     }
     if (testResults.length > 0) {
@@ -110,6 +112,7 @@ const IDE = (props: Props) => {
     setUserCode(newCode as string);
   };
 
+  const terminalHeight = tests ? '60%' : '100%';
   return (
     <div
       style={{
@@ -123,10 +126,10 @@ const IDE = (props: Props) => {
     >
       <div style={{ height: '100%', width: '100%', display: 'flex', position: 'relative' }}>
         <CodeEditor key={startingCode} language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={userCode} />
-        <RunButton run={executeCode} isExecuting={isExecuting} />
+        <RunButton run={executeCode} isExecuting={isExecuting} isTerminalFullHeight={!tests} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
-          <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={'60%'} />
-          <Tests handleRunTests={handleTestCode} registerResetEventHandler={registerResetEventHandler} />
+          <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={terminalHeight} />
+          {tests && <Tests handleRunTests={handleTestCode} registerResetEventHandler={registerResetEventHandler} />}
         </div>
       </div>
     </div>
@@ -139,10 +142,10 @@ type Props = {
   height?: string;
   width?: string;
   tests?: ExerciseTests;
-  setIsProblemComplete: (isComplete: boolean) => void;
+  setIsProblemComplete?: (isComplete: boolean) => void;
   userCode?: string;
   setUserCode: (code: string) => void;
-  registerResetEventHandler: (handler: () => void) => void;
+  registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
 };
 export default IDE;

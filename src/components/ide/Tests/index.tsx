@@ -12,8 +12,10 @@ const Tests = (props: Props) => {
 
   useEffect(
     () => {
-      console.log('registering test event handler');
-      registerResetEventHandler(() => setSuites([]));
+      if (registerResetEventHandler) {
+        console.log('registering test event handler');
+        registerResetEventHandler(() => setSuites([]));
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -44,7 +46,7 @@ const Tests = (props: Props) => {
 
 type Props = {
   handleRunTests: () => Promise<TestResult[]>;
-  registerResetEventHandler: (handler: () => void) => void;
+  registerResetEventHandler?: (handler: () => void) => void;
 };
 
 export default Tests;
