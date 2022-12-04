@@ -43,6 +43,7 @@ const NewStandardPage = () => {
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { standards: x, ...rest } = values;
           const mergedValues = { ...rest, dependentStandards };
           const { error } = await createStandard.mutateAsync(mergedValues);

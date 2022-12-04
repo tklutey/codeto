@@ -1,11 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { generateIdAndTimestamp, join } from 'utils/pgUtil';
 
-type QueryJoinArg = {
-  queryResult: any;
-  joinKey: string;
-};
-
 export default class SbClient {
   private supabaseClient: SupabaseClient;
 
@@ -17,6 +12,11 @@ export default class SbClient {
     } else {
       throw new Error('Missing Supabase URL or key');
     }
+  }
+
+  async getCodingProblemById(id: number) {
+    let { data } = await this.supabaseClient.from('coding_problem').select('*').eq('id', id);
+    return data;
   }
 
   async getAllCodingProblems(userId: string) {
@@ -65,31 +65,6 @@ export default class SbClient {
       return this.supabaseClient.from('user_learning_standard_relationship').upsert(insertRecords).select();
     }
     return 'No new records to insert';
-  }
-
-  async getLearningStandardRelationships() {
-    const { data } = await this.supabaseClient.from('standard_relationship').select();
-    return data;
-  }
-
-  async getAllLearningStandards() {
-    const { data } = await this.supabaseClient.from('learning_standard').select();
-    return data;
-  }
-
-  async getAllCourseUnits() {
-    const { data } = await this.supabaseClient.from('learning_unit').select();
-    return data;
-  }
-
-  async getTopicUnitRelationships() {
-    const { data } = await this.supabaseClient.from('topic_unit_relationship').select();
-    return data;
-  }
-
-  async getStandardBasisRelationships() {
-    const { data } = await this.supabaseClient.from('standard_basis_relationship').select();
-    return data;
   }
 
   async getLearningStandards() {
@@ -193,7 +168,7 @@ export default class SbClient {
       })
       .select();
     if (!error) {
-      const { data: data2, error: error2 } = await this.supabaseClient
+      const { error: error2 } = await this.supabaseClient
         .from('standard_relationship')
         .insert({
           parent_id: parentStandard,
@@ -222,7 +197,7 @@ export default class SbClient {
   }
 
   async getMaxId(tableName: string) {
-    const { data, error } = await this.supabaseClient.from(tableName).select('id').order('id', { ascending: false }).limit(1);
+    const { data } = await this.supabaseClient.from(tableName).select('id').order('id', { ascending: false }).limit(1);
     return data ? data[0].id : null;
   }
 
