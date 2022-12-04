@@ -2,7 +2,7 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/mat
 import { useTheme } from '@mui/styles';
 import { ChangeEvent } from 'react';
 
-const FormTextInput = ({ fieldName, values, errors, touched, handleBlur, handleChange }: Props) => {
+const FormTextInput = ({ fieldName, values, errors, touched, handleBlur, handleChange, multiline }: Props) => {
   const theme = useTheme();
   // capitalize first letter of fieldName
   const fieldNameCapitalized = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
@@ -20,6 +20,7 @@ const FormTextInput = ({ fieldName, values, errors, touched, handleBlur, handleC
         onChange={handleChange}
         label={fieldNameCapitalized}
         inputProps={{}}
+        multiline={multiline}
       />
       {touched[fieldName] && errors[fieldName] && <FormHelperText>{errors[fieldName]}</FormHelperText>}
     </FormControl>
@@ -36,6 +37,7 @@ type Props = {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any> ? void : (e: string | ChangeEvent<any>) => void;
   };
+  multiline?: boolean;
 };
 
 export default FormTextInput;

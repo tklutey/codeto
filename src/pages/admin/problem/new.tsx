@@ -12,6 +12,7 @@ import LearningStandardMultiselect from 'components/forms/components/CodingProbl
 import FormTextInput from 'components/forms/components/FormInputs/FormTextInput';
 import FormSelectInput from 'components/forms/components/FormInputs/FormSelectInput';
 import useLearningStandards from 'hooks/useLearningStandards';
+import ReactMarkdown from 'react-markdown';
 
 const NewProblem = () => {
   const { standards, setStandards } = useLearningStandards();
@@ -98,7 +99,16 @@ const NewProblem = () => {
               touched={touched}
               handleBlur={handleBlur}
               handleChange={handleChange}
+              multiline
             />
+
+            <Box minHeight={'100px'}>
+              <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+                Description Preview
+              </Typography>
+              {/* eslint-disable-next-line react/no-children-prop */}
+              <ReactMarkdown children={values.description} />
+            </Box>
 
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Starting Code
