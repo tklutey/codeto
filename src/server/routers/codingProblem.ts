@@ -12,34 +12,6 @@ export type ExerciseTests = {
   expectedSourceCode: TestInstance[];
 };
 
-const getMinimalBasisIds = async (basisIds: number[]) => {
-  const sbClient = new SbClient();
-  const standardBasisRelationship = await sbClient.getStandardBasisRelationships();
-
-  const basisToStandardsMap = standardBasisRelationship?.reduce((basisIdToStandardIds, sbr) => {
-    const { basis_id, standard_id } = sbr;
-    if (basisIds.includes(basis_id)) {
-      if (basisIdToStandardIds[basis_id]) {
-        basisIdToStandardIds[basis_id].push(standard_id);
-      } else {
-        basisIdToStandardIds[basis_id] = [standard_id];
-      }
-    }
-    return basisIdToStandardIds;
-  }, {});
-
-  const minimalBasisToStandardMap = Object.entries<[string, number[]]>(basisToStandardsMap)
-    .filter(([basisId, standardIds]) => {
-      return !Object.entries<[string, number[]]>(basisToStandardsMap).some(([basisId2, standardIds2]) => {
-        return basisId !== basisId2 && standardIds.every((standardId) => standardIds2.includes(standardId));
-      });
-    })
-    .map(([basisId, standardIds]) => {
-      return parseInt(basisId);
-    });
-  return minimalBasisToStandardMap;
-};
-
 export const codingProblem = trpc
   .router()
   .query('getById', {
@@ -75,10 +47,20 @@ export const codingProblem = trpc
       ),
       source: z.string(),
       youtubeUrl: z.string(),
-      basisIds: z.array(z.number())
+      dependentStandards: z.array(z.number())
     }),
     async resolve({ input }) {
-      const { title, description, startingCode, solutionCode, expectedOutputTests, sourceCodeTests, source, youtubeUrl, basisIds } = input;
+      const {
+        title,
+        description,
+        startingCode,
+        solutionCode,
+        expectedOutputTests,
+        sourceCodeTests,
+        source,
+        youtubeUrl,
+        dependentStandards
+      } = input;
       const tests = { expectedOutput: expectedOutputTests, expectedSourceCode: sourceCodeTests };
       const problem = {
         title,
@@ -91,8 +73,7 @@ export const codingProblem = trpc
         source
       };
       const sbClient = new SbClient();
-      const minimalBasisIds = await getMinimalBasisIds(basisIds);
-      const result = await sbClient.createCodingProblem(problem, minimalBasisIds);
+      const result = await sbClient.createCodingProblem(problem, dependentStandards);
       return result;
     }
   })

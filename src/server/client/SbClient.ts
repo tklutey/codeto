@@ -160,7 +160,7 @@ export default class SbClient {
     return data;
   }
 
-  async createCodingProblem(codingProblem: any, basisIds: number[]) {
+  async createCodingProblem(codingProblem: any, dependentStandards: number[]) {
     const { timestamp, id } = await generateIdAndTimestamp('coding_problem');
 
     const { data, error } = await this.supabaseClient
@@ -168,13 +168,16 @@ export default class SbClient {
       .insert({ ...codingProblem, id, created_at: timestamp })
       .select();
     if (!error) {
-      const records = basisIds.map((basisId) => {
+      const records = dependentStandards.map((standard) => {
         return {
-          coding_problem_id: id,
-          basis_id: basisId
+          problem_id: id,
+          standard_id: standard
         };
       });
-      await this.supabaseClient.from('coding_problem_basis_relationship').insert(records).select();
+      const { error: error2 } = await this.supabaseClient.from('problem_standard_relationship').insert(records).select();
+      if (error2) {
+        throw new Error(error2.message);
+      }
     }
     return { data, error };
   }
