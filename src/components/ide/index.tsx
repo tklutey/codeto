@@ -5,6 +5,7 @@ import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import RunButton from 'components/ide/RunButton';
+import useTestRunner from 'hooks/useTestRunner';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
@@ -31,16 +32,6 @@ const IDE = (props: Props) => {
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
 
-  useEffect(
-    () => {
-      if (registerResetEventHandler) {
-        registerResetEventHandler(() => setTerminalText(''));
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);
     setTerminalText('Running...');
@@ -66,53 +57,27 @@ const IDE = (props: Props) => {
     }
   };
 
-  const runTestSuite = (testSuite: CodingProblemTest[], stringToMatch: string): TestResult[] => {
-    return testSuite.map((test) => {
-      if (test.test_type === 'regex') {
-        const status = stringToMatch.match(test.test_code) ? 'pass' : 'fail';
-        return { status: status, message: test.test_message };
-      } else {
-        return { status: 'fail', message: 'Unknown test type' };
-      }
-    });
+  const onAllTestsPass = () => {
+    return setIsProblemComplete ? setIsProblemComplete(true) : () => {};
   };
+  const { suites, resetTestSuites, handleTestCode } = useTestRunner(
+    tests as CodingProblemTest[],
+    userCode || '',
+    onAllTestsPass,
+    executeCode
+  );
 
-  const runAndPush = (testResults: TestResult[], testSuite: CodingProblemTest[], stringToMatch: string) => {
-    const expectedOutputTestResults: TestResult[] = runTestSuite(testSuite, stringToMatch);
-    testResults.push(...expectedOutputTestResults);
-  };
-
-  const allTestsPassed = (testResults: TestResult[]) => {
-    return testResults.every((result) => result.status === 'pass');
-  };
-
-  const handleTestCode = async (): Promise<TestResult[]> => {
-    const testResults: TestResult[] = [];
-    const stdInTests = tests?.filter((test) => test.source_type === 'stdin');
-    const stdOutTests = tests?.filter((test) => test.source_type === 'stdout');
-    if (stdInTests && stdInTests.length > 0) {
-      runAndPush(testResults, stdInTests, userCode || '');
-    }
-    await executeCode((output) => {
-      if (stdOutTests && stdOutTests.length > 0) {
-        runAndPush(testResults, stdOutTests, output);
+  useEffect(
+    () => {
+      if (registerResetEventHandler) {
+        registerResetEventHandler(() => setTerminalText(''));
+        console.log('registering test event handler');
+        registerResetEventHandler(resetTestSuites);
       }
-      const status = output.match('error') ? 'fail' : 'pass';
-      testResults.push({ status: status, message: 'The test runs without any errors.' });
-    });
-    if (allTestsPassed(testResults) && setIsProblemComplete) {
-      setIsProblemComplete(true);
-    }
-    if (testResults.length > 0) {
-      return testResults;
-    }
-    return [
-      {
-        status: 'pass',
-        message: 'No tests found'
-      }
-    ];
-  };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const updateCode = (newCode?: string, _?: any) => {
     setUserCode(newCode as string);
@@ -135,7 +100,7 @@ const IDE = (props: Props) => {
         <RunButton run={executeCode} isExecuting={isExecuting} isTerminalFullHeight={!tests} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={terminalHeight} />
-          {tests && <Tests handleRunTests={handleTestCode} registerResetEventHandler={registerResetEventHandler} />}
+          {tests && <Tests suites={suites} handleRunTests={handleTestCode} />}
         </div>
       </div>
     </div>
