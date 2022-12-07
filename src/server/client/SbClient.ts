@@ -184,12 +184,16 @@ export default class SbClient {
       let { id: problemTestId } = await generateIdAndTimestamp(this._getTableName('coding_problem_tests'));
       const codingProblemTestRecords = [];
       for (const test of codingProblem.tests.expectedSourceCode) {
-        const newRecord = await createCodingProblemTestRecord(test, 'stdin', problemTestId++);
-        codingProblemTestRecords.push(newRecord);
+        if (test.message) {
+          const newRecord = await createCodingProblemTestRecord(test, 'stdin', problemTestId++);
+          codingProblemTestRecords.push(newRecord);
+        }
       }
       for (const test of codingProblem.tests.expectedOutput) {
-        const newRecord = await createCodingProblemTestRecord(test, 'stdout', problemTestId++);
-        codingProblemTestRecords.push(newRecord);
+        if (test.message) {
+          const newRecord = await createCodingProblemTestRecord(test, 'stdout', problemTestId++);
+          codingProblemTestRecords.push(newRecord);
+        }
       }
       const { error: error3 } = await this.supabaseClient
         .from(this._getTableName('coding_problem_tests'))
