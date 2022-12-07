@@ -23,7 +23,7 @@ export default class SbClient {
     let { data } = await this.supabaseClient
       .from('coding_problem')
       .select(
-        '*, problem_standard_relationship(learning_standard(id, code, description)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt)'
+        '*, problem_standard_relationship(learning_standard(id, code, description)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt), coding_problem_tests(test_type, source_type, test_message, test_code)'
       )
       .eq('user_problem_attempt_history.user_id', userId);
     return data;
