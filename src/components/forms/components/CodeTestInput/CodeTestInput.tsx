@@ -1,8 +1,8 @@
 import TestInputRow from 'components/forms/components/CodeTestInput/TestInputRow';
 import { Box, Button } from '@mui/material';
 
-const EMPTY_TEST_ROW = { message: '', regex: '' };
-const CodeTestInput = ({ tests, setTests, regexTestText }: Props) => {
+const EMPTY_TEST_ROW = { message: '', testCode: '' };
+const CodeTestInput = ({ tests, setTests, testInput }: Props) => {
   const handleClick = () => {
     setTests((prevTests) => [...prevTests, EMPTY_TEST_ROW]);
   };
@@ -19,13 +19,7 @@ const CodeTestInput = ({ tests, setTests, regexTestText }: Props) => {
     <Box>
       <Box width={'100%'} display={'flex'}>
         {tests.map((test, index) => (
-          <TestInputRow
-            key={index}
-            message={test.message}
-            regex={test.regex}
-            onChange={handleChange(index)}
-            regexTestText={regexTestText}
-          />
+          <TestInputRow key={index} message={test.message} testCode={test.testCode} onChange={handleChange(index)} testInput={testInput} />
         ))}
       </Box>
       <Button onClick={handleClick}>Add Test</Button>
@@ -36,7 +30,7 @@ const CodeTestInput = ({ tests, setTests, regexTestText }: Props) => {
 type Props = {
   tests: any[];
   setTests: (callback: (prevTests: any) => any[]) => void;
-  regexTestText: string;
+  testInput: string;
 };
 
 export default CodeTestInput;

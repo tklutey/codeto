@@ -1,16 +1,16 @@
 import { Box, InputLabel, OutlinedInput } from '@mui/material';
 import { useState } from 'react';
 
-const TestInputRow = ({ message, regex, onChange, regexTestText }: Props) => {
+const TestInputRow = ({ message, testCode, onChange, testInput }: Props) => {
   const [status, setStatus] = useState('fail');
   const handleChange = (key: string) => {
     return (e: any) => {
-      onChange({ ...{ message, regex }, [key]: e.target.value });
+      onChange({ ...{ message, testCode: testCode }, [key]: e.target.value });
     };
   };
 
   try {
-    const currentStatus = regexTestText.match(regex) && regex.length > 0 ? 'pass' : 'fail';
+    const currentStatus = testInput.match(testCode) && testCode.length > 0 ? 'pass' : 'fail';
     if (currentStatus !== status) {
       setStatus(currentStatus);
     }
@@ -25,7 +25,7 @@ const TestInputRow = ({ message, regex, onChange, regexTestText }: Props) => {
       </Box>
       <Box width={'30%'}>
         <InputLabel htmlFor="outlined-adornment-title">Regex</InputLabel>
-        <OutlinedInput fullWidth id="outlined-adornment-title" type="text" value={regex} onChange={handleChange('regex')} />
+        <OutlinedInput fullWidth id="outlined-adornment-title" type="text" value={testCode} onChange={handleChange('testCode')} />
       </Box>
       <Box width={'10%'}>
         <InputLabel htmlFor="outlined-adornment-title">Is Passing</InputLabel>
@@ -37,9 +37,9 @@ const TestInputRow = ({ message, regex, onChange, regexTestText }: Props) => {
 
 type Props = {
   message: string;
-  regex: string;
+  testCode: string;
   onChange: (test: any) => void;
-  regexTestText: string;
+  testInput: string;
 };
 
 export default TestInputRow;

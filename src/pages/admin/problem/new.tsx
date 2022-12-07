@@ -19,8 +19,8 @@ const NewProblem = () => {
   const [startingCode, setStartingCode] = useState('');
   const [solutionCode, setSolutionCode] = useState('');
   const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
-  const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', regex: '' }]);
-  const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', regex: '' }]);
+  const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', testCode: '' }]);
+  const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', testCode: '' }]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const updateStartingCode = (newCode?: string, _?: any) => {
@@ -51,12 +51,14 @@ const NewProblem = () => {
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
+          const sourceCodeTestsWithType = sourceCodeTests.map((test) => ({ ...test, type: 'regex' }));
+          const expectedOutputTestsWithType = expectedOutputTests.map((test) => ({ ...test, type: 'regex' }));
           const mergedValues = {
             ...values,
             startingCode,
             solutionCode,
-            sourceCodeTests,
-            expectedOutputTests,
+            sourceCodeTests: sourceCodeTestsWithType,
+            expectedOutputTests: expectedOutputTestsWithType,
             dependentStandards
           };
           const handleError = () => {
@@ -69,16 +71,17 @@ const NewProblem = () => {
             setSubmitting(false);
             setSnackbarOpen(true);
           };
-          try {
-            const { error } = await createProblem.mutateAsync(mergedValues);
-            if (!error) {
-              handleSuccess();
-            } else {
-              handleError();
-            }
-          } catch (error) {
-            handleError();
-          }
+          console.log(mergedValues);
+          // try {
+          //   const { error } = await createProblem.mutateAsync(mergedValues);
+          //   if (!error) {
+          //     handleSuccess();
+          //   } else {
+          //     handleError();
+          //   }
+          // } catch (error) {
+          //   handleError();
+          // }
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, status, touched, values }) => (
@@ -138,11 +141,11 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Output Tests
             </Typography>
-            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} regexTestText={solutionCodeTerminalText} />
+            <CodeTestInput tests={expectedOutputTests} setTests={setExpectedOutputTests} testInput={solutionCodeTerminalText} />
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Expected Source Code Tests
             </Typography>
-            <CodeTestInput tests={sourceCodeTests} setTests={setSourceCodeTests} regexTestText={solutionCode} />
+            <CodeTestInput tests={sourceCodeTests} setTests={setSourceCodeTests} testInput={solutionCode} />
 
             <FormTextInput
               fieldName={'youtubeUrl'}
