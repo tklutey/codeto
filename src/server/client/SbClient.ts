@@ -14,6 +14,16 @@ export default class SbClient {
     }
   }
 
+  _getTableName(tableName: string) {
+    // create a new set with 2 elements
+    const hasBetaTable = new Set(['coding_problem', 'coding_problem_tests', 'problem_standard_relationship']);
+    const env = process.env.NODE_ENV;
+    if (env === 'development' && hasBetaTable.has(tableName)) {
+      return `beta:${tableName}`;
+    }
+    return tableName;
+  }
+
   async getCodingProblemById(id: number) {
     let { data } = await this.supabaseClient
       .from('coding_problem')
@@ -139,10 +149,10 @@ export default class SbClient {
   }
 
   async createCodingProblem(codingProblem: any, dependentStandards: number[]) {
-    const { timestamp, id } = await generateIdAndTimestamp('coding_problem');
+    const { timestamp, id } = await generateIdAndTimestamp(this._getTableName('coding_problem'));
 
     const { data, error } = await this.supabaseClient
-      .from('coding_problem')
+      .from(this._getTableName('coding_problem'))
       .insert({ ...codingProblem, id, created_at: timestamp })
       .select();
     if (!error) {
@@ -152,7 +162,10 @@ export default class SbClient {
           standard_id: standard
         };
       });
-      const { error: error2 } = await this.supabaseClient.from('problem_standard_relationship').insert(records).select();
+      const { error: error2 } = await this.supabaseClient
+        .from(this._getTableName('problem_standard_relationship'))
+        .insert(records)
+        .select();
       if (error2) {
         throw new Error(error2.message);
       }
