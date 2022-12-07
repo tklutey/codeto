@@ -3,10 +3,10 @@ import React, { ReactElement, useEffect } from 'react';
 import { openDrawer } from 'store/slices/menu';
 import { trpc } from 'utils/trpc';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
-import { ExerciseTests } from 'server/routers/codingProblem';
 import Layout from 'layout';
 import { useRouter } from 'next/router';
 import Page from 'ui-component/Page';
+import { CodingProblemTest } from 'server/routers/codingProblem';
 
 const Problem = () => {
   const router = useRouter();
@@ -29,7 +29,7 @@ const Problem = () => {
         starting_code: startingCode,
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
-        tests
+        coding_problem_tests: codingProblemTests
       } = problem;
       return (
         <ProgrammingActivityLayout
@@ -38,7 +38,7 @@ const Problem = () => {
           language={language}
           startingCode={startingCode}
           solutionCode={solutionCode}
-          tests={tests as ExerciseTests}
+          tests={codingProblemTests as CodingProblemTest[]}
           youtubeTutorialUrl={youtubeTutorialUrl}
           goToNextProblem={(isCorrect: boolean) => () => {}}
           isLoading={isLoading}

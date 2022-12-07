@@ -15,7 +15,10 @@ export default class SbClient {
   }
 
   async getCodingProblemById(id: number) {
-    let { data } = await this.supabaseClient.from('coding_problem').select('*').eq('id', id);
+    let { data } = await this.supabaseClient
+      .from('coding_problem')
+      .select('*, coding_problem_tests(test_type, source_type, test_message, test_code)')
+      .eq('id', id);
     return data;
   }
 

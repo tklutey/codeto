@@ -3,15 +3,6 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { transformCodingProblem } from 'server/routers/util';
 
-export type TestInstance = {
-  summary: string;
-  matchRegex: string;
-};
-export type ExerciseTests = {
-  expectedOutput: TestInstance[];
-  expectedSourceCode: TestInstance[];
-};
-
 export type CodingProblemTest = {
   test_type: 'regex' | 'code';
   source_type: 'stdin' | 'stdout';
