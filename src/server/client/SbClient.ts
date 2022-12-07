@@ -150,10 +150,11 @@ export default class SbClient {
 
   async createCodingProblem(codingProblem: any, dependentStandards: number[]) {
     const { timestamp, id: problemId } = await generateIdAndTimestamp(this._getTableName('coding_problem'));
+    const { tests, ...problem } = codingProblem;
 
     const { data, error } = await this.supabaseClient
       .from(this._getTableName('coding_problem'))
-      .insert({ ...codingProblem, id: problemId, created_at: timestamp })
+      .insert({ ...problem, id: problemId, created_at: timestamp })
       .select();
     if (!error) {
       const dependentStandardRecords = dependentStandards.map((standard) => {
