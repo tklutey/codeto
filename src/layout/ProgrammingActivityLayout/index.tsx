@@ -1,6 +1,6 @@
 import IDE from 'components/ide';
 import React, { useEffect, useState } from 'react';
-import { ExerciseTests } from 'server/routers/codingProblem';
+import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
@@ -97,7 +97,7 @@ type Props = {
   language: string;
   startingCode?: string;
   solutionCode?: string;
-  tests?: ExerciseTests;
+  tests?: CodingProblemTest[];
   youtubeTutorialUrl?: string;
   goToNextProblem: (isCorrect: boolean) => () => void;
   isLoading: boolean;

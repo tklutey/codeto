@@ -3,7 +3,7 @@ import CodeEditor from 'components/ide/editor/CodeEditor';
 import dynamic from 'next/dynamic';
 import Tests from 'components/ide/Tests';
 import { trpc } from 'utils/trpc';
-import { ExerciseTests, TestInstance } from 'server/routers/codingProblem';
+import { CodingProblemTest } from 'server/routers/codingProblem';
 import RunButton from 'components/ide/RunButton';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
@@ -66,14 +66,18 @@ const IDE = (props: Props) => {
     }
   };
 
-  const runTestSuite = (testSuite: TestInstance[], stringToMatch: string): TestResult[] => {
+  const runTestSuite = (testSuite: CodingProblemTest[], stringToMatch: string): TestResult[] => {
     return testSuite.map((test) => {
-      const status = stringToMatch.match(test.matchRegex) ? 'pass' : 'fail';
-      return { status: status, message: test.summary };
+      if (test.test_type === 'regex') {
+        const status = stringToMatch.match(test.test_code) ? 'pass' : 'fail';
+        return { status: status, message: test.test_message };
+      } else {
+        return { status: 'fail', message: 'Unknown test type' };
+      }
     });
   };
 
-  const runAndPush = (testResults: TestResult[], testSuite: TestInstance[], stringToMatch: string) => {
+  const runAndPush = (testResults: TestResult[], testSuite: CodingProblemTest[], stringToMatch: string) => {
     const expectedOutputTestResults: TestResult[] = runTestSuite(testSuite, stringToMatch);
     testResults.push(...expectedOutputTestResults);
   };
@@ -84,12 +88,14 @@ const IDE = (props: Props) => {
 
   const handleTestCode = async (): Promise<TestResult[]> => {
     const testResults: TestResult[] = [];
-    if (tests?.expectedSourceCode) {
-      runAndPush(testResults, tests.expectedSourceCode, userCode || '');
+    const stdInTests = tests?.filter((test) => test.source_type === 'stdin');
+    const stdOutTests = tests?.filter((test) => test.source_type === 'stdout');
+    if (stdInTests && stdInTests.length > 0) {
+      runAndPush(testResults, stdInTests, userCode || '');
     }
     await executeCode((output) => {
-      if (tests?.expectedOutput) {
-        runAndPush(testResults, tests.expectedOutput, output);
+      if (stdOutTests && stdOutTests.length > 0) {
+        runAndPush(testResults, stdOutTests, output);
       }
       const status = output.match('error') ? 'fail' : 'pass';
       testResults.push({ status: status, message: 'The test runs without any errors.' });
@@ -141,7 +147,7 @@ type Props = {
   startingCode?: string;
   height?: string;
   width?: string;
-  tests?: ExerciseTests;
+  tests?: CodingProblemTest[];
   setIsProblemComplete?: (isComplete: boolean) => void;
   userCode?: string;
   setUserCode: (code: string) => void;

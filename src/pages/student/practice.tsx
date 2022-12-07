@@ -2,11 +2,11 @@ import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import { trpc } from 'utils/trpc';
-import { ExerciseTests } from 'server/routers/codingProblem';
 import useAuth from 'hooks/useAuth';
 import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
+import { CodingProblemTest } from 'server/routers/codingProblem';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -90,7 +90,7 @@ const Practice = () => {
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
         learning_standards: learningStandards,
-        tests
+        coding_problem_tests: codingProblemTests
       } = problem;
       return (
         <ProgrammingActivityLayout
@@ -99,7 +99,7 @@ const Practice = () => {
           language={language}
           startingCode={startingCode}
           solutionCode={solutionCode}
-          tests={tests as ExerciseTests}
+          tests={codingProblemTests as CodingProblemTest[]}
           youtubeTutorialUrl={youtubeTutorialUrl}
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
           isLoading={isLoading}

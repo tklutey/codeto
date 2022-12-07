@@ -12,6 +12,12 @@ export type ExerciseTests = {
   expectedSourceCode: TestInstance[];
 };
 
+export type CodingProblemTest = {
+  test_type: 'regex' | 'code';
+  source_type: 'stdin' | 'stdout';
+  test_message: string;
+  test_code: string;
+};
 export const codingProblem = trpc
   .router()
   .query('getById', {
