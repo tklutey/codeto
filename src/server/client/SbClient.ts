@@ -197,8 +197,8 @@ export default class SbClient {
       if (error3) {
         throw new Error(error3.message);
       }
-      return { data, error };
     }
+    return { data, error };
   }
 
   async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {

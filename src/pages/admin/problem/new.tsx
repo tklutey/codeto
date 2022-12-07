@@ -71,7 +71,6 @@ const NewProblem = () => {
             setSubmitting(false);
             setSnackbarOpen(true);
           };
-          console.log(mergedValues);
           try {
             const { error } = await createProblem.mutateAsync(mergedValues);
             if (!error) {
