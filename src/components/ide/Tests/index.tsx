@@ -31,7 +31,7 @@ const Tests = ({ handleRunTests, suites }: Props) => {
 
 type Props = {
   suites: TestResult[] | undefined;
-  handleRunTests: () => Promise<TestResult[]>;
+  handleRunTests: () => Promise<void>;
 };
 
 export default Tests;
