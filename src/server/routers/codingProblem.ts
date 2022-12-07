@@ -33,13 +33,15 @@ export const codingProblem = trpc
       expectedOutputTests: z.array(
         z.object({
           message: z.string(),
-          regex: z.string()
+          testCode: z.string(),
+          type: z.string()
         })
       ),
       sourceCodeTests: z.array(
         z.object({
           message: z.string(),
-          regex: z.string()
+          testCode: z.string(),
+          type: z.string()
         })
       ),
       source: z.string(),

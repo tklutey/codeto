@@ -72,16 +72,16 @@ const NewProblem = () => {
             setSnackbarOpen(true);
           };
           console.log(mergedValues);
-          // try {
-          //   const { error } = await createProblem.mutateAsync(mergedValues);
-          //   if (!error) {
-          //     handleSuccess();
-          //   } else {
-          //     handleError();
-          //   }
-          // } catch (error) {
-          //   handleError();
-          // }
+          try {
+            const { error } = await createProblem.mutateAsync(mergedValues);
+            if (!error) {
+              handleSuccess();
+            } else {
+              handleError();
+            }
+          } catch (error) {
+            handleError();
+          }
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, status, touched, values }) => (

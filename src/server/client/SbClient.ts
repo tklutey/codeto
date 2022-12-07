@@ -149,28 +149,56 @@ export default class SbClient {
   }
 
   async createCodingProblem(codingProblem: any, dependentStandards: number[]) {
-    const { timestamp, id } = await generateIdAndTimestamp(this._getTableName('coding_problem'));
+    const { timestamp, id: problemId } = await generateIdAndTimestamp(this._getTableName('coding_problem'));
 
     const { data, error } = await this.supabaseClient
       .from(this._getTableName('coding_problem'))
-      .insert({ ...codingProblem, id, created_at: timestamp })
+      .insert({ ...codingProblem, id: problemId, created_at: timestamp })
       .select();
     if (!error) {
-      const records = dependentStandards.map((standard) => {
+      const dependentStandardRecords = dependentStandards.map((standard) => {
         return {
-          problem_id: id,
+          problem_id: problemId,
           standard_id: standard
         };
       });
       const { error: error2 } = await this.supabaseClient
         .from(this._getTableName('problem_standard_relationship'))
-        .insert(records)
+        .insert(dependentStandardRecords)
         .select();
       if (error2) {
         throw new Error(error2.message);
       }
+      const createCodingProblemTestRecord = async (test: any, sourceType: string, problemTestId: number) => {
+        return {
+          id: problemTestId,
+          created_at: timestamp,
+          coding_problem_id: problemId,
+          test_type: test.type,
+          source_type: sourceType,
+          test_message: test.message,
+          test_code: test.testCode
+        };
+      };
+      let { id: problemTestId } = await generateIdAndTimestamp(this._getTableName('coding_problem_tests'));
+      const codingProblemTestRecords = [];
+      for (const test of codingProblem.tests.expectedSourceCode) {
+        const newRecord = await createCodingProblemTestRecord(test, 'stdin', problemTestId++);
+        codingProblemTestRecords.push(newRecord);
+      }
+      for (const test of codingProblem.tests.expectedOutput) {
+        const newRecord = await createCodingProblemTestRecord(test, 'stdout', problemTestId++);
+        codingProblemTestRecords.push(newRecord);
+      }
+      const { error: error3 } = await this.supabaseClient
+        .from(this._getTableName('coding_problem_tests'))
+        .insert(codingProblemTestRecords)
+        .select();
+      if (error3) {
+        throw new Error(error3.message);
+      }
+      return { data, error };
     }
-    return { data, error };
   }
 
   async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {
