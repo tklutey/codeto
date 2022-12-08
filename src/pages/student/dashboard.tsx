@@ -10,42 +10,80 @@ import Page from 'ui-component/Page';
 const StudentDashboard = () => {
   const { user } = useAuth();
   const [dataLevel, setDataLevel] = useState<'UNIT' | 'TOPIC'>('UNIT');
+  const [chartData, setChartData] = useState<any>(null);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
-  const studentMasteryData = trpc.useQuery(['knowledgeState.getUserCourseMasterySummary', user.id]);
 
   const getChartData = (masteryData: any) => {
-    if (dataLevel === 'UNIT') {
-      return masteryData?.map((unitData: any) => {
-        return {
-          name: unitData.unit_name,
-          percentage: unitData.unit_mastery
-        };
-      });
-    } else {
-      return masteryData?.map((unitData: any) => {
-        return {
-          name: unitData.unit_name,
-          percentage: unitData.unit_mastery
-        };
-      });
+    return masteryData?.map((unitData: any) => {
+      return {
+        key: unitData.unit_id,
+        name: unitData.unit_name,
+        percentage: unitData.unit_mastery
+      };
+    });
+  };
+
+  const studentMasteryData = trpc.useQuery(['knowledgeState.getUserCourseMasterySummary', user.id], {
+    onSuccess: (data) => {
+      if (data) {
+        setChartData(getChartData(data));
+      }
     }
+  });
+
+  const drillDown = (masteryData: any, index: number) => {
+    if (dataLevel === 'UNIT') {
+      setDataLevel('TOPIC');
+    } else {
+      return;
+    }
+    // get the element matching the index
+    const { standards } = masteryData[index];
+    // group standards into distinct topics
+    const topics = standards.reduce((acc: any, standard: any) => {
+      const { topic_id, topic_description } = standard;
+      if (!acc[topic_id]) {
+        acc[topic_id] = {
+          topic_id,
+          topic_description,
+          standards: []
+        };
+      }
+      acc[topic_id].standards.push(standard);
+      return acc;
+    }, {});
+    const topicsFormatted = Object.entries(topics).map(([key, value]: [string, any]) => {
+      const { standards: topicStandards } = value;
+      // calculate percentage of standards mastered
+      const masteredStandards = topicStandards.filter((standard: any) => standard.mastered);
+      const percentage = (masteredStandards.length / topicStandards.length) * 100;
+      // round to whole number
+      const percentageRounded = Math.round(percentage);
+      return {
+        key: key,
+        name: value.topic_description,
+        percentage: percentageRounded
+      };
+    });
+    setChartData(topicsFormatted);
   };
 
-  const toggleChartLevel = () => {
-    setDataLevel(dataLevel === 'UNIT' ? 'TOPIC' : 'UNIT');
-  };
-
-  if (studentMasteryData?.data) {
-    const unitMastery = getChartData(studentMasteryData.data);
+  if (chartData) {
     return (
       <Page title="Dashboard">
         <MainCard title="Student Mastery" style={{ width: '100%' }}>
           <Grid container spacing={2}>
-            {unitMastery.map((unitData: any) => (
-              <Grid item key={unitData.unit_id} xs={12}>
-                <Grid container alignItems="center" spacing={1} onClick={toggleChartLevel}>
+            {chartData.map((unitData: any, index: number) => (
+              <Grid item key={unitData.key} xs={12}>
+                <Grid
+                  container
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => drillDown(studentMasteryData.data, index)}
+                >
                   <Grid item sm zeroMinWidth>
                     <Typography variant="body2">{unitData.name}</Typography>
                   </Grid>
