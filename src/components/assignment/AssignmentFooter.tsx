@@ -14,11 +14,20 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   marginBottom: '-20px',
   marginRight: '-20px'
 }));
-const AssignmentFooter = (props: Props) => {
-  const { disabled, onNextClicked, onShowSolutionClicked } = props;
+const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked }: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{
+          margin: '14px'
+        }}
+        onClick={onSkipClicked}
+      >
+        Skip
+      </Button>
       <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
         <Button
           variant="outlined"
@@ -51,6 +60,7 @@ const AssignmentFooter = (props: Props) => {
 type Props = {
   disabled: boolean;
   onNextClicked?: () => void;
+  onSkipClicked?: () => void;
   onShowSolutionClicked?: () => void;
 };
 

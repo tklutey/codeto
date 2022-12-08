@@ -34,10 +34,18 @@ const ProgrammingActivityLayout = (props: Props) => {
     setIsProblemCorrect(false);
   };
 
-  const handleGoToNextProblem = () => {
-    goToNextProblem(isProblemCorrect)();
+  const cleanupProblem = () => {
     console.log(resetEventHandlers);
     resetEventHandlers.forEach((handler) => handler());
+  };
+  const handleGoToNextProblem = () => {
+    goToNextProblem(isProblemCorrect)();
+    cleanupProblem();
+  };
+
+  const handleSkipProblem = () => {
+    goToNextProblem(false)();
+    cleanupProblem();
   };
 
   const registerResetEventHandler = (handler: () => void) => {
@@ -87,6 +95,7 @@ const ProgrammingActivityLayout = (props: Props) => {
       <AssignmentFooter
         disabled={!canMoveOnToNextProblem}
         onNextClicked={handleGoToNextProblem}
+        onSkipClicked={handleSkipProblem}
         onShowSolutionClicked={handleShowSolution}
       />
     </div>
