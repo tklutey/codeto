@@ -27,6 +27,7 @@ const ProgrammingActivityLayout = (props: Props) => {
   useEffect(() => {
     setUserCode(startingCode);
     setIsProblemCorrect(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [problemFetchTimestamp]);
 
   const handleShowSolution = () => {
