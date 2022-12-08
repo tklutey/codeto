@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
 import MainCard from 'ui-component/cards/MainCard';
 import { Grid, LinearProgress, Typography } from '@mui/material';
@@ -9,36 +9,66 @@ import Page from 'ui-component/Page';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
+  const [dataLevel, setDataLevel] = useState<'UNIT' | 'TOPIC'>('UNIT');
   if (!user || !user.id) {
     throw new Error('User not found');
   }
   const studentMasteryData = trpc.useQuery(['knowledgeState.getUserCourseMasterySummary', user.id]);
 
-  return (
-    <Page title="Dashboard">
-      <MainCard title="Student Mastery" style={{ width: '100%' }}>
-        {studentMasteryData?.data && (
+  const getChartData = (masteryData: any) => {
+    if (dataLevel === 'UNIT') {
+      return masteryData?.map((unitData: any) => {
+        return {
+          name: unitData.unit_name,
+          percentage: unitData.unit_mastery
+        };
+      });
+    } else {
+      return masteryData?.map((unitData: any) => {
+        return {
+          name: unitData.unit_name,
+          percentage: unitData.unit_mastery
+        };
+      });
+    }
+  };
+
+  const toggleChartLevel = () => {
+    setDataLevel(dataLevel === 'UNIT' ? 'TOPIC' : 'UNIT');
+  };
+
+  if (studentMasteryData?.data) {
+    const unitMastery = getChartData(studentMasteryData.data);
+    return (
+      <Page title="Dashboard">
+        <MainCard title="Student Mastery" style={{ width: '100%' }}>
           <Grid container spacing={2}>
-            {studentMasteryData.data.map((unitData: any) => (
+            {unitMastery.map((unitData: any) => (
               <Grid item key={unitData.unit_id} xs={12}>
-                <Grid container alignItems="center" spacing={1}>
+                <Grid container alignItems="center" spacing={1} onClick={toggleChartLevel}>
                   <Grid item sm zeroMinWidth>
-                    <Typography variant="body2">{unitData.unit_name}</Typography>
+                    <Typography variant="body2">{unitData.name}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body2" align="right">
-                      {unitData.unit_mastery}%
+                      {unitData.percentage}%
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <LinearProgress variant="determinate" value={unitData.unit_mastery} color="primary" />
+                    <LinearProgress variant="determinate" value={unitData.percentage} color="primary" />
                   </Grid>
                 </Grid>
               </Grid>
             ))}
           </Grid>
-        )}
-        {!studentMasteryData?.data && <SkeletonStudentMasteryChart rows={10} />}
+        </MainCard>
+      </Page>
+    );
+  }
+  return (
+    <Page title="Dashboard">
+      <MainCard title="Student Mastery" style={{ width: '100%' }}>
+        <SkeletonStudentMasteryChart rows={10} />
       </MainCard>
     </Page>
   );
