@@ -36,6 +36,10 @@ const sortProblems = (a: any, b: any) => {
   if (a.learning_standards.length < b.learning_standards.length) return -1;
   if (a.learning_standards.length > b.learning_standards.length) return 1;
 
+  // sort by the number of characters in the solution code, i.e. the more characters, the more difficult
+  if (a.solution_code.length < b.solution_code.length) return -1;
+  if (a.solution_code.length > b.solution_code.length) return 1;
+
   return 0;
 };
 export const engine = trpc.router().query('getProblemsByDistance', {
