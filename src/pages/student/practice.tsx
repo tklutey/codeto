@@ -17,6 +17,7 @@ const Practice = () => {
   const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
+  const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
     throw new Error('User not found');
@@ -42,6 +43,7 @@ const Practice = () => {
         if (data) {
           if (data.length > 0) {
             setCodingProblem(data[0]);
+            setProblemFetchTimestamp(Date.now());
           } else {
             setIsAllProblemsComplete(true);
           }
@@ -103,6 +105,7 @@ const Practice = () => {
           youtubeTutorialUrl={youtubeTutorialUrl}
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
           isLoading={isLoading}
+          problemFetchTimestamp={problemFetchTimestamp}
         />
       );
     }

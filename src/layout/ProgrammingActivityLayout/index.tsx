@@ -15,7 +15,8 @@ const ProgrammingActivityLayout = (props: Props) => {
     tests,
     youtubeTutorialUrl,
     goToNextProblem,
-    isLoading
+    isLoading,
+    problemFetchTimestamp
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -25,7 +26,8 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   useEffect(() => {
     setUserCode(startingCode);
-  }, [startingCode]);
+    setIsProblemCorrect(true);
+  }, [problemFetchTimestamp]);
 
   const handleShowSolution = () => {
     setShowSolution(true);
@@ -101,6 +103,7 @@ type Props = {
   youtubeTutorialUrl?: string;
   goToNextProblem: (isCorrect: boolean) => () => void;
   isLoading: boolean;
+  problemFetchTimestamp?: number;
 };
 
 export default ProgrammingActivityLayout;
