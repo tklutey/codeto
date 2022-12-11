@@ -1,6 +1,6 @@
 import * as trpc from '@trpc/server';
-import { z } from 'zod';
 import GPTClient from 'server/client/GPTClient';
+import { z } from 'zod';
 
 export const gpt = trpc.router().query('errorHint', {
   input: z.string(),

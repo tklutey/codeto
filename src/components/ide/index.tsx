@@ -28,10 +28,39 @@ const IDE = (props: Props) => {
     registerResetEventHandler,
     onTerminalTextChange
   } = props;
-  const mutation = trpc.useMutation('executeCode.post');
+  const [terminalError, setTerminalError] = useState<string>('');
+  const [terminalHint, setTerminalHint] = useState<string>('');
+  const [isTerminalHintOpen, setIsTerminalHintOpen] = useState<boolean>(false);
   const [terminalText, setTerminalText] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
+  const mutation = trpc.useMutation('executeCode.post');
+  const { refetch: refetchErrorHint } = trpc.useQuery(
+    [
+      'gpt.errorHint',
+      JSON.stringify({
+        error: terminalError
+      })
+    ],
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        setTerminalHint(data);
+        setIsTerminalHintOpen(true);
+      }
+    }
+  );
+  console.log(terminalHint);
 
+  const handleCodeError = (output: string) => {
+    // Check if output contains "error"
+    if (output.toLowerCase().includes('error')) {
+      setTerminalError(output);
+      refetchErrorHint();
+    } else {
+      setTerminalError('');
+      setTerminalHint('');
+    }
+  };
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);
     setTerminalText('Running...');
@@ -46,6 +75,7 @@ const IDE = (props: Props) => {
 
       const output = data.output;
       if (output !== undefined) {
+        handleCodeError(output);
         setTerminalText(output);
         if (onTerminalTextChange) {
           onTerminalTextChange(output);
@@ -99,7 +129,14 @@ const IDE = (props: Props) => {
         <CodeEditor key={startingCode} language={language} updateCode={updateCode} width={'50%'} height={'100%'} startingCode={userCode} />
         <RunButton run={executeCode} isExecuting={isExecuting} isTerminalFullHeight={!tests} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
-          <CodeExecutionTerminal terminalText={terminalText} width={'100%'} height={terminalHeight} />
+          <CodeExecutionTerminal
+            terminalText={terminalText}
+            width={'100%'}
+            height={terminalHeight}
+            errorHintText={terminalHint}
+            setAlertOpen={setIsTerminalHintOpen}
+            isAlertOpen={isTerminalHintOpen}
+          />
           {tests && <Tests suites={suites} handleRunTests={handleTestCode} />}
         </div>
       </div>
