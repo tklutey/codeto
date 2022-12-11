@@ -1,0 +1,30 @@
+import { ChatGPTAPI } from 'chatgpt';
+
+export default class GPTClient {
+  private GPTClient: ChatGPTAPI;
+
+  TIMEOUT = 10000;
+
+  constructor() {
+    const token =
+      'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..GRky7SMR6gp0AZF3.LhwOUZf2bHZ4Af-y1bHGPJA-0IKZsPsXk58n4G9VIXqDDGaoO9nFKLldAcDMgBTFm7xQiWOW7qndbirIokVzeZKQpGBb6EpQ6uzx6Mir5mjrueYXprbnGuzW-jdi2iSQwqpey38MRasSSmRPrNvZ_57xM8iIHF73UQy2oPlRpTSetuYkf4ezE0kpMWcZbtJaFGrnBzPQN4T3ALUiYaIbq75LuWI5ATOZqZeuoMB6weVwbXh6KwW7CXPGngeXgEwTpc7o91-ki6SLezzm_VX0bgcsxhxA7snJ3Ls9jAxQ99kdRMqFkZ7bzozsza1gQVyzR-Vye1m20Y1KkvYsMB9fn7DNsLXwGqTO97AN7p7vxgUF3YoZDje6P4hSPKUUk-6vvdv0lOz0VASssizNB1vO6xDGhH5TyBxwntldWZagdz5YnXqXOiXJPH4rveEVHwM9cgQY1xqDsqzFtffAUm6F11dSbKWaSXna9ovmobZPmqKa79hJFFX0fHb6RjtirRo4wopDETkLFH76SVxv-8No_eKXxqJ7WTwnysZNcTt64p5gcHl2oeBxwdyswGEXJVYSYXOl7fOC6_xguSKTTWlzXshCNeGC_T3ZRVGaVgTUb_W1q8WoI-T3HVHb6lWhZaoCMmmSU3z4dxiiURWN1TyY7nY2erNIFv-PuMO8HAWLgH4ZSpVR5p2PzL7UtscE9sKKvUQVfRoQs5OUnJmfyYdrdelJ5A4-P0FmF6uuHFH3I4XpyzZMB19h90QZszwSC9tfqkcFJm4H7MVAv2YUCBsysGET5P_-yL-fwdUJtm44Ab6mTArl8drEp9Up0fIb1lk1ySE-2FP8TLX_fDwIUCJJzgQPxjwDNjZ_C077OtCeKGGNc6xRpBs33NmjrB2Lh7CCSyzsveKid07KZqqqYzN03MBIRCh1eaMyNI283oZZLQULw_Fof-xTCX9VW50S_DqbP5YRQAIQ5eC7_248jaXQg-OJT-HLuY7cgZzzaSqikrqlaEoLaRWtIXxBjplxQRlQ8sGZfeAildW84iOf0LwxRyPiIcEiJhcAXAtY1oqUvCCLz4W4943TwamIbqI0LC_dMdJGT-apDBZU-Hr8V5LJoAvmGYzYQHthXD8dEUhDUc1P6dOBdK8WXWgv5Cee6RiPYt3PyCwLhYIFzCbOqDnq3WtF1dmKq_W3oaz0DjqetlXRQT2l0UhFGcQq_h6FErYNcudDLqN24lt_maoxDS2YpP5pH_rzt_6Y5VygIl9VUqGXxYGetscI2XNjYHBVLpdLQHZkMs4SJzB6XUOdUIp2NCDzv2ScRnpYHmvTeqnhdI1c5crgGbewtf42WTGg3yYYPtGfBxmiQrAOjNJXA6fWunKbhzq5gxfZA8x3ZrnLiTSfG_n-fKe2gx4-xCOPKzX8-5Xw2Z0_VzYnLirdSff2iRhHZnU5NJs6A_URD6CsBgjm9IkD5tKbOdZDQuM4LDrV2jDMNxoMMh3bXqOmBCnqHJOKyH_eNtbyd0EGkFlDYyNohIry1usm-V3ayZojORAlNPDVVYANduBpe8PTklSuTsN2jopNeQ3dGIgUGMcnIJfhc9o7acGrBeJop0neOIr5ZSMllCdOH1YlZtudsjPSqLG6ZI069Qx5380eB-6IjshnPph3CYOsWTucHLYhjus_l6N59UYFYPIhaoY70KM0wXeDkB1YIZImHLct7P0-HwGHTL_ouMDrQVWZILX1ewdeVnAWXcK0A7mRkWdNj8jyNrxuhYseet4dHQIN2jZeSLXzEvFykmxOAlZcUhCzu0dhNQJ11n8BGA_E3qMoqev5MeS3Ggm0XqRS6haOelfnK8q2GL6HRSJv5qK67soBtzybachPg8l7m5UbMOKbZpez_aAfj_XshzNWmFUWi2AFJPLzZ94f4oh52BDwplCNR6KrS44evny0XibhjL5rWhbnikQw-G0Wmy4uukFHjJ7jQ1yI27GdFdL1-weAV5xsVJVcU2METaCTLaL83bfdV9LqxOzcwWKAbg1NGLPQnw_f2Vh0TqWZudFZsXOI8AdSCcKN_on9Z8hhzGC3aFcJQrRrJGBRXD91HqCcTp1g5ZsuQUJJtJWjPVYq7oJgCVbKeWsSck21Vqkl18QqS8Qib7iL18_JZIDvjxdEV23KJ8CwFLS_Hgsu7Y9H6PFlfTIuQVYaxC4kDH_vGgjzAUPgjo_66Woyw7HruR9MkZBPdeNZNxBH2oTG6CZVSpBNoBg716ghtGV8c9wcySZfEcOgV9_UMEfu8sCzCr7vUiciOEtt5N84fnd_CdKTnpU3eFoeaubNyhL_yk2HraycgLS0OwT-0D0TGSfSyuJpxbfNt1qPAg.WYiOxbO87-LlsHJEVkU23Q';
+    this.GPTClient = new ChatGPTAPI({
+      sessionToken: token
+    });
+  }
+
+  auth = async () => {
+    await this.GPTClient.ensureAuth();
+    return this.GPTClient;
+  };
+
+  getJavaErrorHint = async (error: string) => {
+    // send a message and wait for the response
+    const response = await this.GPTClient.sendMessage(`Provide a hint as to what is causing the following Java error: ${error}`, {
+      timeoutMs: this.TIMEOUT
+    });
+
+    // response is a markdown-formatted string
+    return response;
+  };
+}
