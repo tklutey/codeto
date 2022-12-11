@@ -49,7 +49,6 @@ const IDE = (props: Props) => {
       }
     }
   );
-  console.log(terminalHint);
 
   const handleCodeError = (output: string) => {
     // Check if output contains "error"
@@ -101,7 +100,6 @@ const IDE = (props: Props) => {
     () => {
       if (registerResetEventHandler) {
         registerResetEventHandler(() => setTerminalText(''));
-        console.log('registering test event handler');
         registerResetEventHandler(resetTestSuites);
       }
     },

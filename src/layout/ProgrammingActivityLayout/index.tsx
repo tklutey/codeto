@@ -36,7 +36,6 @@ const ProgrammingActivityLayout = (props: Props) => {
   };
 
   const cleanupProblem = () => {
-    console.log(resetEventHandlers);
     resetEventHandlers.forEach((handler) => handler());
   };
   const handleGoToNextProblem = () => {
@@ -51,8 +50,6 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   const registerResetEventHandler = (handler: () => void) => {
     setResetEventHandlers((prevResetEventHandlers) => {
-      console.log('registering reset event handler: ', handler);
-      console.log('pre-existing reset event handlers: ', prevResetEventHandlers);
       return [...prevResetEventHandlers, handler];
     });
   };

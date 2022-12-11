@@ -12,7 +12,6 @@ const CodeEditor = (props: Props) => {
       value={startingCode}
       loading={<Loading />}
       onChange={updateCode}
-      onMount={() => console.log('mounted')}
       theme={'vs-dark'}
       options={CodeEditorOptions}
       {...props}

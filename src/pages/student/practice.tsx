@@ -49,7 +49,8 @@ const Practice = () => {
           }
           setIsLoading(false);
         }
-      }
+      },
+      refetchOnWindowFocus: false
     }
   );
 
