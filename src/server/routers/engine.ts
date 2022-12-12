@@ -8,6 +8,26 @@ const streakToTargetDistance = (streak: number) => {
   return 2 ** streak;
 };
 
+const calculateStreak = (sortedCodingProblems: any) => {
+  const attemptHistory = sortedCodingProblems?.flatMap((cp: any) => cp.user_problem_attempt_history);
+  const sortedAttemptHistory = attemptHistory?.sort((a: any, b: any) => {
+    const aTimestamp = new Date(a.attempt_timestamp);
+    const bTimestamp = new Date(b.attempt_timestamp);
+    return aTimestamp.getTime() - bTimestamp.getTime();
+  });
+  let streak = 0;
+  // get number of problems in a row that are correct
+  for (let i = 0; i < sortedAttemptHistory.length; i++) {
+    const attempt = sortedAttemptHistory[i];
+    if (attempt.is_successful_attempt) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
+};
+
 const sortProblems = (a: any, b: any) => {
   const hasSuccessfulAttempt = (problem: any) => {
     return problem.user_problem_attempt_history.some((attempt: any) => attempt.is_successful_attempt);
@@ -98,8 +118,7 @@ export const engine = trpc
             coding_problems: [rest],
             distance,
             distanceFromTarget,
-            learning_standards,
-            streak: 0
+            learning_standards
           };
         }
         return acc;
@@ -108,11 +127,11 @@ export const engine = trpc
       const sortedProblemSetsByDistance = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
         const { coding_problems, ...rest } = value;
         const sortedCodingProblems = coding_problems.sort(sortProblems);
-        // return key, value pair where key is the learning standards string and value is the sorted coding problems
         return {
           id: key,
           ...rest,
-          coding_problems: sortedCodingProblems
+          coding_problems: sortedCodingProblems,
+          streak: calculateStreak(sortedCodingProblems)
         };
       });
       return sortedProblemSetsByDistance;
