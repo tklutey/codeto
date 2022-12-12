@@ -42,31 +42,79 @@ const sortProblems = (a: any, b: any) => {
 
   return 0;
 };
-export const engine = trpc.router().query('getProblemsByDistance', {
-  input: z.string(),
-  async resolve({ input }) {
-    const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-    const sbClient = new SbClient();
-    const currentStreak = await getCurrentUserStreak(userId);
-    const targetDistance = streakToTargetDistance(currentStreak);
-    const allCodingProblems = await sbClient.getAllCodingProblems(userId);
-    const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
-    const sortedLearningStandards = transformedCodingProblems
-      ?.map((cp) => {
-        const { learning_standards, ...rest } = cp;
-        const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
-        const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
-        const distance = learning_standards.length - intersection.length;
-        const distanceFromTarget = Math.abs(targetDistance - distance);
+
+const getProblemsByDistance = async (userId: string, userLearningStandards: number[]) => {
+  const sbClient = new SbClient();
+  const currentStreak = await getCurrentUserStreak(userId);
+  const targetDistance = streakToTargetDistance(currentStreak);
+  const allCodingProblems = await sbClient.getAllCodingProblems(userId);
+  const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
+  const sortedLearningStandards = transformedCodingProblems
+    ?.map((cp) => {
+      const { learning_standards, ...rest } = cp;
+      const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
+      const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
+      const distance = learning_standards.length - intersection.length;
+      const distanceFromTarget = Math.abs(targetDistance - distance);
+      return {
+        ...rest,
+        learning_standards,
+        distance,
+        distanceFromTarget
+      };
+    })
+    .sort(sortProblems)
+    .filter((cp) => cp.distance > 0);
+  return sortedLearningStandards;
+};
+export const engine = trpc
+  .router()
+  .query('getProblemsByDistance', {
+    input: z.string(),
+    async resolve({ input }) {
+      const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
+      return getProblemsByDistance(userId, userLearningStandards);
+    }
+  })
+  .query('getProblemSetsByDistance', {
+    input: z.string(),
+    async resolve({ input }) {
+      const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
+      const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards);
+      // group problems that share the same exact learning standards
+      const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
+        const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
+        const learningStandardsString = JSON.stringify(learning_standards);
+        if (acc[learningStandardsString]) {
+          acc[learningStandardsString].coding_problems = [...acc[learningStandardsString].coding_problems, rest];
+          if (
+            distance !== acc[learningStandardsString].distance ||
+            distanceFromTarget !== acc[learningStandardsString].distanceFromTarget
+          ) {
+            throw new Error('distance should be the same for all problems in a problem set');
+          }
+        } else {
+          acc[learningStandardsString] = {
+            coding_problems: [rest],
+            distance,
+            distanceFromTarget,
+            learning_standards,
+            streak: 0
+          };
+        }
+        return acc;
+      }, {});
+
+      const sortedProblemSetsByDistance = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
+        const { coding_problems, ...rest } = value;
+        const sortedCodingProblems = coding_problems.sort(sortProblems);
+        // return key, value pair where key is the learning standards string and value is the sorted coding problems
         return {
+          id: key,
           ...rest,
-          learning_standards,
-          distance,
-          distanceFromTarget
+          coding_problems: sortedCodingProblems
         };
-      })
-      .sort(sortProblems)
-      .filter((cp) => cp.distance > 0);
-    return sortedLearningStandards;
-  }
-});
+      });
+      return sortedProblemSetsByDistance;
+    }
+  });
