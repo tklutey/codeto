@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Button, Tooltip } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
@@ -10,7 +10,7 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   height: '10%',
   background: theme.palette.background.default,
   display: 'flex',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
   marginLeft: '-20px',
   marginBottom: '-20px',
   marginRight: '-20px'
@@ -19,42 +19,44 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
   const theme = useTheme();
   return (
     <FooterStrip>
-      <MasteryStepper />
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{
-          margin: '14px'
-        }}
-        onClick={onSkipClicked}
-      >
-        Skip
-      </Button>
-      <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
+      <MasteryStepper activeStep={1} />
+      <Box>
         <Button
-          variant="outlined"
+          variant="contained"
+          color="primary"
           sx={{
             margin: '14px'
           }}
-          onClick={onShowSolutionClicked}
+          onClick={onSkipClicked}
         >
-          <HelpOutlineIcon fontSize={'small'} />
-          &nbsp;&nbsp;&nbsp;Solution
+          Skip
         </Button>
-      </Tooltip>
-      <Button
-        variant="contained"
-        disabled={disabled}
-        sx={{
-          margin: '14px',
-          color: theme.palette.common.black,
-          background: theme.palette.warning.dark,
-          '&:hover': { background: theme.palette.warning.main }
-        }}
-        onClick={onNextClicked}
-      >
-        Next
-      </Button>
+        <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
+          <Button
+            variant="outlined"
+            sx={{
+              margin: '14px'
+            }}
+            onClick={onShowSolutionClicked}
+          >
+            <HelpOutlineIcon fontSize={'small'} />
+            &nbsp;&nbsp;&nbsp;Solution
+          </Button>
+        </Tooltip>
+        <Button
+          variant="contained"
+          disabled={disabled}
+          sx={{
+            margin: '14px',
+            color: theme.palette.common.black,
+            background: theme.palette.warning.dark,
+            '&:hover': { background: theme.palette.warning.main }
+          }}
+          onClick={onNextClicked}
+        >
+          Next
+        </Button>
+      </Box>
     </FooterStrip>
   );
 };

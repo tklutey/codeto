@@ -25,11 +25,11 @@ const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
   }
 }));
 
-const MasteryStepper = () => {
+const MasteryStepper = ({ activeStep }: Props) => {
   const steps = ['Learned', 'Practiced', 'Mastered'];
 
   return (
-    <Stepper alternativeLabel activeStep={1} connector={<StyledStepConnector />}>
+    <Stepper alternativeLabel activeStep={activeStep} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
       {steps.map((label) => (
         <Step key={label}>
           <StepLabel StepIconComponent={StepIcon}>{label}</StepLabel>
@@ -37,6 +37,10 @@ const MasteryStepper = () => {
       ))}
     </Stepper>
   );
+};
+
+type Props = {
+  activeStep: number;
 };
 
 export default MasteryStepper;
