@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Button, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import MasteryStepper from 'components/assignment/MasteryStepper';
 
 const FooterStrip = styled('footer')(({ theme }) => ({
   width: 'calc(100% + 40px)',
@@ -18,6 +19,7 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
   const theme = useTheme();
   return (
     <FooterStrip>
+      <MasteryStepper />
       <Button
         variant="contained"
         color="primary"
