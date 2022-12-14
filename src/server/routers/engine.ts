@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
 
+export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
   return 2 ** streak;
 };
@@ -60,6 +61,19 @@ const sortProblems = (a: any, b: any) => {
   if (a.solution_code.length < b.solution_code.length) return -1;
   if (a.solution_code.length > b.solution_code.length) return 1;
 
+  return 0;
+};
+
+const sortProblemSets = (a: any, b: any) => {
+  const isCurrentlyLearning = (problemSet: any) => {
+    return problemSet.streak > 0 && problemSet.streak < MASTERED_STREAK_LENGTH;
+  };
+  if (isCurrentlyLearning(a) && !isCurrentlyLearning(b)) return -1;
+  if (!isCurrentlyLearning(a) && isCurrentlyLearning(b)) return 1;
+
+  // sort by fringe distance
+  if (a.distanceFromTarget < b.distanceFromTarget) return -1;
+  if (a.distanceFromTarget > b.distanceFromTarget) return 1;
   return 0;
 };
 
@@ -128,7 +142,7 @@ export const engine = trpc
         return acc;
       }, {});
 
-      const sortedProblemSetsByDistance = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
+      const problemSetsWithSortedProblems = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
         const { coding_problems, ...rest } = value;
         const sortedCodingProblems = coding_problems.sort(sortProblems);
         return {
@@ -138,6 +152,6 @@ export const engine = trpc
           streak: calculateStreak(sortedCodingProblems)
         };
       });
-      return sortedProblemSetsByDistance;
+      return problemSetsWithSortedProblems.sort(sortProblemSets);
     }
   });

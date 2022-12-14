@@ -69,7 +69,8 @@ const Practice = () => {
           problemId: codingProblem?.id,
           isCorrect
         });
-        if (isCorrect) {
+        // @TODO: Combine update problem attempt history and update knowledge state api so the back end determines when the user has mastered a learning standard
+        if (isCorrect && streak === 1) {
           const learningStandardsNumeric = learningStandards.map((ls) => ls.standard_id);
           await updateKnowledgeStateMutation.mutateAsync({
             learningStandards: learningStandardsNumeric,
