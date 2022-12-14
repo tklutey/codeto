@@ -17,6 +17,7 @@ const Practice = () => {
   const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
+  const [streak, setStreak] = useState(0);
   const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
@@ -32,7 +33,7 @@ const Practice = () => {
   });
   const { refetch: refetchProblemsByDistance } = trpc.useQuery(
     [
-      'engine.getProblemsByDistance',
+      'engine.getProblemSetsByDistance',
       JSON.stringify({
         learningStandards: knowledgeState,
         userId: user.id
@@ -42,7 +43,9 @@ const Practice = () => {
       onSuccess: (data) => {
         if (data) {
           if (data.length > 0) {
-            setCodingProblem(data[0]);
+            setStreak(data[0].streak);
+            const prob = data[0].coding_problems[0];
+            setCodingProblem(prob);
             setProblemFetchTimestamp(Date.now());
           } else {
             setIsAllProblemsComplete(true);
@@ -107,6 +110,7 @@ const Practice = () => {
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
+          problemSetStageIndex={streak}
         />
       );
     }

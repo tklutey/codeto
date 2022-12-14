@@ -15,12 +15,16 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   marginBottom: '-20px',
   marginRight: '-20px'
 }));
-const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked }: Props) => {
+
+const ButtonStrip = styled(Box)(({ theme }) => ({
+  display: 'flex'
+}));
+const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, problemSetStageIndex }: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
-      <MasteryStepper activeStep={1} />
-      <Box>
+      <MasteryStepper activeStep={problemSetStageIndex} />
+      <ButtonStrip>
         <Button
           variant="contained"
           color="primary"
@@ -56,7 +60,7 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
         >
           Next
         </Button>
-      </Box>
+      </ButtonStrip>
     </FooterStrip>
   );
 };
@@ -66,6 +70,7 @@ type Props = {
   onNextClicked?: () => void;
   onSkipClicked?: () => void;
   onShowSolutionClicked?: () => void;
+  problemSetStageIndex: number;
 };
 
 export default AssignmentFooter;

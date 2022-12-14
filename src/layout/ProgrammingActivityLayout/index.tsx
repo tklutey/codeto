@@ -16,7 +16,8 @@ const ProgrammingActivityLayout = (props: Props) => {
     youtubeTutorialUrl,
     goToNextProblem,
     isLoading,
-    problemFetchTimestamp
+    problemFetchTimestamp,
+    problemSetStageIndex
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -95,6 +96,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         onNextClicked={handleGoToNextProblem}
         onSkipClicked={handleSkipProblem}
         onShowSolutionClicked={handleShowSolution}
+        problemSetStageIndex={problemSetStageIndex}
       />
     </div>
   );
@@ -111,6 +113,7 @@ type Props = {
   goToNextProblem: (isCorrect: boolean) => () => void;
   isLoading: boolean;
   problemFetchTimestamp?: number;
+  problemSetStageIndex: number;
 };
 
 export default ProgrammingActivityLayout;

@@ -105,8 +105,12 @@ export const engine = trpc
       const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
         const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
         const learningStandardsString = JSON.stringify(learning_standards);
+        const cp = {
+          ...rest,
+          learning_standards
+        };
         if (acc[learningStandardsString]) {
-          acc[learningStandardsString].coding_problems = [...acc[learningStandardsString].coding_problems, rest];
+          acc[learningStandardsString].coding_problems = [...acc[learningStandardsString].coding_problems, cp];
           if (
             distance !== acc[learningStandardsString].distance ||
             distanceFromTarget !== acc[learningStandardsString].distanceFromTarget
@@ -115,7 +119,7 @@ export const engine = trpc
           }
         } else {
           acc[learningStandardsString] = {
-            coding_problems: [rest],
+            coding_problems: [cp],
             distance,
             distanceFromTarget,
             learning_standards
