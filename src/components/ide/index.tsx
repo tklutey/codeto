@@ -42,7 +42,7 @@ const IDE = (props: Props) => {
       })
     ],
     {
-      enabled: false,
+      enabled: terminalError !== '',
       onSuccess: (data) => {
         setTerminalHint(data);
         setIsTerminalHintOpen(true);
@@ -51,18 +51,19 @@ const IDE = (props: Props) => {
   );
 
   const handleCodeError = (output: string) => {
-    // Check if output contains "error"
     if (output.toLowerCase().includes('error')) {
       setTerminalError(output);
       refetchErrorHint();
     } else {
       setTerminalError('');
       setTerminalHint('');
+      setIsTerminalHintOpen(false);
     }
   };
   const executeCode = async (onSuccess?: (output: string) => void) => {
     setIsExecuting(true);
     setTerminalText('Running...');
+    setIsTerminalHintOpen(false);
     if (userCode) {
       const input = {
         script: userCode,
