@@ -7,7 +7,6 @@ export const gpt = trpc.router().query('errorHint', {
   async resolve({ input }) {
     const { error } = JSON.parse(input);
     const gptClient = new GPTClient();
-    await gptClient.auth();
     return gptClient.getJavaErrorHint(error);
   }
 });

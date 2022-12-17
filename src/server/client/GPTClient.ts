@@ -1,32 +1,25 @@
-import { ChatGPTAPIBrowser } from 'chatgpt';
+import OpenAI from 'openai-api';
 
 export default class GPTClient {
-  private GPTClient: ChatGPTAPIBrowser;
+  private openAIClient: OpenAI;
 
   TIMEOUT = 15000;
 
   constructor() {
-    this.GPTClient = new ChatGPTAPIBrowser({
-      email: 'kluteyt@gmail.com',
-      password: 'yRsjzaG$M#575&Ad'
-    });
+    const OPENAI_API_KEY = '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';
+    this.openAIClient = new OpenAI(OPENAI_API_KEY);
   }
 
-  auth = async () => {
-    await this.GPTClient.init();
-    return this.GPTClient;
-  };
-
   getJavaErrorHint = async (error: string) => {
-    // send a message and wait for the response
-    const response = await this.GPTClient.sendMessage(
-      `Provide a hint (in less than 180 characters) as to what is causing the following Java error: ${error}`,
-      {
-        timeoutMs: this.TIMEOUT
-      }
-    );
+    const prompt = `explain why the below code doesn't work \n${error}`;
+    const gptResponse = await this.openAIClient.complete({
+      engine: 'text-davinci-002',
+      prompt: prompt,
+      maxTokens: 256,
+      temperature: 0,
+      stream: false
+    });
 
-    // response is a markdown-formatted string
-    return response;
+    return gptResponse.data?.choices[0]?.text;
   };
 }
