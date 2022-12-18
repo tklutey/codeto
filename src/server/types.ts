@@ -1,22 +1,22 @@
 // Create ordered enum call mastery status
-export enum IMasteryStatus {
+export enum MasteryStatus {
   Unattempted = 0,
   Learned = 1,
-  Applied = 2,
+  Practiced = 2,
   Mastered = 3
 }
 
 export const getMasteryStatusByValue = (value: number) => {
   switch (value) {
     case 0:
-      return IMasteryStatus.Unattempted;
+      return MasteryStatus.Unattempted;
     case 1:
-      return IMasteryStatus.Learned;
+      return MasteryStatus.Learned;
     case 2:
-      return IMasteryStatus.Applied;
+      return MasteryStatus.Practiced;
     case 3:
-      return IMasteryStatus.Mastered;
+      return MasteryStatus.Mastered;
     default:
-      return IMasteryStatus.Unattempted;
+      return MasteryStatus.Unattempted;
   }
 };

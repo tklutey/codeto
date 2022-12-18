@@ -4,6 +4,7 @@ import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
+import { MasteryStatus } from 'server/types';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const {
@@ -17,7 +18,7 @@ const ProgrammingActivityLayout = (props: Props) => {
     goToNextProblem,
     isLoading,
     problemFetchTimestamp,
-    problemSetStageIndex
+    masteryStatus
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -96,7 +97,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         onNextClicked={handleGoToNextProblem}
         onSkipClicked={handleSkipProblem}
         onShowSolutionClicked={handleShowSolution}
-        problemSetStageIndex={problemSetStageIndex}
+        masteryStatus={masteryStatus}
       />
     </div>
   );
@@ -113,7 +114,7 @@ type Props = {
   goToNextProblem: (isCorrect: boolean) => () => void;
   isLoading: boolean;
   problemFetchTimestamp?: number;
-  problemSetStageIndex: number;
+  masteryStatus: MasteryStatus;
 };
 
 export default ProgrammingActivityLayout;

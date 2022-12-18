@@ -1,6 +1,7 @@
 import React from 'react';
 import { Step, StepConnector, stepConnectorClasses, StepIcon, StepLabel, Stepper } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { MasteryStatus } from 'server/types';
 
 const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -25,11 +26,12 @@ const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
   }
 }));
 
-const MasteryStepper = ({ activeStep }: Props) => {
-  const steps = ['Learned', 'Practiced', 'Mastered'];
+const MasteryStepper = ({ currentMasteryStatus }: Props) => {
+  const steps = [MasteryStatus[MasteryStatus.Learned], MasteryStatus[MasteryStatus.Practiced], MasteryStatus[MasteryStatus.Mastered]];
+  const currentStepStage = currentMasteryStatus.valueOf() + 1;
 
   return (
-    <Stepper alternativeLabel activeStep={activeStep} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
+    <Stepper alternativeLabel activeStep={currentStepStage} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
       {steps.map((label) => (
         <Step key={label}>
           <StepLabel StepIconComponent={StepIcon}>{label}</StepLabel>
@@ -40,7 +42,7 @@ const MasteryStepper = ({ activeStep }: Props) => {
 };
 
 type Props = {
-  activeStep: number;
+  currentMasteryStatus: MasteryStatus;
 };
 
 export default MasteryStepper;

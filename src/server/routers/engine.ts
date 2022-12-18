@@ -3,7 +3,7 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
-import { IMasteryStatus } from 'server/types';
+import { MasteryStatus } from 'server/types';
 
 export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
@@ -149,7 +149,7 @@ export const engine = trpc
         const sortedCodingProblems = coding_problems.sort(sortProblems);
         // get mastery status by index
         const streak = calculateStreak(sortedCodingProblems);
-        const masteryStatus = IMasteryStatus[streak];
+        const masteryStatus = MasteryStatus[streak];
 
         return {
           id: key,

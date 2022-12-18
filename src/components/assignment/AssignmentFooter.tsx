@@ -4,6 +4,7 @@ import { Box, Button, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
+import { MasteryStatus } from 'server/types';
 
 const FooterStrip = styled('footer')(({ theme }) => ({
   width: 'calc(100% + 40px)',
@@ -19,11 +20,11 @@ const FooterStrip = styled('footer')(({ theme }) => ({
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'
 }));
-const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, problemSetStageIndex }: Props) => {
+const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, masteryStatus }: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
-      <MasteryStepper activeStep={problemSetStageIndex} />
+      <MasteryStepper currentMasteryStatus={masteryStatus} />
       <ButtonStrip>
         <Button
           variant="contained"
@@ -70,7 +71,7 @@ type Props = {
   onNextClicked?: () => void;
   onSkipClicked?: () => void;
   onShowSolutionClicked?: () => void;
-  problemSetStageIndex: number;
+  masteryStatus: MasteryStatus;
 };
 
 export default AssignmentFooter;

@@ -7,7 +7,7 @@ import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
 import { CodingProblemTest } from 'server/routers/codingProblem';
-import { getMasteryStatusByValue, IMasteryStatus } from 'server/types';
+import { getMasteryStatusByValue, MasteryStatus } from 'server/types';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -18,8 +18,7 @@ const Practice = () => {
   const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
-  const [streak, setStreak] = useState(0);
-  const [masteryStatus, setMasteryStatus] = useState<IMasteryStatus>(IMasteryStatus.Unattempted);
+  const [masteryStatus, setMasteryStatus] = useState<MasteryStatus>(MasteryStatus.Unattempted);
   const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
@@ -45,7 +44,6 @@ const Practice = () => {
       onSuccess: (data) => {
         if (data) {
           if (data.length > 0) {
-            setStreak(data[0].streak);
             const masteryStatusIndex = data[0].mastery_status;
             setMasteryStatus(getMasteryStatusByValue(masteryStatusIndex));
             const prob = data[0].coding_problems[0];
@@ -74,7 +72,7 @@ const Practice = () => {
           isCorrect
         });
         // @TODO: Combine update problem attempt history and update knowledge state api so the back end determines when the user has mastered a learning standard
-        if (isCorrect && streak === 1) {
+        if (isCorrect && masteryStatus === MasteryStatus.Mastered) {
           const learningStandardsNumeric = learningStandards.map((ls) => ls.standard_id);
           await updateKnowledgeStateMutation.mutateAsync({
             learningStandards: learningStandardsNumeric,
@@ -117,7 +115,7 @@ const Practice = () => {
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
-          problemSetStageIndex={masteryStatus.valueOf() + 1}
+          masteryStatus={masteryStatus}
         />
       );
     }
