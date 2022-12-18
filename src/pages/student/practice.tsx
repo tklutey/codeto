@@ -7,6 +7,7 @@ import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
 import { CodingProblemTest } from 'server/routers/codingProblem';
+import { getMasteryStatusByValue, IMasteryStatus } from 'server/types';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -18,6 +19,7 @@ const Practice = () => {
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
   const [streak, setStreak] = useState(0);
+  const [masteryStatus, setMasteryStatus] = useState<IMasteryStatus>(IMasteryStatus.Unattempted);
   const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
@@ -44,6 +46,8 @@ const Practice = () => {
         if (data) {
           if (data.length > 0) {
             setStreak(data[0].streak);
+            const masteryStatusIndex = data[0].mastery_status;
+            setMasteryStatus(getMasteryStatusByValue(masteryStatusIndex));
             const prob = data[0].coding_problems[0];
             setCodingProblem(prob);
             setProblemFetchTimestamp(Date.now());
@@ -85,6 +89,8 @@ const Practice = () => {
     };
   };
 
+  // get mastery status index
+
   const getPageContent = (problem: any) => {
     if (isAllProblemsComplete) {
       return <AssignmentsCompleteModal />;
@@ -111,7 +117,7 @@ const Practice = () => {
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
-          problemSetStageIndex={streak}
+          problemSetStageIndex={masteryStatus.valueOf() + 1}
         />
       );
     }

@@ -3,7 +3,7 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
-import { MasteryStatus } from 'server/types';
+import { IMasteryStatus } from 'server/types';
 
 export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
@@ -83,7 +83,6 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
   const currentStreak = await getCurrentUserStreak(userId);
   const targetDistance = streakToTargetDistance(currentStreak);
   const allCodingProblems = await sbClient.getAllCodingProblems(userId);
-  console.log(allCodingProblems);
   const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
   const sortedLearningStandards = transformedCodingProblems
     ?.map((cp) => {
@@ -150,14 +149,14 @@ export const engine = trpc
         const sortedCodingProblems = coding_problems.sort(sortProblems);
         // get mastery status by index
         const streak = calculateStreak(sortedCodingProblems);
-        const masteryStatus = MasteryStatus[streak];
+        const masteryStatus = IMasteryStatus[streak];
 
         return {
           id: key,
           ...rest,
           coding_problems: sortedCodingProblems,
           streak: calculateStreak(sortedCodingProblems),
-          masteryStatus
+          mastery_status: masteryStatus.valueOf()
         };
       });
       return problemSetsWithSortedProblems.sort(sortProblemSets);
