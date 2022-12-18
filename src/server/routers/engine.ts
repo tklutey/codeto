@@ -3,6 +3,7 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
+import { MasteryStatus } from 'server/types';
 
 export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
@@ -82,6 +83,7 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
   const currentStreak = await getCurrentUserStreak(userId);
   const targetDistance = streakToTargetDistance(currentStreak);
   const allCodingProblems = await sbClient.getAllCodingProblems(userId);
+  console.log(allCodingProblems);
   const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
   const sortedLearningStandards = transformedCodingProblems
     ?.map((cp) => {
@@ -89,7 +91,9 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
       const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
       const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
       const distance = learning_standards.length - intersection.length;
-      const distanceFromTarget = Math.abs(targetDistance - distance);
+      // const distanceFromTarget = Math.abs(targetDistance - distance);
+      // TODO: turning off adaptive learning for now
+      const distanceFromTarget = distance;
       return {
         ...rest,
         learning_standards,
@@ -97,8 +101,7 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
         distanceFromTarget
       };
     })
-    .sort(sortProblems)
-    .filter((cp) => cp.distance > 0);
+    .sort(sortProblems);
   return sortedLearningStandards;
 };
 export const engine = trpc
@@ -107,7 +110,7 @@ export const engine = trpc
     input: z.string(),
     async resolve({ input }) {
       const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      return getProblemsByDistance(userId, userLearningStandards);
+      return (await getProblemsByDistance(userId, userLearningStandards))?.filter((cp) => cp.distance > 0);
     }
   })
   .query('getProblemSetsByDistance', {
@@ -145,11 +148,16 @@ export const engine = trpc
       const problemSetsWithSortedProblems = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
         const { coding_problems, ...rest } = value;
         const sortedCodingProblems = coding_problems.sort(sortProblems);
+        // get mastery status by index
+        const streak = calculateStreak(sortedCodingProblems);
+        const masteryStatus = MasteryStatus[streak];
+
         return {
           id: key,
           ...rest,
           coding_problems: sortedCodingProblems,
-          streak: calculateStreak(sortedCodingProblems)
+          streak: calculateStreak(sortedCodingProblems),
+          masteryStatus
         };
       });
       return problemSetsWithSortedProblems.sort(sortProblemSets);
