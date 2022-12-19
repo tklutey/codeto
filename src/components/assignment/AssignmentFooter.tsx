@@ -24,7 +24,7 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
   const theme = useTheme();
   return (
     <FooterStrip>
-      <MasteryStepper currentMasteryStatus={masteryStatus} />
+      {masteryStatus && <MasteryStepper currentMasteryStatus={masteryStatus} />}
       <ButtonStrip>
         <Button
           variant="contained"
@@ -73,7 +73,7 @@ type Props = {
   onNextClicked?: () => void;
   onSkipClicked?: () => void;
   onShowSolutionClicked?: () => void;
-  masteryStatus: MasteryStatus;
+  masteryStatus?: MasteryStatus;
   allowShowSolution: boolean;
 };
 

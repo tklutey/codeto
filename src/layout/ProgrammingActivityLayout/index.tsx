@@ -26,7 +26,9 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [isProblemCorrect, setIsProblemCorrect] = useState(true);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
-  const scaffoldingConfiguration: ScaffoldingConfiguration = getScaffoldingConfiguration(masteryStatus);
+  const scaffoldingConfiguration: ScaffoldingConfiguration | undefined = masteryStatus
+    ? getScaffoldingConfiguration(masteryStatus)
+    : undefined;
 
   useEffect(() => {
     setUserCode(startingCode);
@@ -42,15 +44,17 @@ const ProgrammingActivityLayout = (props: Props) => {
   const cleanupProblem = () => {
     resetEventHandlers.forEach((handler) => handler());
   };
-  const handleGoToNextProblem = () => {
-    goToNextProblem(isProblemCorrect);
-    cleanupProblem();
-  };
 
   // @TODO: make sure mastery stages work with skipping/incorrect
   const handleProblemComplete = (correct: boolean) => {
-    goToNextProblem(correct);
-    cleanupProblem();
+    if (goToNextProblem) {
+      goToNextProblem(correct);
+      cleanupProblem();
+    }
+  };
+
+  const handleGoToNextProblem = () => {
+    handleProblemComplete(isProblemCorrect);
   };
 
   const registerResetEventHandler = (handler: () => void) => {
@@ -93,7 +97,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           userCode={userCode}
           setUserCode={setUserCode}
           registerResetEventHandler={registerResetEventHandler}
-          testLimit={scaffoldingConfiguration.testLimit}
+          testLimit={scaffoldingConfiguration ? scaffoldingConfiguration.testLimit : undefined}
           onProblemComplete={handleProblemComplete}
         />
       </div>
@@ -103,7 +107,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         onSkipClicked={() => handleProblemComplete(false)}
         onShowSolutionClicked={handleShowSolution}
         masteryStatus={masteryStatus}
-        allowShowSolution={scaffoldingConfiguration.hasSolution}
+        allowShowSolution={scaffoldingConfiguration ? scaffoldingConfiguration.hasSolution : true}
       />
     </div>
   );
@@ -117,10 +121,10 @@ type Props = {
   solutionCode?: string;
   tests?: CodingProblemTest[];
   youtubeTutorialUrl?: string;
-  goToNextProblem: (isCorrect: boolean) => Promise<void>;
+  goToNextProblem?: (isCorrect: boolean) => Promise<void>;
   isLoading: boolean;
   problemFetchTimestamp?: number;
-  masteryStatus: MasteryStatus;
+  masteryStatus?: MasteryStatus;
 };
 
 export default ProgrammingActivityLayout;

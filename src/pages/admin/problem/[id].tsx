@@ -40,7 +40,6 @@ const Problem = () => {
           solutionCode={solutionCode}
           tests={codingProblemTests as CodingProblemTest[]}
           youtubeTutorialUrl={youtubeTutorialUrl}
-          goToNextProblem={(isCorrect: boolean) => () => {}}
           isLoading={isLoading}
         />
       );
