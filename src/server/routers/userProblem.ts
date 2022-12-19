@@ -22,7 +22,7 @@ export const userProblem = trpc.router().mutation('submitProblemAttempt', {
     const problemSet = problemSets.find((set: any) => set.coding_problems.find((problem: any) => problem.id === codingProblemId));
     if (getMasteryStatusByKey(problemSet.mastery_status) === MasteryStatus.Mastered) {
       // update knowledge state
-      const problemSetLearningStandards = problemSet.learning_standards.map((standard: any) => standard.id);
+      const problemSetLearningStandards = problemSet.learning_standards.map((standard: any) => standard.standard_id);
       await sbClient.updateUserKnowledgeState(problemSetLearningStandards, userId);
     }
     return problemSet;

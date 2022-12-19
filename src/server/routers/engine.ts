@@ -160,6 +160,6 @@ export const engine = trpc
     input: z.string(),
     async resolve({ input }) {
       const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      return getProblemSetsByDistance(userId, userLearningStandards);
+      return (await getProblemSetsByDistance(userId, userLearningStandards))?.filter((ps) => ps.distance > 0);
     }
   });
