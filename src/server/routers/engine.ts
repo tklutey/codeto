@@ -5,7 +5,6 @@ import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
 import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
 
-export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
   return 2 ** streak;
 };
@@ -82,6 +81,7 @@ const sortProblemSets = (a: any, b: any) => {
 const getProblemsByDistance = async (userId: string, userLearningStandards: number[]) => {
   const sbClient = new SbClient();
   const currentStreak = await getCurrentUserStreak(userId);
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const targetDistance = streakToTargetDistance(currentStreak);
   const allCodingProblems = await sbClient.getAllCodingProblems(userId);
   const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
