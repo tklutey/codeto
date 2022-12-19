@@ -24,14 +24,9 @@ const Practice = () => {
   if (!user || !user.id) {
     throw new Error('User not found');
   }
+
+  //@TODO: we can remove setKnowledgeState
   const [knowledgeState, setKnowledgeState] = useState<number[]>([]);
-  const { refetch: refetchMasteredLearningStandards } = trpc.useQuery(['knowledgeState.getMasteredLearningStandards', user.id], {
-    onSuccess: (data) => {
-      if (data) {
-        setKnowledgeState(extractKnowledgeState(data));
-      }
-    }
-  });
   const { refetch: refetchProblemsByDistance } = trpc.useQuery(
     [
       'engine.getProblemSetsByDistance',
@@ -59,30 +54,19 @@ const Practice = () => {
     }
   );
 
-  const updateKnowledgeStateMutation = trpc.useMutation('knowledgeState.update');
-  const updateProblemAttemptHistory = trpc.useMutation('codingProblem.updateProblemAttemptHistory');
+  const submitProblemAttempt = trpc.useMutation('userProblem.submitProblemAttempt');
 
   const goToNextProblem = (isCorrect: boolean) => {
+    // @TODO: remove learningStandards
     return (learningStandards: any[]) => {
       return async () => {
         setIsLoading(true);
-        await updateProblemAttemptHistory.mutateAsync({
+        await submitProblemAttempt.mutateAsync({
           userId: user.id as string,
-          problemId: codingProblem?.id,
+          codingProblemId: codingProblem.id,
           isCorrect
         });
-        // @TODO: Combine update problem attempt history and update knowledge state api so the back end determines when the user has mastered a learning standard
-        if (isCorrect && masteryStatus === MasteryStatus.Mastered) {
-          const learningStandardsNumeric = learningStandards.map((ls) => ls.standard_id);
-          await updateKnowledgeStateMutation.mutateAsync({
-            learningStandards: learningStandardsNumeric,
-            userId: user.id as string
-          });
-          const { data: updatedMasteredLearningStandards } = await refetchMasteredLearningStandards();
-          setKnowledgeState(extractKnowledgeState(updatedMasteredLearningStandards || []));
-        } else {
-          await refetchProblemsByDistance();
-        }
+        await refetchProblemsByDistance();
       };
     };
   };
