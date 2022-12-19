@@ -2,7 +2,9 @@ import { MasteryStatus } from 'server/types';
 
 export type ScaffoldingConfiguration = {
   hasSolution: boolean;
+  // @TODO: add this into scaffolding
   hasErrorHints: boolean;
+  // @TODO: add this into scaffolding
   hasVideo: boolean;
   testLimit?: number;
 };
