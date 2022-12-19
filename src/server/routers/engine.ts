@@ -159,7 +159,10 @@ export const engine = trpc
   .query('getProblemSetsByDistance', {
     input: z.string(),
     async resolve({ input }) {
+      // TODO: get rid of passed in learning standards
       const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      return (await getProblemSetsByDistance(userId, userLearningStandards))?.filter((ps) => ps.distance > 0);
+      const sbClient = new SbClient();
+      const masteredStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
+      return (await getProblemSetsByDistance(userId, masteredStandards ? masteredStandards : []))?.filter((ps) => ps.distance > 0);
     }
   });
