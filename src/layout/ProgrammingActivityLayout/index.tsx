@@ -5,7 +5,7 @@ import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
 import { MasteryStatus } from 'server/types';
-import { getScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
+import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const {
@@ -26,7 +26,7 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [isProblemCorrect, setIsProblemCorrect] = useState(true);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
-  const scaffoldingConfiguration = getScaffoldingConfiguration(masteryStatus);
+  const scaffoldingConfiguration: ScaffoldingConfiguration = getScaffoldingConfiguration(masteryStatus);
 
   useEffect(() => {
     setUserCode(startingCode);
@@ -92,6 +92,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           userCode={userCode}
           setUserCode={setUserCode}
           registerResetEventHandler={registerResetEventHandler}
+          testLimit={scaffoldingConfiguration.testLimit}
         />
       </div>
       <AssignmentFooter

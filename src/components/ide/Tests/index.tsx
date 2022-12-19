@@ -1,10 +1,16 @@
 import { Button } from '@mui/material';
 import { TestResult } from 'components/ide/index';
+import { useState } from 'react';
 
-const Tests = ({ handleRunTests, suites }: Props) => {
+const Tests = ({ handleRunTests, suites, testLimit }: Props) => {
+  const [numTestRuns, setNumTestRuns] = useState<number>(0);
   const doRunTests = async () => {
+    if (testLimit) {
+      setNumTestRuns((prev) => prev + 1);
+    }
     await handleRunTests();
   };
+  const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
 
   return (
     <div>
@@ -12,7 +18,7 @@ const Tests = ({ handleRunTests, suites }: Props) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h2>Test Summary</h2>
           <Button variant="contained" onClick={doRunTests} style={{ height: '35px', marginTop: '5px' }}>
-            Run Tests
+            {testButtonText}
           </Button>
         </div>
       </div>
@@ -32,6 +38,7 @@ const Tests = ({ handleRunTests, suites }: Props) => {
 type Props = {
   suites: TestResult[] | undefined;
   handleRunTests: () => Promise<void>;
+  testLimit?: number;
 };
 
 export default Tests;

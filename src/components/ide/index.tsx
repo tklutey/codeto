@@ -26,7 +26,8 @@ const IDE = (props: Props) => {
     userCode,
     setUserCode,
     registerResetEventHandler,
-    onTerminalTextChange
+    onTerminalTextChange,
+    testLimit
   } = props;
   const [terminalError, setTerminalError] = useState<string>('');
   const [terminalHint, setTerminalHint] = useState<string>('');
@@ -136,7 +137,7 @@ const IDE = (props: Props) => {
             setAlertOpen={setIsTerminalHintOpen}
             isAlertOpen={isTerminalHintOpen}
           />
-          {tests && <Tests suites={suites} handleRunTests={handleTestCode} />}
+          {tests && <Tests suites={suites} handleRunTests={handleTestCode} testLimit={testLimit} />}
         </div>
       </div>
     </div>
@@ -154,5 +155,6 @@ type Props = {
   setUserCode: (code: string) => void;
   registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
+  testLimit?: number;
 };
 export default IDE;

@@ -4,7 +4,7 @@ export type ScaffoldingConfiguration = {
   hasSolution: boolean;
   hasErrorHints: boolean;
   hasVideo: boolean;
-  testLimit: number | 'Unlimited';
+  testLimit?: number;
 };
 
 export const getScaffoldingConfiguration = (masteryStatus: MasteryStatus) => {
@@ -13,8 +13,7 @@ export const getScaffoldingConfiguration = (masteryStatus: MasteryStatus) => {
       return {
         hasSolution: true,
         hasErrorHints: true,
-        hasVideo: true,
-        testLimit: 'Unlimited'
+        hasVideo: true
       };
     case MasteryStatus.Learned:
       return {
@@ -34,8 +33,7 @@ export const getScaffoldingConfiguration = (masteryStatus: MasteryStatus) => {
       return {
         hasSolution: false,
         hasErrorHints: false,
-        hasVideo: false,
-        testLimit: 0
+        hasVideo: false
       };
   }
 };
