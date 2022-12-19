@@ -103,6 +103,50 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
     .sort(sortProblems);
   return sortedLearningStandards;
 };
+
+export const getProblemSetsByDistance = async (userId: string, userLearningStandards: number[]) => {
+  const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards);
+  // group problems that share the same exact learning standards
+  const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
+    const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
+    const learningStandardsString = JSON.stringify(learning_standards);
+    const cp = {
+      ...rest,
+      learning_standards
+    };
+    if (acc[learningStandardsString]) {
+      acc[learningStandardsString].coding_problems = [...acc[learningStandardsString].coding_problems, cp];
+      if (distance !== acc[learningStandardsString].distance || distanceFromTarget !== acc[learningStandardsString].distanceFromTarget) {
+        throw new Error('distance should be the same for all problems in a problem set');
+      }
+    } else {
+      acc[learningStandardsString] = {
+        coding_problems: [cp],
+        distance,
+        distanceFromTarget,
+        learning_standards
+      };
+    }
+    return acc;
+  }, {});
+
+  const problemSetsWithSortedProblems = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
+    const { coding_problems, ...rest } = value;
+    const sortedCodingProblems = coding_problems.sort(sortProblems);
+    // get mastery status by index
+    const streak = calculateStreak(sortedCodingProblems);
+    const masteryStatus = MasteryStatus[streak];
+
+    return {
+      id: key,
+      ...rest,
+      coding_problems: sortedCodingProblems,
+      streak: calculateStreak(sortedCodingProblems),
+      mastery_status: masteryStatus.valueOf()
+    };
+  });
+  return problemSetsWithSortedProblems.sort(sortProblemSets);
+};
 export const engine = trpc
   .router()
   .query('getProblemsByDistance', {
@@ -116,49 +160,6 @@ export const engine = trpc
     input: z.string(),
     async resolve({ input }) {
       const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards);
-      // group problems that share the same exact learning standards
-      const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
-        const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
-        const learningStandardsString = JSON.stringify(learning_standards);
-        const cp = {
-          ...rest,
-          learning_standards
-        };
-        if (acc[learningStandardsString]) {
-          acc[learningStandardsString].coding_problems = [...acc[learningStandardsString].coding_problems, cp];
-          if (
-            distance !== acc[learningStandardsString].distance ||
-            distanceFromTarget !== acc[learningStandardsString].distanceFromTarget
-          ) {
-            throw new Error('distance should be the same for all problems in a problem set');
-          }
-        } else {
-          acc[learningStandardsString] = {
-            coding_problems: [cp],
-            distance,
-            distanceFromTarget,
-            learning_standards
-          };
-        }
-        return acc;
-      }, {});
-
-      const problemSetsWithSortedProblems = Object.entries(problemSetsByDistance).map(([key, value]: [string, any]) => {
-        const { coding_problems, ...rest } = value;
-        const sortedCodingProblems = coding_problems.sort(sortProblems);
-        // get mastery status by index
-        const streak = calculateStreak(sortedCodingProblems);
-        const masteryStatus = MasteryStatus[streak];
-
-        return {
-          id: key,
-          ...rest,
-          coding_problems: sortedCodingProblems,
-          streak: calculateStreak(sortedCodingProblems),
-          mastery_status: masteryStatus.valueOf()
-        };
-      });
-      return problemSetsWithSortedProblems.sort(sortProblemSets);
+      return getProblemSetsByDistance(userId, userLearningStandards);
     }
   });

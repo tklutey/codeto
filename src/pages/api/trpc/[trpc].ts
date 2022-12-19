@@ -7,6 +7,7 @@ import { userHistory } from 'server/routers/userHistory';
 import { engine } from 'server/routers/engine';
 import { learningStandards } from 'server/routers/learningStandards';
 import { gpt } from 'server/routers/gpt';
+import { userProblem } from 'server/routers/userProblem';
 
 const appRouter = trpc
   .router()
@@ -16,6 +17,7 @@ const appRouter = trpc
   .merge('engine.', engine)
   .merge('learningStandards.', learningStandards)
   .merge('gpt.', gpt)
+  .merge('userProblem.', userProblem)
   .merge('executeCode.', executeCode);
 
 // export type definition of API
