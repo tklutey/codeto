@@ -3,7 +3,7 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
-import { MasteryStatus } from 'server/types';
+import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
 
 export const MASTERED_STREAK_LENGTH = 2;
 const streakToTargetDistance = (streak: number) => {
@@ -67,7 +67,8 @@ const sortProblems = (a: any, b: any) => {
 
 const sortProblemSets = (a: any, b: any) => {
   const isCurrentlyLearning = (problemSet: any) => {
-    return problemSet.streak > 0 && problemSet.streak < MASTERED_STREAK_LENGTH;
+    const masteryStatus = getMasteryStatusByKey(problemSet.mastery_status);
+    return masteryStatus !== MasteryStatus.Unattempted && masteryStatus !== MasteryStatus.Mastered;
   };
   if (isCurrentlyLearning(a) && !isCurrentlyLearning(b)) return -1;
   if (!isCurrentlyLearning(a) && isCurrentlyLearning(b)) return 1;
