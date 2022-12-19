@@ -2,20 +2,24 @@ import { Button } from '@mui/material';
 import { TestResult } from 'components/ide/index';
 import { useEffect, useState } from 'react';
 
-const Tests = ({ handleRunTests, suites, testLimit }: Props) => {
+const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLimitExceeded, registerResetEventHandler }: Props) => {
   const [numTestRuns, setNumTestRuns] = useState<number>(0);
   const doRunTests = async () => {
+    await handleRunTests();
     if (testLimit) {
       setNumTestRuns((prev) => prev + 1);
     }
-    await handleRunTests();
   };
 
   useEffect(() => {
-    if (testLimit && numTestRuns >= testLimit) {
-      console.log('ya done goofed');
+    if (testLimit && numTestRuns >= testLimit && !areAllTestsPassed && onTestLimitExceeded) {
+      onTestLimitExceeded();
     }
   }, [numTestRuns]);
+
+  useEffect(() => {
+    registerResetEventHandler(() => setNumTestRuns(0));
+  }, []);
   const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
 
   return (
@@ -44,7 +48,10 @@ const Tests = ({ handleRunTests, suites, testLimit }: Props) => {
 type Props = {
   suites: TestResult[] | undefined;
   handleRunTests: () => Promise<void>;
+  areAllTestsPassed: boolean;
   testLimit?: number;
+  onTestLimitExceeded?: () => void;
+  registerResetEventHandler: (handler: () => void) => void;
 };
 
 export default Tests;

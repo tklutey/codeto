@@ -92,7 +92,7 @@ const IDE = (props: Props) => {
   const onAllTestsPass = () => {
     return setIsProblemComplete ? setIsProblemComplete(true) : () => {};
   };
-  const { suites, resetTestSuites, handleTestCode } = useTestRunner(
+  const { suites, resetTestSuites, handleTestCode, areAllTestsPassed } = useTestRunner(
     tests as CodingProblemTest[],
     userCode || '',
     onAllTestsPass,
@@ -138,7 +138,16 @@ const IDE = (props: Props) => {
             setAlertOpen={setIsTerminalHintOpen}
             isAlertOpen={isTerminalHintOpen}
           />
-          {tests && <Tests suites={suites} handleRunTests={handleTestCode} testLimit={testLimit} />}
+          {tests && (
+            <Tests
+              suites={suites}
+              handleRunTests={handleTestCode}
+              testLimit={testLimit}
+              areAllTestsPassed={areAllTestsPassed}
+              onTestLimitExceeded={onProblemComplete ? () => onProblemComplete(false) : undefined}
+              registerResetEventHandler={registerResetEventHandler}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -157,6 +166,6 @@ type Props = {
   registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
   testLimit?: number;
-  onProblemComplete?: (correct: boolean) => Promise<void>;
+  onProblemComplete?: (correct: boolean) => void;
 };
 export default IDE;

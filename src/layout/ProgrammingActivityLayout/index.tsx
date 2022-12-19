@@ -47,8 +47,9 @@ const ProgrammingActivityLayout = (props: Props) => {
     cleanupProblem();
   };
 
-  const handleSkipProblem = () => {
-    goToNextProblem(false);
+  // @TODO: make sure mastery stages work with skipping/incorrect
+  const handleProblemComplete = (correct: boolean) => {
+    goToNextProblem(correct);
     cleanupProblem();
   };
 
@@ -93,12 +94,13 @@ const ProgrammingActivityLayout = (props: Props) => {
           setUserCode={setUserCode}
           registerResetEventHandler={registerResetEventHandler}
           testLimit={scaffoldingConfiguration.testLimit}
+          onProblemComplete={handleProblemComplete}
         />
       </div>
       <AssignmentFooter
         disabled={!canMoveOnToNextProblem}
         onNextClicked={handleGoToNextProblem}
-        onSkipClicked={handleSkipProblem}
+        onSkipClicked={() => handleProblemComplete(false)}
         onShowSolutionClicked={handleShowSolution}
         masteryStatus={masteryStatus}
         allowShowSolution={scaffoldingConfiguration.hasSolution}

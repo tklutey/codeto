@@ -9,6 +9,7 @@ const useTestRunner = (
   executeCode: (onOutput: (output: string) => void) => Promise<void>
 ) => {
   const [suites, setSuites] = useState<TestResult[]>();
+  const [areAllTestsPassed, setAreAllTestsPassed] = useState<boolean>(false);
 
   const runTestSuite = (testSuite: CodingProblemTest[], stringToMatch: string): TestResult[] => {
     return testSuite.map((test) => {
@@ -44,8 +45,11 @@ const useTestRunner = (
       const status = output.match('error') ? 'fail' : 'pass';
       testResults.push({ status: status, message: 'The test runs without any errors.' });
     });
-    if (allTestsPassed(testResults) && onAllTestsPassed) {
-      onAllTestsPassed();
+    if (allTestsPassed(testResults)) {
+      setAreAllTestsPassed(true);
+      if (onAllTestsPassed) {
+        onAllTestsPassed();
+      }
     }
     if (testResults.length > 0) {
       setSuites(testResults);
@@ -62,7 +66,8 @@ const useTestRunner = (
   return {
     suites,
     resetTestSuites: () => setSuites([]),
-    handleTestCode
+    handleTestCode,
+    areAllTestsPassed
   };
 };
 
