@@ -7,7 +7,7 @@ import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
 import { CodingProblemTest } from 'server/routers/codingProblem';
-import { getMasteryStatusByValue, MasteryStatus } from 'server/types';
+import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
 
 const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
   return masteredLearningStandards.map((mls) => mls.learning_standard_id);
@@ -44,8 +44,8 @@ const Practice = () => {
       onSuccess: (data) => {
         if (data) {
           if (data.length > 0) {
-            const masteryStatusIndex = data[0].mastery_status;
-            setMasteryStatus(getMasteryStatusByValue(masteryStatusIndex));
+            const masteryStatusKey = data[0].mastery_status;
+            setMasteryStatus(getMasteryStatusByKey(masteryStatusKey));
             const prob = data[0].coding_problems[0];
             setCodingProblem(prob);
             setProblemFetchTimestamp(Date.now());

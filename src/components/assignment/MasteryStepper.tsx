@@ -28,10 +28,9 @@ const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
 
 const MasteryStepper = ({ currentMasteryStatus }: Props) => {
   const steps = [MasteryStatus[MasteryStatus.Learned], MasteryStatus[MasteryStatus.Practiced], MasteryStatus[MasteryStatus.Mastered]];
-  const currentStepStage = currentMasteryStatus.valueOf() + 1;
 
   return (
-    <Stepper alternativeLabel activeStep={currentStepStage} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
+    <Stepper alternativeLabel activeStep={currentMasteryStatus} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
       {steps.map((label) => (
         <Step key={label}>
           <StepLabel StepIconComponent={StepIcon}>{label}</StepLabel>

@@ -20,3 +20,18 @@ export const getMasteryStatusByValue = (value: number) => {
       return MasteryStatus.Unattempted;
   }
 };
+
+export const getMasteryStatusByKey = (key: string) => {
+  switch (key) {
+    case 'Unattempted':
+      return MasteryStatus.Unattempted;
+    case 'Learned':
+      return MasteryStatus.Learned;
+    case 'Practiced':
+      return MasteryStatus.Practiced;
+    case 'Mastered':
+      return MasteryStatus.Mastered;
+    default:
+      return MasteryStatus.Unattempted;
+  }
+};
