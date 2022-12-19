@@ -9,10 +9,6 @@ import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteM
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
 
-const extractKnowledgeState = (masteredLearningStandards: any[]): number[] => {
-  return masteredLearningStandards.map((mls) => mls.learning_standard_id);
-};
-
 const Practice = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,13 +21,10 @@ const Practice = () => {
     throw new Error('User not found');
   }
 
-  //@TODO: we can remove setKnowledgeState
-  const [knowledgeState, setKnowledgeState] = useState<number[]>([]);
   const { refetch: refetchProblemsByDistance } = trpc.useQuery(
     [
       'engine.getProblemSetsByDistance',
       JSON.stringify({
-        learningStandards: knowledgeState,
         userId: user.id
       })
     ],

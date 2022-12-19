@@ -104,8 +104,10 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
   return sortedLearningStandards;
 };
 
-export const getProblemSetsByDistance = async (userId: string, userLearningStandards: number[]) => {
-  const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards);
+export const getProblemSetsByDistance = async (userId: string) => {
+  const sbClient = new SbClient();
+  const userLearningStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
+  const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards ? userLearningStandards : []);
   // group problems that share the same exact learning standards
   const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
     const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
@@ -160,9 +162,7 @@ export const engine = trpc
     input: z.string(),
     async resolve({ input }) {
       // TODO: get rid of passed in learning standards
-      const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      const sbClient = new SbClient();
-      const masteredStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
-      return (await getProblemSetsByDistance(userId, masteredStandards ? masteredStandards : []))?.filter((ps) => ps.distance > 0);
+      const { userId } = JSON.parse(input);
+      return (await getProblemSetsByDistance(userId))?.filter((ps) => ps.distance > 0);
     }
   });

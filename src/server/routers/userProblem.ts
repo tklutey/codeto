@@ -16,8 +16,7 @@ export const userProblem = trpc.router().mutation('submitProblemAttempt', {
     const sbClient = new SbClient();
     // update problem attempt history
     await sbClient.updateCodingProblemAttemptHistory(codingProblemId, userId, isCorrect);
-    const masteredStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
-    const problemSets = await getProblemSetsByDistance(userId, masteredStandards ? masteredStandards : []);
+    const problemSets = await getProblemSetsByDistance(userId);
     // find codingProblemId in problemSets
     const problemSet = problemSets.find((set: any) => set.coding_problems.find((problem: any) => problem.id === codingProblemId));
     if (getMasteryStatusByKey(problemSet.mastery_status) === MasteryStatus.Mastered) {
