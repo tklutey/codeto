@@ -49,19 +49,14 @@ const Practice = () => {
 
   const submitProblemAttempt = trpc.useMutation('userProblem.submitProblemAttempt');
 
-  const goToNextProblem = (isCorrect: boolean) => {
-    // @TODO: remove learningStandards
-    return (learningStandards: any[]) => {
-      return async () => {
-        setIsLoading(true);
-        await submitProblemAttempt.mutateAsync({
-          userId: user.id as string,
-          codingProblemId: codingProblem.id,
-          isCorrect
-        });
-        await refetchProblemsByDistance();
-      };
-    };
+  const goToNextProblem = async (isCorrect: boolean) => {
+    setIsLoading(true);
+    await submitProblemAttempt.mutateAsync({
+      userId: user.id as string,
+      codingProblemId: codingProblem.id,
+      isCorrect
+    });
+    await refetchProblemsByDistance();
   };
 
   // get mastery status index
@@ -89,7 +84,7 @@ const Practice = () => {
           solutionCode={solutionCode}
           tests={codingProblemTests as CodingProblemTest[]}
           youtubeTutorialUrl={youtubeTutorialUrl}
-          goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)(learningStandards)}
+          goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
           masteryStatus={masteryStatus}

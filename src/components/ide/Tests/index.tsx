@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { TestResult } from 'components/ide/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Tests = ({ handleRunTests, suites, testLimit }: Props) => {
   const [numTestRuns, setNumTestRuns] = useState<number>(0);
@@ -10,6 +10,12 @@ const Tests = ({ handleRunTests, suites, testLimit }: Props) => {
     }
     await handleRunTests();
   };
+
+  useEffect(() => {
+    if (testLimit && numTestRuns >= testLimit) {
+      console.log('ya done goofed');
+    }
+  }, [numTestRuns]);
   const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
 
   return (

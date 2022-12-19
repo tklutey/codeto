@@ -27,7 +27,8 @@ const IDE = (props: Props) => {
     setUserCode,
     registerResetEventHandler,
     onTerminalTextChange,
-    testLimit
+    testLimit,
+    onProblemComplete
   } = props;
   const [terminalError, setTerminalError] = useState<string>('');
   const [terminalHint, setTerminalHint] = useState<string>('');
@@ -156,5 +157,6 @@ type Props = {
   registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
   testLimit?: number;
+  onProblemComplete?: (correct: boolean) => Promise<void>;
 };
 export default IDE;

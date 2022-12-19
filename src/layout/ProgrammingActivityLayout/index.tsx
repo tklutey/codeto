@@ -43,12 +43,12 @@ const ProgrammingActivityLayout = (props: Props) => {
     resetEventHandlers.forEach((handler) => handler());
   };
   const handleGoToNextProblem = () => {
-    goToNextProblem(isProblemCorrect)();
+    goToNextProblem(isProblemCorrect);
     cleanupProblem();
   };
 
   const handleSkipProblem = () => {
-    goToNextProblem(false)();
+    goToNextProblem(false);
     cleanupProblem();
   };
 
@@ -115,7 +115,7 @@ type Props = {
   solutionCode?: string;
   tests?: CodingProblemTest[];
   youtubeTutorialUrl?: string;
-  goToNextProblem: (isCorrect: boolean) => () => void;
+  goToNextProblem: (isCorrect: boolean) => Promise<void>;
   isLoading: boolean;
   problemFetchTimestamp?: number;
   masteryStatus: MasteryStatus;
