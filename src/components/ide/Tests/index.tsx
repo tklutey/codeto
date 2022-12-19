@@ -15,11 +15,15 @@ const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLim
     if (testLimit && numTestRuns >= testLimit && !areAllTestsPassed && onTestLimitExceeded) {
       onTestLimitExceeded();
     }
-  }, [numTestRuns]);
+  }, [numTestRuns, areAllTestsPassed, onTestLimitExceeded, testLimit]);
 
-  useEffect(() => {
-    registerResetEventHandler(() => setNumTestRuns(0));
-  }, []);
+  useEffect(
+    () => {
+      registerResetEventHandler(() => setNumTestRuns(0));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
 
   return (

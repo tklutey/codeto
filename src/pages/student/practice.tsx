@@ -72,7 +72,6 @@ const Practice = () => {
         starting_code: startingCode,
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
-        learning_standards: learningStandards,
         coding_problem_tests: codingProblemTests
       } = problem;
       return (
