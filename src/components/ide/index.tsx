@@ -145,7 +145,7 @@ const IDE = (props: Props) => {
               testLimit={testLimit}
               areAllTestsPassed={areAllTestsPassed}
               onTestLimitExceeded={onProblemComplete ? () => onProblemComplete(false) : undefined}
-              registerResetEventHandler={registerResetEventHandler}
+              registerResetEventHandler={registerResetEventHandler ? registerResetEventHandler : () => {}}
             />
           )}
         </div>
@@ -163,7 +163,7 @@ type Props = {
   setIsProblemComplete?: (isComplete: boolean) => void;
   userCode?: string;
   setUserCode: (code: string) => void;
-  registerResetEventHandler: (handler: () => void) => void;
+  registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
   testLimit?: number;
   onProblemComplete?: (correct: boolean) => void;
