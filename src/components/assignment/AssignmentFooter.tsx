@@ -20,7 +20,7 @@ const FooterStrip = styled('footer')(({ theme }) => ({
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'
 }));
-const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, masteryStatus }: Props) => {
+const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, masteryStatus, allowShowSolution }: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
@@ -36,18 +36,20 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
         >
           Skip
         </Button>
-        <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
-          <Button
-            variant="outlined"
-            sx={{
-              margin: '14px'
-            }}
-            onClick={onShowSolutionClicked}
-          >
-            <HelpOutlineIcon fontSize={'small'} />
-            &nbsp;&nbsp;&nbsp;Solution
-          </Button>
-        </Tooltip>
+        {allowShowSolution && (
+          <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
+            <Button
+              variant="outlined"
+              sx={{
+                margin: '14px'
+              }}
+              onClick={onShowSolutionClicked}
+            >
+              <HelpOutlineIcon fontSize={'small'} />
+              &nbsp;&nbsp;&nbsp;Walkthrough
+            </Button>
+          </Tooltip>
+        )}
         <Button
           variant="contained"
           disabled={disabled}
@@ -72,6 +74,7 @@ type Props = {
   onSkipClicked?: () => void;
   onShowSolutionClicked?: () => void;
   masteryStatus: MasteryStatus;
+  allowShowSolution: boolean;
 };
 
 export default AssignmentFooter;
