@@ -38,7 +38,6 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   const handleShowSolution = () => {
     setShowSolution(true);
-    setIsProblemCorrect(false);
   };
 
   const cleanupProblem = () => {
