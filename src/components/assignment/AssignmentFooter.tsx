@@ -24,7 +24,7 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
   const theme = useTheme();
   return (
     <FooterStrip>
-      {masteryStatus && <MasteryStepper currentMasteryStatus={masteryStatus} />}
+      {masteryStatus !== undefined && masteryStatus !== null && <MasteryStepper currentMasteryStatus={masteryStatus} />}
       <ButtonStrip>
         <Button
           variant="contained"

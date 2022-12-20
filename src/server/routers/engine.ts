@@ -14,7 +14,7 @@ const calculateStreak = (sortedCodingProblems: any) => {
   const sortedAttemptHistory = attemptHistory?.sort((a: any, b: any) => {
     const aTimestamp = new Date(a.attempt_timestamp);
     const bTimestamp = new Date(b.attempt_timestamp);
-    return aTimestamp.getTime() - bTimestamp.getTime();
+    return bTimestamp.getTime() - aTimestamp.getTime();
   });
   let streak = 0;
   // get number of problems in a row that are correct
@@ -67,7 +67,8 @@ const sortProblems = (a: any, b: any) => {
 const sortProblemSets = (a: any, b: any) => {
   const isCurrentlyLearning = (problemSet: any) => {
     const masteryStatus = getMasteryStatusByKey(problemSet.mastery_status);
-    return masteryStatus !== MasteryStatus.Unattempted && masteryStatus !== MasteryStatus.Mastered;
+    const problemAttempts = problemSet.coding_problems.flatMap((cp: any) => cp.user_problem_attempt_history);
+    return problemAttempts.length > 0 && masteryStatus !== MasteryStatus.Mastered;
   };
   if (isCurrentlyLearning(a) && !isCurrentlyLearning(b)) return -1;
   if (!isCurrentlyLearning(a) && isCurrentlyLearning(b)) return 1;
@@ -144,7 +145,7 @@ export const getProblemSetsByDistance = async (userId: string) => {
       id: key,
       ...rest,
       coding_problems: sortedCodingProblems,
-      streak: calculateStreak(sortedCodingProblems),
+      streak: streak,
       mastery_status: masteryStatus.valueOf()
     };
   });
