@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
 import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
+import { problemSetOutputValidator } from 'server/pipeline/validators/problemSet';
 
 const streakToTargetDistance = (streak: number) => {
   return 2 ** streak;
@@ -163,8 +164,9 @@ export const engine = trpc
   .query('getProblemSetsByDistance', {
     input: z.string(),
     async resolve({ input }) {
-      // TODO: get rid of passed in learning standards
       const { userId } = JSON.parse(input);
-      return (await getProblemSetsByDistance(userId))?.filter((ps) => ps.distance > 0);
+      const problemSets = (await getProblemSetsByDistance(userId))?.filter((ps) => ps.distance > 0);
+      const validatedProblemSets = problemSetOutputValidator(problemSets);
+      return validatedProblemSets;
     }
   });
