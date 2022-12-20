@@ -1,9 +1,14 @@
 export const problemSetOutputValidator = (problemSets: any[]) => {
-  problemSets.forEach((ps) => {
-    const codingProblems = ps.coding_problems;
+  // iterate through problemSets with a for loop
+  let missingProblemsCount = 0;
+  for (let i = 0; i < problemSets.length; i++) {
+    const codingProblems = problemSets[i].coding_problems;
     if (codingProblems.length < 3) {
-      console.warn('Problem set ID ' + ps.id + ' has less than 3 problems');
+      missingProblemsCount++;
     }
-  });
+  }
+  if (missingProblemsCount > 0) {
+    console.warn(`There are ${missingProblemsCount} problem sets with less than 3 problems`);
+  }
   return problemSets;
 };
