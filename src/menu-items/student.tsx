@@ -30,12 +30,12 @@ interface StudentMenuProps {
 
 const student: StudentMenuProps = {
   id: 'student',
-  title: <FormattedMessage id="Student" />,
+  title: <FormattedMessage id="Student" defaultMessage={'Student'} />,
   type: 'group',
   children: [
     {
       id: 'dashboard',
-      title: <FormattedMessage id="Dashboard" />,
+      title: <FormattedMessage id="Dashboard" defaultMessage={'Dashboard'} />,
       type: 'item',
       url: '/student/dashboard',
       icon: icons.IconDashboard,
@@ -43,7 +43,7 @@ const student: StudentMenuProps = {
     },
     {
       id: 'practice',
-      title: <FormattedMessage id="Practice" />,
+      title: <FormattedMessage id="Practice" defaultMessage={'Practice'} />,
       type: 'item',
       url: '/student/practice',
       icon: icons.IconPencil,
@@ -51,7 +51,7 @@ const student: StudentMenuProps = {
     },
     {
       id: 'sandbox',
-      title: <FormattedMessage id="Sandbox" />,
+      title: <FormattedMessage id="Sandbox" defaultMessage={'Sandbox'} />,
       type: 'item',
       url: '/student/sandbox',
       icon: icons.Icon3dCubeSphere,

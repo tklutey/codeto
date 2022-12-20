@@ -18,7 +18,7 @@ const StudentDashboard = () => {
   const getChartData = (masteryData: any) => {
     return masteryData?.map((unitData: any) => {
       return {
-        key: unitData.unit_id,
+        key: unitData.id,
         name: unitData.unit_name,
         percentage: unitData.unit_mastery
       };
