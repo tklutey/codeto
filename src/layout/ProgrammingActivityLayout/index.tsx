@@ -22,7 +22,8 @@ const ProgrammingActivityLayout = (props: Props) => {
     isLoading,
     problemFetchTimestamp,
     currentProblemMasteryStatus,
-    submittedProblemMasteryStatus
+    submittedProblemMasteryStatus,
+    isAdaptiveMode
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -124,6 +125,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         onShowSolutionClicked={handleShowSolution}
         masteryStatus={currentProblemMasteryStatus}
         allowShowSolution={scaffoldingConfiguration ? scaffoldingConfiguration.hasSolution : true}
+        isAdaptiveMode={isAdaptiveMode}
       />
     </div>
   );
@@ -142,6 +144,7 @@ type Props = {
   problemFetchTimestamp?: number;
   currentProblemMasteryStatus?: MasteryStatus;
   submittedProblemMasteryStatus?: MasteryStatus;
+  isAdaptiveMode?: boolean;
 };
 
 export default ProgrammingActivityLayout;

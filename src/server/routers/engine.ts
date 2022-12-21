@@ -7,7 +7,7 @@ import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
 import { problemSetOutputValidator } from 'server/pipeline/validators/problemSet';
 
 const streakToTargetDistance = (streak: number) => {
-  return 2 ** streak;
+  return 2 ** Math.floor(streak / 3);
 };
 
 const calculateStreak = (sortedCodingProblems: any) => {
@@ -83,7 +83,6 @@ const sortProblemSets = (a: any, b: any) => {
 const getProblemsByDistance = async (userId: string, userLearningStandards: number[]) => {
   const sbClient = new SbClient();
   const currentStreak = await getCurrentUserStreak(userId);
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   const targetDistance = streakToTargetDistance(currentStreak);
   const allCodingProblems = await sbClient.getAllCodingProblems(userId);
   const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
@@ -93,14 +92,13 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
       const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
       const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
       const distance = learning_standards.length - intersection.length;
-      // const distanceFromTarget = Math.abs(targetDistance - distance);
-      // TODO: turning off adaptive learning for now
-      const distanceFromTarget = distance;
+      const distanceFromTarget = Math.abs(targetDistance - distance);
       return {
         ...rest,
         learning_standards,
         distance,
-        distanceFromTarget
+        distanceFromTarget,
+        isAdaptiveMode: targetDistance > 1
       };
     })
     .sort(sortProblems);
@@ -113,7 +111,7 @@ export const getProblemSetsByDistance = async (userId: string) => {
   const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards ? userLearningStandards : []);
   // group problems that share the same exact learning standards
   const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
-    const { learning_standards, distance, distanceFromTarget, ...rest } = problem;
+    const { learning_standards, distance, distanceFromTarget, isAdaptiveMode, ...rest } = problem;
     // const learningStandardsString = JSON.stringify(learning_standards);
     const learningStandards = JSON.stringify(learning_standards.map((ls: any) => ls.standard_id).sort());
     const cp = {
@@ -130,6 +128,7 @@ export const getProblemSetsByDistance = async (userId: string) => {
         coding_problems: [cp],
         distance,
         distanceFromTarget,
+        isAdaptiveMode,
         learning_standards
       };
     }

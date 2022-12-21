@@ -18,6 +18,7 @@ const Practice = () => {
   const [submittedProblemMasteryStatus, setSubmittedProblemMasteryStatus] = useState<MasteryStatus>(MasteryStatus.Unattempted);
   const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
+  const [isAdaptiveMode, setIsAdaptiveMode] = useState(false);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
@@ -37,6 +38,7 @@ const Practice = () => {
             setCurrentProblemMasteryStatus(getMasteryStatusByKey(masteryStatusKey));
             const prob = data[0].coding_problems[0];
             setCodingProblem(prob);
+            setIsAdaptiveMode(data[0].isAdaptiveMode);
             setProblemFetchTimestamp(Date.now());
           } else {
             setIsAllProblemsComplete(true);
@@ -88,6 +90,7 @@ const Practice = () => {
           problemFetchTimestamp={problemFetchTimestamp}
           currentProblemMasteryStatus={currentProblemMasteryStatus}
           submittedProblemMasteryStatus={submittedProblemMasteryStatus}
+          isAdaptiveMode={isAdaptiveMode}
         />
       );
     }

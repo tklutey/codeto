@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Chip } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
@@ -20,10 +20,19 @@ const FooterStrip = styled('footer')(({ theme }) => ({
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'
 }));
-const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSolutionClicked, masteryStatus, allowShowSolution }: Props) => {
+const AssignmentFooter = ({
+  disabled,
+  onNextClicked,
+  onSkipClicked,
+  onShowSolutionClicked,
+  masteryStatus,
+  allowShowSolution,
+  isAdaptiveMode
+}: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
+      {isAdaptiveMode && <Chip label="Adaptive Mode" color="primary" />}
       {masteryStatus !== undefined && masteryStatus !== null && <MasteryStepper currentMasteryStatus={masteryStatus} />}
       <ButtonStrip>
         <Button
@@ -73,6 +82,7 @@ type Props = {
   onShowSolutionClicked?: () => void;
   masteryStatus?: MasteryStatus;
   allowShowSolution: boolean;
+  isAdaptiveMode?: boolean;
 };
 
 export default AssignmentFooter;
