@@ -1,10 +1,11 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Button, Chip } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
 import { MasteryStatus } from 'server/types';
+import AdaptiveModeToggle from 'components/assignment/AdaptiveModeToggle';
 
 const FooterStrip = styled('footer')(({ theme }) => ({
   width: 'calc(100% + 40px)',
@@ -33,19 +34,9 @@ const AssignmentFooter = ({
   const theme = useTheme();
   return (
     <FooterStrip>
-      {isAdaptiveMode && <Chip label="Adaptive Mode" color="primary" />}
+      <AdaptiveModeToggle isAdaptiveMode={isAdaptiveMode} onSkipClicked={onSkipClicked} />
       {masteryStatus !== undefined && masteryStatus !== null && <MasteryStepper currentMasteryStatus={masteryStatus} />}
       <ButtonStrip>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            margin: '14px'
-          }}
-          onClick={onSkipClicked}
-        >
-          Skip
-        </Button>
         {allowShowSolution && (
           <Button
             variant="outlined"
