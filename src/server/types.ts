@@ -1,3 +1,9 @@
+export enum ProblemAttemptStatus {
+  Correct = 'correct',
+  Incorrect = 'incorrect',
+  Skipped = 'skipped'
+}
+
 // Create ordered enum call mastery status
 export enum MasteryStatus {
   Unattempted = 0,

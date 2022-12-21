@@ -129,7 +129,7 @@ export default class SbClient {
     return fullStandardsJoin;
   }
 
-  async updateCodingProblemAttemptHistory(problemId: number, userId: string, isCorrect: boolean) {
+  async updateCodingProblemAttemptHistory(problemId: number, userId: string, isCorrect: boolean, problemAttemptStatus: string) {
     const timestamp = new Date().toISOString();
     const { data } = await this.supabaseClient
       .from('user_problem_attempt_history')
@@ -137,7 +137,8 @@ export default class SbClient {
         problem_id: problemId,
         user_id: userId,
         is_successful_attempt: isCorrect,
-        attempt_timestamp: timestamp
+        attempt_timestamp: timestamp,
+        attempt_status: problemAttemptStatus
       })
       .select();
     return data;

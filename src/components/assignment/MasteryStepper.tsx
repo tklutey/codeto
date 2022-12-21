@@ -4,18 +4,16 @@ import { styled } from '@mui/material/styles';
 import { MasteryStatus } from 'server/types';
 
 const StyledStepLabel = styled(StepLabel)(({ theme }) => ({
-  [`& .${stepLabelClasses.label}`]: {
+  [`&.${stepLabelClasses.label}`]: {
     marginTop: '5px'
   },
-
   [`&.${stepLabelClasses.label}`]: {
-    [`& .${stepLabelClasses.alternativeLabel}`]: {
+    [`&.${stepLabelClasses.alternativeLabel}`]: {
       marginTop: '5px'
     }
   }
 }));
 
-console.log(StyledStepLabel);
 const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 10,
