@@ -14,7 +14,8 @@ const FooterStrip = styled('footer')(({ theme }) => ({
   justifyContent: 'space-between',
   marginLeft: '-20px',
   marginBottom: '-20px',
-  marginRight: '-20px'
+  marginRight: '-20px',
+  alignItems: 'center'
 }));
 
 const ButtonStrip = styled(Box)(({ theme }) => ({
