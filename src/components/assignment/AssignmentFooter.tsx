@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Button, Tooltip } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
@@ -37,18 +37,16 @@ const AssignmentFooter = ({ disabled, onNextClicked, onSkipClicked, onShowSoluti
           Skip
         </Button>
         {allowShowSolution && (
-          <Tooltip title={'Using the solution means you will not get credit for this problem.'}>
-            <Button
-              variant="outlined"
-              sx={{
-                margin: '14px'
-              }}
-              onClick={onShowSolutionClicked}
-            >
-              <HelpOutlineIcon fontSize={'small'} />
-              &nbsp;&nbsp;&nbsp;Walkthrough
-            </Button>
-          </Tooltip>
+          <Button
+            variant="outlined"
+            sx={{
+              margin: '14px'
+            }}
+            onClick={onShowSolutionClicked}
+          >
+            <HelpOutlineIcon fontSize={'small'} />
+            &nbsp;&nbsp;&nbsp;Walkthrough
+          </Button>
         )}
         <Button
           variant="contained"
