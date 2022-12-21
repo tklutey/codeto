@@ -6,6 +6,8 @@ import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
 import { MasteryStatus } from 'server/types';
 import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
+import { Alert, Snackbar } from '@mui/material';
+import useSnackbar from 'hooks/useSnackbar';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const {
@@ -19,16 +21,25 @@ const ProgrammingActivityLayout = (props: Props) => {
     goToNextProblem,
     isLoading,
     problemFetchTimestamp,
-    masteryStatus
+    currentProblemMasteryStatus,
+    submittedProblemMasteryStatus
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [isProblemCorrect, setIsProblemCorrect] = useState(true);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
-  const scaffoldingConfiguration: ScaffoldingConfiguration | undefined = masteryStatus
-    ? getScaffoldingConfiguration(masteryStatus)
+  const scaffoldingConfiguration: ScaffoldingConfiguration | undefined = currentProblemMasteryStatus
+    ? getScaffoldingConfiguration(currentProblemMasteryStatus)
     : undefined;
+  useSnackbar();
+  const { isSnackbarOpen: masteredProblemSnackbarOpen, setIsSnackbarOpen: setMasteredProblemSnackbarOpen, handleClose } = useSnackbar();
+
+  useEffect(() => {
+    if (submittedProblemMasteryStatus === MasteryStatus.Mastered) {
+      setMasteredProblemSnackbarOpen(true);
+    }
+  }, [submittedProblemMasteryStatus]);
 
   useEffect(() => {
     setUserCode(startingCode);
@@ -100,12 +111,18 @@ const ProgrammingActivityLayout = (props: Props) => {
           onProblemComplete={handleProblemComplete}
         />
       </div>
+
+      <Snackbar open={masteredProblemSnackbarOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={'success'} sx={{ width: '100%' }}>
+          {'Skill Mastered'}
+        </Alert>
+      </Snackbar>
       <AssignmentFooter
         disabled={!canMoveOnToNextProblem}
         onNextClicked={handleGoToNextProblem}
         onSkipClicked={() => handleProblemComplete(false)}
         onShowSolutionClicked={handleShowSolution}
-        masteryStatus={masteryStatus}
+        masteryStatus={currentProblemMasteryStatus}
         allowShowSolution={scaffoldingConfiguration ? scaffoldingConfiguration.hasSolution : true}
       />
     </div>
@@ -123,7 +140,8 @@ type Props = {
   goToNextProblem?: (isCorrect: boolean) => Promise<void>;
   isLoading: boolean;
   problemFetchTimestamp?: number;
-  masteryStatus?: MasteryStatus;
+  currentProblemMasteryStatus?: MasteryStatus;
+  submittedProblemMasteryStatus?: MasteryStatus;
 };
 
 export default ProgrammingActivityLayout;

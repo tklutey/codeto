@@ -14,7 +14,8 @@ const Practice = () => {
   const [isLoading, setIsLoading] = useState(true);
   useOpenNavDrawer();
   const [codingProblem, setCodingProblem] = useState<any>(null);
-  const [masteryStatus, setMasteryStatus] = useState<MasteryStatus>(MasteryStatus.Unattempted);
+  const [currentProblemMasteryStatus, setCurrentProblemMasteryStatus] = useState<MasteryStatus>(MasteryStatus.Unattempted);
+  const [submittedProblemMasteryStatus, setSubmittedProblemMasteryStatus] = useState<MasteryStatus>(MasteryStatus.Unattempted);
   const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
   const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
@@ -33,7 +34,7 @@ const Practice = () => {
         if (data) {
           if (data.length > 0) {
             const masteryStatusKey = data[0].mastery_status;
-            setMasteryStatus(getMasteryStatusByKey(masteryStatusKey));
+            setCurrentProblemMasteryStatus(getMasteryStatusByKey(masteryStatusKey));
             const prob = data[0].coding_problems[0];
             setCodingProblem(prob);
             setProblemFetchTimestamp(Date.now());
@@ -51,15 +52,14 @@ const Practice = () => {
 
   const goToNextProblem = async (isCorrect: boolean) => {
     setIsLoading(true);
-    await submitProblemAttempt.mutateAsync({
+    const data = await submitProblemAttempt.mutateAsync({
       userId: user.id as string,
       codingProblemId: codingProblem.id,
       isCorrect
     });
+    setSubmittedProblemMasteryStatus(getMasteryStatusByKey(data.mastery_status));
     await refetchProblemsByDistance();
   };
-
-  // get mastery status index
 
   const getPageContent = (problem: any) => {
     if (isAllProblemsComplete) {
@@ -86,7 +86,8 @@ const Practice = () => {
           goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
-          masteryStatus={masteryStatus}
+          currentProblemMasteryStatus={currentProblemMasteryStatus}
+          submittedProblemMasteryStatus={submittedProblemMasteryStatus}
         />
       );
     }
