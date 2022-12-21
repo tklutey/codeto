@@ -1,6 +1,13 @@
-import { FormControlLabel, Switch } from '@mui/material';
+import { FormControlLabel, formControlLabelClasses, Switch } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 
+const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
+  [`&.${formControlLabelClasses.root}`]: {
+    marginLeft: '0px',
+    minWidth: '170px'
+  }
+}));
 const AdaptiveModeToggle = ({ isAdaptiveMode, onSkipClicked }: Props) => {
   const [checked, setChecked] = useState(isAdaptiveMode);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +21,10 @@ const AdaptiveModeToggle = ({ isAdaptiveMode, onSkipClicked }: Props) => {
     setChecked(isAdaptiveMode);
   }, [isAdaptiveMode]);
   return (
-    <FormControlLabel control={<Switch checked={checked} disabled={!isAdaptiveMode} onChange={handleChange} />} label={'Adaptive Mode'} />
+    <StyledFormControlLabel
+      control={<Switch checked={checked} disabled={!isAdaptiveMode} onChange={handleChange} />}
+      label={'Adaptive Mode'}
+    />
   );
 };
 

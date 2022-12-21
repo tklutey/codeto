@@ -1,18 +1,7 @@
 import React from 'react';
-import { Step, StepConnector, stepConnectorClasses, StepIcon, StepLabel, stepLabelClasses, Stepper } from '@mui/material';
+import { Step, StepConnector, stepConnectorClasses, StepIcon, StepLabel, Stepper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MasteryStatus } from 'server/types';
-
-const StyledStepLabel = styled(StepLabel)(({ theme }) => ({
-  [`&.${stepLabelClasses.label}`]: {
-    marginTop: '5px'
-  },
-  [`&.${stepLabelClasses.label}`]: {
-    [`&.${stepLabelClasses.alternativeLabel}`]: {
-      marginTop: '5px'
-    }
-  }
-}));
 
 const StyledStepConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -44,7 +33,9 @@ const MasteryStepper = ({ currentMasteryStatus }: Props) => {
     <Stepper alternativeLabel activeStep={currentMasteryStatus} connector={<StyledStepConnector />} sx={{ width: '80%' }}>
       {steps.map((label) => (
         <Step key={label}>
-          <StyledStepLabel StepIconComponent={StepIcon}>{label}</StyledStepLabel>
+          <StepLabel StepIconComponent={StepIcon} componentsProps={{ label: { style: { marginTop: '5px' } } }}>
+            {label}
+          </StepLabel>
         </Step>
       ))}
     </Stepper>
