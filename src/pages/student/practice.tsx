@@ -7,7 +7,7 @@ import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
 import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
 import { CodingProblemTest } from 'server/routers/codingProblem';
-import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
+import { getMasteryStatusByKey, MasteryStatus, ProblemAttemptStatus } from 'server/types';
 
 const Practice = () => {
   const { user } = useAuth();
@@ -52,12 +52,12 @@ const Practice = () => {
 
   const submitProblemAttempt = trpc.useMutation('userProblem.submitProblemAttempt');
 
-  const goToNextProblem = async (isCorrect: boolean) => {
+  const goToNextProblem = async (problemAttemptStatus: ProblemAttemptStatus) => {
     setIsLoading(true);
     const data = await submitProblemAttempt.mutateAsync({
       userId: user.id as string,
       codingProblemId: codingProblem.id,
-      isCorrect
+      problemAttemptStatus
     });
     setSubmittedProblemMasteryStatus(getMasteryStatusByKey(data.mastery_status));
     await refetchProblemsByDistance();
@@ -85,7 +85,7 @@ const Practice = () => {
           solutionCode={solutionCode}
           tests={codingProblemTests as CodingProblemTest[]}
           youtubeTutorialUrl={youtubeTutorialUrl}
-          goToNextProblem={(isCorrect: boolean) => goToNextProblem(isCorrect)}
+          goToNextProblem={(problemAttemptStatus: ProblemAttemptStatus) => goToNextProblem(problemAttemptStatus)}
           isLoading={isLoading}
           problemFetchTimestamp={problemFetchTimestamp}
           currentProblemMasteryStatus={currentProblemMasteryStatus}

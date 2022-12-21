@@ -4,7 +4,7 @@ import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import SolutionModal from 'components/assignment/SolutionModal';
-import { MasteryStatus } from 'server/types';
+import { MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
 import { Alert, Snackbar } from '@mui/material';
 import useSnackbar from 'hooks/useSnackbar';
@@ -28,7 +28,7 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
-  const [isProblemCorrect, setIsProblemCorrect] = useState(true);
+  const [problemAttemptStatus, setProblemAttemptStatus] = useState<ProblemAttemptStatus>(ProblemAttemptStatus.Correct);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
   const scaffoldingConfiguration: ScaffoldingConfiguration | undefined = currentProblemMasteryStatus
     ? getScaffoldingConfiguration(currentProblemMasteryStatus)
@@ -44,7 +44,7 @@ const ProgrammingActivityLayout = (props: Props) => {
 
   useEffect(() => {
     setUserCode(startingCode);
-    setIsProblemCorrect(true);
+    setProblemAttemptStatus(ProblemAttemptStatus.Correct);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [problemFetchTimestamp]);
 
@@ -56,16 +56,15 @@ const ProgrammingActivityLayout = (props: Props) => {
     resetEventHandlers.forEach((handler) => handler());
   };
 
-  // @TODO: make sure mastery stages work with skipping/incorrect
-  const handleProblemComplete = (correct: boolean) => {
+  const handleProblemComplete = (inputProblemAttemptStatus: ProblemAttemptStatus) => {
     if (goToNextProblem) {
-      goToNextProblem(correct);
+      goToNextProblem(inputProblemAttemptStatus);
       cleanupProblem();
     }
   };
 
   const handleGoToNextProblem = () => {
-    handleProblemComplete(isProblemCorrect);
+    handleProblemComplete(problemAttemptStatus);
   };
 
   const registerResetEventHandler = (handler: () => void) => {
@@ -121,7 +120,7 @@ const ProgrammingActivityLayout = (props: Props) => {
       <AssignmentFooter
         disabled={!canMoveOnToNextProblem}
         onNextClicked={handleGoToNextProblem}
-        onSkipClicked={() => handleProblemComplete(false)}
+        onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
         onShowSolutionClicked={handleShowSolution}
         masteryStatus={currentProblemMasteryStatus}
         allowShowSolution={scaffoldingConfiguration ? scaffoldingConfiguration.hasSolution : true}
@@ -139,7 +138,7 @@ type Props = {
   solutionCode?: string;
   tests?: CodingProblemTest[];
   youtubeTutorialUrl?: string;
-  goToNextProblem?: (isCorrect: boolean) => Promise<void>;
+  goToNextProblem?: (problemAttemptStatus: ProblemAttemptStatus) => Promise<void>;
   isLoading: boolean;
   problemFetchTimestamp?: number;
   currentProblemMasteryStatus?: MasteryStatus;

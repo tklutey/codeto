@@ -8,15 +8,14 @@ export const userProblem = trpc.router().mutation('submitProblemAttempt', {
   input: z.object({
     userId: z.string(),
     codingProblemId: z.number(),
-    isCorrect: z.boolean(),
     problemAttemptStatus: z.string()
   }),
   async resolve({ input }) {
     // Accept: userId, problemId, isSuccessfulAttempt => update userProblemAttemptHistory
-    const { userId, codingProblemId, isCorrect, problemAttemptStatus } = input;
+    const { userId, codingProblemId, problemAttemptStatus } = input;
     const sbClient = new SbClient();
     // update problem attempt history
-    await sbClient.updateCodingProblemAttemptHistory(codingProblemId, userId, isCorrect, problemAttemptStatus);
+    await sbClient.updateCodingProblemAttemptHistory(codingProblemId, userId, problemAttemptStatus);
     const problemSets = await getProblemSetsByDistance(userId);
     // find codingProblemId in problemSets
     const problemSet = problemSets.find((set: any) => set.coding_problems.find((problem: any) => problem.id === codingProblemId));

@@ -6,6 +6,7 @@ import { trpc } from 'utils/trpc';
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import RunButton from 'components/ide/RunButton';
 import useTestRunner from 'hooks/useTestRunner';
+import { ProblemAttemptStatus } from 'server/types';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
@@ -144,7 +145,7 @@ const IDE = (props: Props) => {
               handleRunTests={handleTestCode}
               testLimit={testLimit}
               areAllTestsPassed={areAllTestsPassed}
-              onTestLimitExceeded={onProblemComplete ? () => onProblemComplete(false) : undefined}
+              onTestLimitExceeded={onProblemComplete ? () => onProblemComplete(ProblemAttemptStatus.Incorrect) : undefined}
               registerResetEventHandler={registerResetEventHandler ? registerResetEventHandler : () => {}}
             />
           )}
@@ -166,6 +167,6 @@ type Props = {
   registerResetEventHandler?: (handler: () => void) => void;
   onTerminalTextChange?: (terminalText: string) => void;
   testLimit?: number;
-  onProblemComplete?: (correct: boolean) => void;
+  onProblemComplete?: (problemAttemptStatus: ProblemAttemptStatus) => void;
 };
 export default IDE;
