@@ -3,7 +3,7 @@ import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCurrentUserStreak } from 'server/routers/userHistory';
 import { transformCodingProblem } from './util';
-import { getMasteryStatusByKey, MasteryStatus } from 'server/types';
+import { getMasteryStatusByKey, MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { problemSetOutputValidator } from 'server/pipeline/validators/problemSet';
 
 const streakToTargetDistance = (streak: number) => {
@@ -69,7 +69,16 @@ const sortProblemSets = (a: any, b: any) => {
   const isCurrentlyLearning = (problemSet: any) => {
     const masteryStatus = getMasteryStatusByKey(problemSet.mastery_status);
     const problemAttempts = problemSet.coding_problems.flatMap((cp: any) => cp.user_problem_attempt_history);
-    return problemAttempts.length > 0 && masteryStatus !== MasteryStatus.Mastered;
+    const mostRecentAttempt = problemAttempts.sort((a: any, b: any) => {
+      const aTimestamp = new Date(a.attempt_timestamp);
+      const bTimestamp = new Date(b.attempt_timestamp);
+      return bTimestamp.getTime() - aTimestamp.getTime();
+    })[0];
+    return (
+      problemAttempts.length > 0 &&
+      masteryStatus !== MasteryStatus.Mastered &&
+      mostRecentAttempt.attempt_status !== ProblemAttemptStatus.Skipped
+    );
   };
   if (isCurrentlyLearning(a) && !isCurrentlyLearning(b)) return -1;
   if (!isCurrentlyLearning(a) && isCurrentlyLearning(b)) return 1;
