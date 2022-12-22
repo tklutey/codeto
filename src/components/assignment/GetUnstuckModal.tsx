@@ -32,9 +32,7 @@ const GetUnstuckModal = (props: Props) => {
           Get Unstuck
         </Typography>
         <Box display={'flex'} height={'100%'} width={'100%'}>
-          <ContentBox>
-            <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />
-          </ContentBox>
+          <ContentBox>{youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}</ContentBox>
           <ContentBox>
             <ChatHelp />
           </ContentBox>
@@ -47,7 +45,7 @@ const GetUnstuckModal = (props: Props) => {
 type Props = {
   isOpen: boolean;
   handleClose: () => void;
-  youtubeTutorialUrl: string;
+  youtubeTutorialUrl?: string | undefined;
 };
 
 export default GetUnstuckModal;
