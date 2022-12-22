@@ -1,4 +1,4 @@
-import { Box, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { Box, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from 'react';
 import { trpc } from 'utils/trpc';
@@ -19,6 +19,15 @@ const ChatHelp = () => {
     setChatResponse('Loading...');
     await refetch();
   };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChatMessage(event.target.value);
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  };
   return (
     <Box width={'100%'}>
       <FormControl sx={{ m: 1, width: '100%' }}>
@@ -32,12 +41,18 @@ const ChatHelp = () => {
               </IconButton>
             </InputAdornment>
           }
-          label="Amount"
+          label="Question"
           value={chatMessage}
-          onChange={(event) => setChatMessage(event.target.value)}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={'How do I print text to the console?'}
         />
       </FormControl>
-      {chatResponse && <p>{chatResponse}</p>}
+      {chatResponse && (
+        <Box sx={{ marginX: '15px' }}>
+          <Typography variant={'body2'}> {chatResponse}</Typography>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -25,7 +25,7 @@ export default class GPTClient {
     console.log(question);
     const gptResponse = await this.openAIClient.complete({
       engine: 'text-davinci-003',
-      prompt: `Q: ${question}\nA:`,
+      prompt: `Q: In Java, ${question}\nA:`,
       maxTokens: 512,
       temperature: 0,
       stream: false
