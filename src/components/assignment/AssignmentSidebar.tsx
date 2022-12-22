@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
-import { Skeleton } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
+import GetUnstuckModal from 'components/assignment/GetUnstuckModal';
 
 const ColumnFlexDiv = styled('div')({
   display: 'flex',
@@ -27,6 +28,7 @@ const Container = styled('div')<ContainerProps>((props) => ({
 
 const AssignmentSidebar = (props: Props) => {
   const { assignmentTitle, assignmentDescription, youtubeTutorialUrl, height, width, isLoading } = props;
+  const [isGetUnstuckModalOpen, setIsGetUnstuckModalOpen] = useState(false);
   if (isLoading) {
     return (
       <Container width={width} height={height}>
@@ -45,20 +47,28 @@ const AssignmentSidebar = (props: Props) => {
           <ReactMarkdown children={assignmentDescription} />
         </div>
       </ColumnFlexDiv>
-      <ColumnFlexDiv style={{ height: '30%' }}>
-        <div style={{ height: '25%' }}>
-          <h2>Get Unstuck</h2>
-        </div>
-        <iframe
-          src={youtubeTutorialUrl}
-          width="100%"
-          height="75%"
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </ColumnFlexDiv>
+      <GetUnstuckModal
+        isOpen={isGetUnstuckModalOpen}
+        handleClose={() => setIsGetUnstuckModalOpen(false)}
+        youtubeTutorialUrl={youtubeTutorialUrl}
+      />
+      <Button variant="contained" onClick={() => setIsGetUnstuckModalOpen(true)}>
+        Get Unstuck
+      </Button>
+      {/*<ColumnFlexDiv style={{ height: '30%' }}>*/}
+      {/*  <div style={{ height: '25%' }}>*/}
+      {/*    <h2>Get Unstuck</h2>*/}
+      {/*  </div>*/}
+      {/*  <iframe*/}
+      {/*    src={youtubeTutorialUrl}*/}
+      {/*    width="100%"*/}
+      {/*    height="75%"*/}
+      {/*    title="YouTube video player"*/}
+      {/*    frameBorder="0"*/}
+      {/*    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"*/}
+      {/*    allowFullScreen*/}
+      {/*  ></iframe>*/}
+      {/*</ColumnFlexDiv>*/}
     </Container>
   );
 };
