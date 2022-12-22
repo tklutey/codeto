@@ -40,7 +40,7 @@ const ProgrammingActivityLayout = (props: Props) => {
     if (submittedProblemMasteryStatus === MasteryStatus.Mastered) {
       setMasteredProblemSnackbarOpen(true);
     }
-  }, [submittedProblemMasteryStatus]);
+  }, [submittedProblemMasteryStatus, setMasteredProblemSnackbarOpen]);
 
   useEffect(() => {
     setUserCode(startingCode);

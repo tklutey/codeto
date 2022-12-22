@@ -69,10 +69,10 @@ const sortProblemSets = (a: any, b: any) => {
   const isCurrentlyLearning = (problemSet: any) => {
     const masteryStatus = getMasteryStatusByKey(problemSet.mastery_status);
     const problemAttempts = problemSet.coding_problems.flatMap((cp: any) => cp.user_problem_attempt_history);
-    const mostRecentAttempt = problemAttempts.sort((a: any, b: any) => {
-      const aTimestamp = new Date(a.attempt_timestamp);
-      const bTimestamp = new Date(b.attempt_timestamp);
-      return bTimestamp.getTime() - aTimestamp.getTime();
+    const mostRecentAttempt = problemAttempts.sort((first: any, second: any) => {
+      const firstTimestamp = new Date(first.attempt_timestamp);
+      const secondTimestamp = new Date(second.attempt_timestamp);
+      return secondTimestamp.getTime() - firstTimestamp.getTime();
     })[0];
     return (
       problemAttempts.length > 0 &&
