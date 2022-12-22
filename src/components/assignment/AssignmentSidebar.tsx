@@ -26,8 +26,15 @@ const Container = styled('div')<ContainerProps>((props) => ({
   justifyContent: 'space-between'
 }));
 
-const AssignmentSidebar = (props: Props) => {
-  const { assignmentTitle, assignmentDescription, youtubeTutorialUrl, height, width, isLoading } = props;
+const AssignmentSidebar = ({
+  assignmentTitle,
+  assignmentDescription,
+  youtubeTutorialUrl,
+  height,
+  width,
+  isLoading,
+  hasGetUnstuck
+}: Props) => {
   const [isGetUnstuckModalOpen, setIsGetUnstuckModalOpen] = useState(false);
   if (isLoading) {
     return (
@@ -52,9 +59,11 @@ const AssignmentSidebar = (props: Props) => {
         handleClose={() => setIsGetUnstuckModalOpen(false)}
         youtubeTutorialUrl={youtubeTutorialUrl}
       />
-      <Button variant="contained" onClick={() => setIsGetUnstuckModalOpen(true)}>
-        Get Unstuck
-      </Button>
+      {hasGetUnstuck && (
+        <Button variant="contained" onClick={() => setIsGetUnstuckModalOpen(true)}>
+          Get Unstuck
+        </Button>
+      )}
     </Container>
   );
 };
@@ -66,6 +75,7 @@ type Props = {
   width: string;
   height: string;
   isLoading: boolean;
+  hasGetUnstuck?: boolean;
 };
 
 export default AssignmentSidebar;

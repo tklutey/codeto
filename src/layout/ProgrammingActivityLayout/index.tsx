@@ -96,6 +96,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           width={'20%'}
           height={'100%'}
           isLoading={isLoading}
+          hasGetUnstuck={scaffoldingConfiguration ? scaffoldingConfiguration.hasGetUnstuck : true}
         />
         <IDE
           width={'80%'}
