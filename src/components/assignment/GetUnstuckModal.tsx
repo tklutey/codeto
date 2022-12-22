@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import ChatHelp from 'components/assignment/ChatHelp';
 import { styled } from '@mui/material/styles';
+import VideoPlayer from 'components/assignment/VideoPlayer';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -32,15 +33,7 @@ const GetUnstuckModal = (props: Props) => {
         </Typography>
         <Box display={'flex'} height={'100%'} width={'100%'}>
           <ContentBox>
-            <iframe
-              src={youtubeTutorialUrl}
-              width="100%"
-              height="90%"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />
           </ContentBox>
           <ContentBox>
             <ChatHelp />
