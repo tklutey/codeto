@@ -80,12 +80,12 @@ export const codingProblem = trpc
     input: z.object({
       problemId: z.number(),
       userId: z.string(),
-      isCorrect: z.boolean()
+      problemAttemptStatus: z.string()
     }),
     async resolve({ input }) {
-      const { problemId, userId, isCorrect } = input;
+      const { problemId, userId, problemAttemptStatus } = input;
       const sbClient = new SbClient();
-      const result = await sbClient.updateCodingProblemAttemptHistory(problemId, userId, isCorrect);
+      const result = await sbClient.updateCodingProblemAttemptHistory(problemId, userId, problemAttemptStatus);
       return result;
     }
   });
