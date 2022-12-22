@@ -20,4 +20,17 @@ export default class GPTClient {
 
     return gptResponse.data?.choices[0]?.text;
   };
+
+  askQuestion = async (question: string) => {
+    console.log(question);
+    const gptResponse = await this.openAIClient.complete({
+      engine: 'text-davinci-003',
+      prompt: `Q: ${question}\nA:`,
+      maxTokens: 512,
+      temperature: 0,
+      stream: false
+    });
+
+    return gptResponse.data?.choices[0]?.text;
+  };
 }
