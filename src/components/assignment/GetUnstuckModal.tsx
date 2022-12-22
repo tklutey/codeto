@@ -1,7 +1,7 @@
 import Modal from '@mui/material/Modal';
-import { Box, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
-import SendIcon from '@mui/icons-material/Send';
+import ChatHelp from 'components/assignment/ChatHelp';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,20 +33,7 @@ const GetUnstuckModal = (props: Props) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
-          <FormControl sx={{ m: 1, width: '50%' }}>
-            <InputLabel htmlFor="outlined-adornment-amount">Ask a question</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-amount"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={() => console.log('click')}>
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Amount"
-            />
-          </FormControl>
+          <ChatHelp />
         </Box>
       </Box>
     </Modal>
