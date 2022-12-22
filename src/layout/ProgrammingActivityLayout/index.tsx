@@ -109,6 +109,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           registerResetEventHandler={registerResetEventHandler}
           testLimit={scaffoldingConfiguration ? scaffoldingConfiguration.testLimit : undefined}
           onProblemComplete={handleProblemComplete}
+          isLoading={isLoading}
         />
       </div>
 
