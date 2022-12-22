@@ -19,7 +19,7 @@ const StudentDashboard = () => {
     return masteryData?.map((unitData: any) => {
       return {
         key: unitData.id,
-        name: unitData.unit_name,
+        name: `Unit ${unitData.unit_sequence}: ${unitData.unit_name}`,
         percentage: unitData.unit_mastery
       };
     });
@@ -43,11 +43,12 @@ const StudentDashboard = () => {
     const { standards } = masteryData[index];
     // group standards into distinct topics
     const topics = standards.reduce((acc: any, standard: any) => {
-      const { topic_id, topic_description } = standard;
+      const { topic_id, topic_description, topic_code } = standard;
       if (!acc[topic_id]) {
         acc[topic_id] = {
           topic_id,
           topic_description,
+          topic_code,
           standards: []
         };
       }
@@ -63,11 +64,13 @@ const StudentDashboard = () => {
       const percentageRounded = Math.round(percentage);
       return {
         key: key,
-        name: value.topic_description,
-        percentage: percentageRounded
+        name: `${value.topic_code}: ${value.topic_description}`,
+        percentage: percentageRounded,
+        sortIndex: parseFloat(value.topic_code)
       };
     });
-    setChartData(topicsFormatted);
+    const sortedTopics = topicsFormatted.sort((a: any, b: any) => a.sortIndex - b.sortIndex);
+    setChartData(sortedTopics);
   };
 
   if (chartData) {

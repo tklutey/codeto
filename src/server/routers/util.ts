@@ -11,6 +11,7 @@ export const getCourseStandards = async () => {
     const displayStandards = unitLearningStandards.map((ls: any) => {
       return {
         unit_id: ls.unit.id,
+        unit_sequence: ls.unit.unit_sequence,
         topic_id: ls.topic.id,
         topic_code: ls.topic.code,
         topic_description: ls.topic.description,
@@ -23,7 +24,12 @@ export const getCourseStandards = async () => {
         standard_dependencies: ls.standard.dependencies
       };
     });
-    const displayUnit = { id: unit.id, unit_name: unit.unit_name, standards: displayStandards };
+    const displayUnit = {
+      id: unit.id,
+      unit_name: unit.unit_name,
+      unit_sequence: unit.unit_sequence,
+      standards: displayStandards
+    };
     return displayUnit;
   });
 };
