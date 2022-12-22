@@ -3,9 +3,11 @@ import React from 'react';
 import { CodeEditorOptions } from 'components/ide/editor/CodeEditorOptions';
 import { Skeleton } from '@mui/material';
 
-const CodeEditor = (props: Props) => {
-  const { updateCode, language, startingCode } = props;
+const CodeEditor = ({ updateCode, language, startingCode, isLoading }: Props) => {
   const Loading = () => <Skeleton variant="rectangular" width={'100%'} height={'100%'} />;
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <MonacoEditor
       defaultLanguage={language}
@@ -14,7 +16,6 @@ const CodeEditor = (props: Props) => {
       onChange={updateCode}
       theme={'vs-dark'}
       options={CodeEditorOptions}
-      {...props}
     />
   );
 };
@@ -25,6 +26,7 @@ type Props = {
   language: string;
   width?: string;
   height?: string;
+  isLoading?: boolean;
 };
 
 export default CodeEditor;
