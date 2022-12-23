@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { TestResult } from 'components/ide/index';
 import { useEffect, useState } from 'react';
 
@@ -27,25 +27,25 @@ const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLim
   const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
 
   return (
-    <div>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h2>Test Summary</h2>
+    <Box px={2} py={1}>
+      <Box>
+        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h2">Test Summary</Typography>
           <Button variant="contained" onClick={doRunTests} style={{ height: '35px', marginTop: '5px' }}>
             {testButtonText}
           </Button>
-        </div>
-      </div>
-      <div>
+        </Box>
+      </Box>
+      <Box>
         {suites?.map((suite, i) => (
-          <div key={i}>
-            <div>
+          <Box key={i}>
+            <Box>
               {suite.status === 'pass' ? <>✅</> : <>❌</>} {suite.message}
-            </div>
-          </div>
+            </Box>
+          </Box>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
