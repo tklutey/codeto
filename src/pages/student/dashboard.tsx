@@ -82,53 +82,48 @@ const StudentDashboard = () => {
     }
   };
 
-  if (chartData) {
-    return (
-      <Page title="Dashboard">
-        <Box>
-          <MainCard title="Student Mastery" style={{ width: '100%' }}>
-            {drilldownFilters.unitIndex !== undefined && (
-              <Button variant="outlined" sx={{ marginBottom: '20px' }} onClick={() => setDrilldownFilters({})}>
-                <ArrowBackIosIcon />
-                Back
-              </Button>
-            )}
-            <Grid container spacing={2}>
-              {filterMasteryData(chartData).map((unitData: any, index: number) => (
-                <Grid item key={unitData.key} xs={12}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    spacing={1}
-                    sx={{ cursor: 'pointer' }}
-                    onClick={() => setDrilldownFilters({ unitIndex: index })}
-                  >
-                    <Grid item sm zeroMinWidth>
-                      <Typography variant="body2">{unitData.name}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="body2" align="right">
-                        {unitData.percentage}%
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <LinearProgress variant="determinate" value={unitData.percentage} color="primary" />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              ))}
+  const LoadedPageContents = (
+    <Box>
+      {drilldownFilters.unitIndex !== undefined && (
+        <Button variant="outlined" sx={{ marginBottom: '20px' }} onClick={() => setDrilldownFilters({})}>
+          <ArrowBackIosIcon />
+          Back
+        </Button>
+      )}
+      <Grid container spacing={2}>
+        {filterMasteryData(chartData)?.map((unitData: any, index: number) => (
+          <Grid item key={unitData.key} xs={12}>
+            <Grid
+              container
+              alignItems="center"
+              spacing={1}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => setDrilldownFilters({ unitIndex: index })}
+            >
+              <Grid item sm zeroMinWidth>
+                <Typography variant="body2">{unitData.name}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" align="right">
+                  {unitData.percentage}%
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <LinearProgress variant="determinate" value={unitData.percentage} color="primary" />
+              </Grid>
             </Grid>
-          </MainCard>
-          <StudentDashboardFooter />
-        </Box>
-      </Page>
-    );
-  }
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+
   return (
     <Page title="Dashboard">
       <MainCard title="Student Mastery" style={{ width: '100%' }}>
-        <SkeletonStudentMasteryChart rows={10} />
+        {chartData ? LoadedPageContents : <SkeletonStudentMasteryChart rows={10} />}
       </MainCard>
+      <StudentDashboardFooter />
     </Page>
   );
 };
