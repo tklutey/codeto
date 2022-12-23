@@ -79,7 +79,15 @@ const ProgrammingActivityLayout = (props: Props) => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+        position: 'relative'
+      }}
+    >
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
         <SolutionModal
           isOpen={showSolution}
