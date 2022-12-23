@@ -6,19 +6,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
 import { MasteryStatus } from 'server/types';
 import AdaptiveModeToggle from 'components/assignment/AdaptiveModeToggle';
-
-export const FooterStrip = styled('footer')(({ theme }) => ({
-  width: 'calc(100% + 40px)',
-  height: '10%',
-  background: theme.palette.background.default,
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginLeft: '-20px',
-  marginRight: '-20px',
-  alignItems: 'center',
-  position: 'absolute',
-  bottom: -20
-}));
+import FooterStrip from 'components/footer/FooterStrip';
 
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'

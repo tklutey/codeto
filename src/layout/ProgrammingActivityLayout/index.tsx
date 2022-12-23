@@ -84,8 +84,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: '100%',
-        position: 'relative'
+        height: '100%'
       }}
     >
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
