@@ -7,6 +7,7 @@ import { CodingProblemTest } from 'server/routers/codingProblem';
 import RunButton from 'components/ide/RunButton';
 import useTestRunner from 'hooks/useTestRunner';
 import { ProblemAttemptStatus } from 'server/types';
+import IDEDivider from './IDEDivider';
 
 const CodeExecutionTerminal = dynamic(() => import('components/ide/CodeExecutionTerminal'), {
   ssr: false
@@ -138,6 +139,7 @@ const IDE = (props: Props) => {
           startingCode={userCode}
           isLoading={isLoading}
         />
+        <IDEDivider />
         <RunButton run={executeCode} isExecuting={isExecuting} isTerminalFullHeight={!tests} />
         <div style={{ height: '100%', width: '50%', display: 'flex', flexDirection: 'column' }}>
           <CodeExecutionTerminal
