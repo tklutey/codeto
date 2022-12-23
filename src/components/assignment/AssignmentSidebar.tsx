@@ -45,8 +45,8 @@ const AssignmentSidebar = ({
   }
   return (
     <Container width={width} height={height}>
-      <ColumnFlexDiv style={{ height: '65%' }}>
-        <div style={{ height: '15%' }}>
+      <ColumnFlexDiv style={{ height: '85%' }}>
+        <div style={{ maxHeight: '25%', lineHeight: 'normal' }}>
           <h1> {assignmentTitle} </h1>
         </div>
         <div style={{ height: '85%', overflowY: 'auto' }}>
