@@ -4,11 +4,8 @@ import { Avatar, Box } from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
-import SearchSection from './SearchSection';
 import MobileSection from './MobileSection';
 import ProfileSection from './ProfileSection';
-import LocalizationSection from './LocalizationSection';
-import NotificationSection from './NotificationSection';
 import { useDispatch, useSelector } from 'store';
 import { openDrawer } from 'store/slices/menu';
 
@@ -60,17 +57,10 @@ const Header = () => {
       </Box>
 
       {/* header search */}
-      <SearchSection />
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
-
-      {/* live customization & localization */}
-      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-        <LocalizationSection />
-      </Box>
 
       {/* notification & profile */}
-      <NotificationSection />
       <ProfileSection />
 
       {/* mobile header */}
