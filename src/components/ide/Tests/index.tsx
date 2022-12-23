@@ -24,7 +24,7 @@ const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLim
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-  const testButtonText = testLimit ? `Run Tests (${numTestRuns} / ${testLimit})` : 'Run Tests';
+  const testButtonText = testLimit ? `Check Code (${numTestRuns} / ${testLimit})` : 'Check Code';
 
   return (
     <Box px={2} py={1}>
