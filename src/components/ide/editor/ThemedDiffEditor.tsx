@@ -15,7 +15,7 @@ const ThemedDiffEditor = (props: Props) => {
         });
       }}
       width={'100%'}
-      height={'90%'}
+      height={'75%'}
       theme={'vs-dark'}
       options={CodeEditorOptions}
     />

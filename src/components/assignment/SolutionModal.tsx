@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal';
-import { Box, Button, Typography } from '@mui/material';
+import { Alert, Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useTheme } from '@mui/styles';
 import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
@@ -10,7 +10,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '60%',
-  height: '70%',
+  height: '80%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -38,16 +38,15 @@ const SolutionModal = (props: Props) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
-        <Box sx={{ display: 'flex' }}>
+        <Alert severity="info" sx={{ marginY: '10px' }}>
+          Modify your code on the right to match the solution code.
+        </Alert>
+        <Box sx={{ display: 'flex', paddingBottom: '10px' }}>
           <Box sx={{ width: '50%' }}>
-            <Typography id="modal-modal-title" variant="h2" component="h2">
-              Solution
-            </Typography>
+            <Typography variant="h4">Solution</Typography>
           </Box>
           <Box sx={{ width: '50%' }}>
-            <Typography id="modal-modal-title" variant="h2" component="h2">
-              Your Code
-            </Typography>
+            <Typography variant="h4">Your Code</Typography>
           </Box>
         </Box>
         <ThemedDiffEditor language={language} originalCode={solutionCode} modifiedCode={userCode} updateCode={updateCode} />
