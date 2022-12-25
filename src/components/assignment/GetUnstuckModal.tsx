@@ -1,9 +1,11 @@
 import Modal from '@mui/material/Modal';
-import { Box, Typography } from '@mui/material';
-import React from 'react';
-import ChatHelp from 'components/assignment/ChatHelp';
-import { styled } from '@mui/material/styles';
+import { Box, Tab, Tabs } from '@mui/material';
+import React, { useState } from 'react';
+import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
+import RecentActorsTwoToneIcon from '@mui/icons-material/RecentActorsTwoTone';
+import TabPanel from 'components/ui-elements/basic/UITabs/TabPanel';
 import VideoPlayer from 'components/assignment/VideoPlayer';
+import ChatHelp from 'components/assignment/ChatHelp';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -18,25 +20,34 @@ const style = {
   p: 4
 };
 
-const ContentBox = styled(Box)({
-  width: '100%'
-});
-
 const GetUnstuckModal = (props: Props) => {
   const { isOpen, handleClose, youtubeTutorialUrl } = props;
+  const [value, setValue] = useState(0);
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
-        <Typography variant="h2" sx={{ marginBottom: '25px' }}>
-          Get Unstuck
-        </Typography>
-        <Box display={'flex'} height={'100%'} width={'100%'}>
-          <ContentBox>{youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}</ContentBox>
-          <ContentBox>
-            <ChatHelp />
-          </ContentBox>
-        </Box>
+        <Tabs value={value} variant="scrollable" onChange={handleChange}>
+          <Tab icon={<PersonOutlineTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Match" />
+          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
+          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Read" />
+          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          Item One
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Item Three
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <ChatHelp />
+        </TabPanel>
       </Box>
     </Modal>
   );
