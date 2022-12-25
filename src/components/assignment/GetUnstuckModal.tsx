@@ -6,6 +6,7 @@ import RecentActorsTwoToneIcon from '@mui/icons-material/RecentActorsTwoTone';
 import TabPanel from 'components/ui-elements/basic/UITabs/TabPanel';
 import VideoPlayer from 'components/assignment/VideoPlayer';
 import ChatHelp from 'components/assignment/ChatHelp';
+import AssignmentWalkthrough from 'components/assignment/AssignmentWalkthrough';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,8 +21,7 @@ const style = {
   p: 4
 };
 
-const GetUnstuckModal = (props: Props) => {
-  const { isOpen, handleClose, youtubeTutorialUrl } = props;
+const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode, language, setUserCode, userCode }: Props) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -36,7 +36,13 @@ const GetUnstuckModal = (props: Props) => {
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          Item One
+          <AssignmentWalkthrough
+            handleTestCode={handleClose}
+            solutionCode={solutionCode}
+            language={language}
+            userCode={userCode}
+            setUserCode={setUserCode}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
           {youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}
@@ -53,6 +59,10 @@ type Props = {
   isOpen: boolean;
   handleClose: () => void;
   youtubeTutorialUrl?: string | undefined;
+  solutionCode: string;
+  language: string;
+  userCode?: string;
+  setUserCode: (code: string) => void;
 };
 
 export default GetUnstuckModal;

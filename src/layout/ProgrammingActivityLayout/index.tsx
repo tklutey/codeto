@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
 import AssignmentFooter from 'components/assignment/AssignmentFooter';
-import SolutionModal from 'components/assignment/SolutionModal';
 import { MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
 import { Alert, Snackbar } from '@mui/material';
 import useSnackbar from 'hooks/useSnackbar';
+import GetUnstuckModal from 'components/assignment/GetUnstuckModal';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const {
@@ -88,9 +88,18 @@ const ProgrammingActivityLayout = (props: Props) => {
       }}
     >
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
-        <SolutionModal
+        {/*<SolutionModal*/}
+        {/*  isOpen={showSolution}*/}
+        {/*  handleClose={() => setShowSolution(false)}*/}
+        {/*  language={language}*/}
+        {/*  solutionCode={solutionCode ? solutionCode : 'No solution provided.'}*/}
+        {/*  userCode={userCode}*/}
+        {/*  setUserCode={setUserCode}*/}
+        {/*/>*/}
+        <GetUnstuckModal
           isOpen={showSolution}
           handleClose={() => setShowSolution(false)}
+          youtubeTutorialUrl={youtubeTutorialUrl}
           language={language}
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
           userCode={userCode}
