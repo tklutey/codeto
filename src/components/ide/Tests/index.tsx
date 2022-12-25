@@ -1,8 +1,17 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import { TestResult } from 'components/ide/index';
 import { useEffect, useState } from 'react';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
-const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLimitExceeded, registerResetEventHandler }: Props) => {
+const Tests = ({
+  handleRunTests,
+  suites,
+  testLimit,
+  areAllTestsPassed,
+  onTestLimitExceeded,
+  registerResetEventHandler,
+  resetCode
+}: Props) => {
   const [numTestRuns, setNumTestRuns] = useState<number>(0);
   const doRunTests = async () => {
     await handleRunTests();
@@ -29,9 +38,11 @@ const Tests = ({ handleRunTests, suites, testLimit, areAllTestsPassed, onTestLim
   return (
     <Box px={2} py={1}>
       <Box>
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h2">Test Summary</Typography>
-          <Button variant="contained" onClick={doRunTests} style={{ height: '35px', marginTop: '5px' }}>
+        <Box style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
+          <Tooltip title={'Reset Code'}>
+            <RestartAltIcon sx={{ width: '30px', height: '30px', cursor: 'pointer' }} onClick={resetCode} />
+          </Tooltip>
+          <Button variant="contained" onClick={doRunTests} style={{ height: '35px' }}>
             {testButtonText}
           </Button>
         </Box>
@@ -56,6 +67,7 @@ type Props = {
   testLimit?: number;
   onTestLimitExceeded?: () => void;
   registerResetEventHandler: (handler: () => void) => void;
+  resetCode: () => void;
 };
 
 export default Tests;

@@ -158,6 +158,7 @@ const IDE = (props: Props) => {
               areAllTestsPassed={areAllTestsPassed}
               onTestLimitExceeded={onProblemComplete ? () => onProblemComplete(ProblemAttemptStatus.Incorrect) : undefined}
               registerResetEventHandler={registerResetEventHandler ? registerResetEventHandler : () => {}}
+              resetCode={() => setUserCode(startingCode as string)}
             />
           )}
         </div>
