@@ -33,7 +33,6 @@ const GetUnstuckModal = (props: Props) => {
         <Tabs value={value} variant="scrollable" onChange={handleChange}>
           <Tab icon={<PersonOutlineTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Match" />
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
-          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Read" />
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
         </Tabs>
         <TabPanel value={value} index={0}>
@@ -41,9 +40,6 @@ const GetUnstuckModal = (props: Props) => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           {youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
         </TabPanel>
         <TabPanel value={value} index={3}>
           <ChatHelp />
