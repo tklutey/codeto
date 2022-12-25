@@ -82,6 +82,12 @@ const StudentDashboard = () => {
     }
   };
 
+  const handleDrilldownClick = (index: number) => {
+    if (drilldownFilters.unitIndex === undefined || drilldownFilters.unitIndex === null) {
+      setDrilldownFilters({ unitIndex: index });
+    }
+  };
+
   const LoadedPageContents = (
     <Box>
       {drilldownFilters.unitIndex !== undefined && (
@@ -93,13 +99,7 @@ const StudentDashboard = () => {
       <Grid container spacing={2}>
         {filterMasteryData(chartData)?.map((unitData: any, index: number) => (
           <Grid item key={unitData.key} xs={12}>
-            <Grid
-              container
-              alignItems="center"
-              spacing={1}
-              sx={{ cursor: 'pointer' }}
-              onClick={() => setDrilldownFilters({ unitIndex: index })}
-            >
+            <Grid container alignItems="center" spacing={1} sx={{ cursor: 'pointer' }} onClick={() => handleDrilldownClick(index)}>
               <Grid item sm zeroMinWidth>
                 <Typography variant="body2">{unitData.name}</Typography>
               </Grid>
