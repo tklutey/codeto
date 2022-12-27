@@ -1,12 +1,13 @@
 import Modal from '@mui/material/Modal';
 import { Box, Tab, Tabs } from '@mui/material';
 import React, { useState } from 'react';
-import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
-import RecentActorsTwoToneIcon from '@mui/icons-material/RecentActorsTwoTone';
 import TabPanel from 'components/ui-elements/basic/UITabs/TabPanel';
 import VideoPlayer from 'components/assignment/VideoPlayer';
 import ChatHelp from 'components/assignment/ChatHelp';
 import AssignmentWalkthrough from 'components/assignment/AssignmentWalkthrough';
+import DifferenceIcon from '@mui/icons-material/Difference';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -31,9 +32,9 @@ const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
         <Tabs value={value} variant="scrollable" onChange={handleChange}>
-          <Tab icon={<PersonOutlineTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Match" />
-          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
-          <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
+          <Tab icon={<DifferenceIcon sx={{ fontSize: '1.3rem' }} />} label="Match" />
+          <Tab icon={<VideocamIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
+          <Tab icon={<ChatIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
         </Tabs>
         <TabPanel value={value} index={0} sx={{ height: '85%' }}>
           <AssignmentWalkthrough
