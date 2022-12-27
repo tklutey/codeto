@@ -11,7 +11,6 @@ export type ScaffoldingConfiguration = {
 };
 
 export const getScaffoldingConfiguration = (masteryStatus: MasteryStatus) => {
-  console.log('masery status', masteryStatus);
   switch (masteryStatus) {
     case MasteryStatus.Unattempted:
       return {

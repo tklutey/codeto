@@ -2,11 +2,21 @@ import { Alert, Box, Button, Typography } from '@mui/material';
 import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
 import React, { useState } from 'react';
 import { useTheme } from '@mui/styles';
+import { trpc } from '../../utils/trpc';
 
-const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCode, setUserCode, hasSolution }: Props) => {
+const AssignmentWalkthrough = ({
+  handleTestCode,
+  solutionCode,
+  language,
+  userCode,
+  setUserCode,
+  hasSolution,
+  setProblemSkipped
+}: Props) => {
   const [isUserCodeCorrect, setIsUserCodeCorrect] = useState(false);
+  const [revealSolution, setRevealSolution] = useState(false);
   const theme = useTheme();
-  console.log(hasSolution);
+  const showSolution = hasSolution || revealSolution;
 
   const updateCode = (newCode?: string, _?: any) => {
     if (newCode !== undefined) {
@@ -17,6 +27,11 @@ const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCod
         setIsUserCodeCorrect(false);
       }
     }
+  };
+
+  const handleShowSolution = () => {
+    setRevealSolution(true);
+    setProblemSkipped();
   };
 
   const SolutionContent = (
@@ -61,13 +76,13 @@ const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCod
           background: theme.palette.warning.dark,
           '&:hover': { background: theme.palette.warning.main }
         }}
-        onClick={() => console.log('click')}
+        onClick={handleShowSolution}
       >
         View Solution
       </Button>
     </Box>
   );
-  return <Box height={'100%'}>{hasSolution ? SolutionContent : BlockedSolution}</Box>;
+  return <Box height={'100%'}>{showSolution ? SolutionContent : BlockedSolution}</Box>;
 };
 
 type Props = {
@@ -77,5 +92,6 @@ type Props = {
   userCode?: string;
   setUserCode: (code: string) => void;
   hasSolution: boolean;
+  setProblemSkipped: () => void;
 };
 export default AssignmentWalkthrough;

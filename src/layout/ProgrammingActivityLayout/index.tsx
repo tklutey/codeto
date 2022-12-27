@@ -36,6 +36,7 @@ const ProgrammingActivityLayout = (props: Props) => {
       : undefined;
   useSnackbar();
   const { isSnackbarOpen: masteredProblemSnackbarOpen, setIsSnackbarOpen: setMasteredProblemSnackbarOpen, handleClose } = useSnackbar();
+  console.log(problemAttemptStatus);
 
   useEffect(() => {
     if (submittedProblemMasteryStatus === MasteryStatus.Mastered) {
@@ -94,6 +95,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           userCode={userCode}
           setUserCode={setUserCode}
           scaffoldingConfiguration={scaffoldingConfiguration}
+          setProblemSkipped={() => setProblemAttemptStatus(ProblemAttemptStatus.Skipped)}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}

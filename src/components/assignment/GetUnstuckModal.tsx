@@ -31,7 +31,8 @@ const GetUnstuckModal = ({
   language,
   setUserCode,
   userCode,
-  scaffoldingConfiguration
+  scaffoldingConfiguration,
+  setProblemSkipped
 }: Props) => {
   const [value, setValue] = useState(0);
 
@@ -54,6 +55,7 @@ const GetUnstuckModal = ({
             userCode={userCode}
             setUserCode={setUserCode}
             hasSolution={scaffoldingConfiguration?.hasSolution ?? false}
+            setProblemSkipped={setProblemSkipped}
           />
         </TabPanel>
         <TabPanel value={value} index={1} sx={{ height: '95%' }}>
@@ -76,6 +78,7 @@ type Props = {
   userCode?: string;
   setUserCode: (code: string) => void;
   scaffoldingConfiguration?: ScaffoldingConfiguration;
+  setProblemSkipped: () => void;
 };
 
 export default GetUnstuckModal;
