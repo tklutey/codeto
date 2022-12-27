@@ -26,7 +26,7 @@ const ProgrammingActivityLayout = (props: Props) => {
     isAdaptiveMode
   } = props;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
-  const [showSolution, setShowSolution] = useState(false);
+  const [showGetUnstuckModal, setShowGetUnstuckModal] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [problemAttemptStatus, setProblemAttemptStatus] = useState<ProblemAttemptStatus>(ProblemAttemptStatus.Correct);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
@@ -47,10 +47,6 @@ const ProgrammingActivityLayout = (props: Props) => {
     setProblemAttemptStatus(ProblemAttemptStatus.Correct);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [problemFetchTimestamp]);
-
-  const handleShowSolution = () => {
-    setShowSolution(true);
-  };
 
   const cleanupProblem = () => {
     resetEventHandlers.forEach((handler) => handler());
@@ -88,17 +84,9 @@ const ProgrammingActivityLayout = (props: Props) => {
       }}
     >
       <div style={{ height: '90%', width: '100%', display: 'flex', alignItems: 'flex-start' }}>
-        {/*<SolutionModal*/}
-        {/*  isOpen={showSolution}*/}
-        {/*  handleClose={() => setShowSolution(false)}*/}
-        {/*  language={language}*/}
-        {/*  solutionCode={solutionCode ? solutionCode : 'No solution provided.'}*/}
-        {/*  userCode={userCode}*/}
-        {/*  setUserCode={setUserCode}*/}
-        {/*/>*/}
         <GetUnstuckModal
-          isOpen={showSolution}
-          handleClose={() => setShowSolution(false)}
+          isOpen={showGetUnstuckModal}
+          handleClose={() => setShowGetUnstuckModal(false)}
           youtubeTutorialUrl={youtubeTutorialUrl}
           language={language}
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
@@ -108,11 +96,11 @@ const ProgrammingActivityLayout = (props: Props) => {
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
           assignmentDescription={assignmentDescription}
-          youtubeTutorialUrl={youtubeTutorialUrl}
           width={'20%'}
           height={'100%'}
           isLoading={isLoading}
           hasGetUnstuck={scaffoldingConfiguration ? scaffoldingConfiguration.hasGetUnstuck : true}
+          setShowGetUnstuckModal={setShowGetUnstuckModal}
         />
         <IDE
           width={'80%'}
@@ -139,9 +127,7 @@ const ProgrammingActivityLayout = (props: Props) => {
         disabled={!canMoveOnToNextProblem}
         onNextClicked={handleGoToNextProblem}
         onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
-        onShowSolutionClicked={handleShowSolution}
         masteryStatus={currentProblemMasteryStatus}
-        allowShowSolution={scaffoldingConfiguration ? scaffoldingConfiguration.hasSolution : true}
         isAdaptiveMode={isAdaptiveMode}
       />
     </div>

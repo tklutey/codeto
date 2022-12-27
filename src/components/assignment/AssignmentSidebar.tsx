@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
 import { Button, Skeleton } from '@mui/material';
-import GetUnstuckModal from 'components/assignment/GetUnstuckModal';
 
 const ColumnFlexDiv = styled('div')({
   display: 'flex',
@@ -29,13 +28,12 @@ const Container = styled('div')<ContainerProps>((props) => ({
 const AssignmentSidebar = ({
   assignmentTitle,
   assignmentDescription,
-  youtubeTutorialUrl,
   height,
   width,
   isLoading,
-  hasGetUnstuck
+  hasGetUnstuck,
+  setShowGetUnstuckModal
 }: Props) => {
-  const [isGetUnstuckModalOpen, setIsGetUnstuckModalOpen] = useState(false);
   if (isLoading) {
     return (
       <Container width={width} height={height}>
@@ -54,13 +52,8 @@ const AssignmentSidebar = ({
           <ReactMarkdown children={assignmentDescription} />
         </div>
       </ColumnFlexDiv>
-      <GetUnstuckModal
-        isOpen={isGetUnstuckModalOpen}
-        handleClose={() => setIsGetUnstuckModalOpen(false)}
-        youtubeTutorialUrl={youtubeTutorialUrl}
-      />
       {hasGetUnstuck && (
-        <Button variant="contained" onClick={() => setIsGetUnstuckModalOpen(true)}>
+        <Button variant="contained" onClick={() => setShowGetUnstuckModal(true)}>
           Get Unstuck
         </Button>
       )}
@@ -71,11 +64,11 @@ const AssignmentSidebar = ({
 type Props = {
   assignmentTitle: string;
   assignmentDescription: string;
-  youtubeTutorialUrl?: string;
   width: string;
   height: string;
   isLoading: boolean;
   hasGetUnstuck?: boolean;
+  setShowGetUnstuckModal: (show: boolean) => void;
 };
 
 export default AssignmentSidebar;
