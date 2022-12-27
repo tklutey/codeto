@@ -3,9 +3,10 @@ import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
 import React, { useState } from 'react';
 import { useTheme } from '@mui/styles';
 
-const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCode, setUserCode }: Props) => {
+const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCode, setUserCode, hasSolution }: Props) => {
   const [isUserCodeCorrect, setIsUserCodeCorrect] = useState(false);
   const theme = useTheme();
+  console.log(hasSolution);
 
   const updateCode = (newCode?: string, _?: any) => {
     if (newCode !== undefined) {
@@ -17,7 +18,8 @@ const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCod
       }
     }
   };
-  return (
+
+  const SolutionContent = (
     <Box height={'100%'}>
       <Alert severity="info" sx={{ marginY: '10px' }}>
         Modify your code on the right to match the solution code.
@@ -48,6 +50,24 @@ const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCod
       </Box>
     </Box>
   );
+
+  const BlockedSolution = (
+    <Box height={'100%'}>
+      <Button
+        variant="contained"
+        sx={{
+          marginTop: '8px',
+          color: theme.palette.common.black,
+          background: theme.palette.warning.dark,
+          '&:hover': { background: theme.palette.warning.main }
+        }}
+        onClick={() => console.log('click')}
+      >
+        View Solution
+      </Button>
+    </Box>
+  );
+  return <Box height={'100%'}>{hasSolution ? SolutionContent : BlockedSolution}</Box>;
 };
 
 type Props = {
@@ -56,5 +76,6 @@ type Props = {
   language: string;
   userCode?: string;
   setUserCode: (code: string) => void;
+  hasSolution: boolean;
 };
 export default AssignmentWalkthrough;

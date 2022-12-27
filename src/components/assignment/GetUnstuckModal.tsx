@@ -8,6 +8,7 @@ import AssignmentWalkthrough from 'components/assignment/AssignmentWalkthrough';
 import DifferenceIcon from '@mui/icons-material/Difference';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import ChatIcon from '@mui/icons-material/Chat';
+import { ScaffoldingConfiguration } from '../../layout/ProgrammingActivityLayout/scaffolding';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,7 +23,16 @@ const style = {
   p: 4
 };
 
-const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode, language, setUserCode, userCode }: Props) => {
+const GetUnstuckModal = ({
+  isOpen,
+  handleClose,
+  youtubeTutorialUrl,
+  solutionCode,
+  language,
+  setUserCode,
+  userCode,
+  scaffoldingConfiguration
+}: Props) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -43,6 +53,7 @@ const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode
             language={language}
             userCode={userCode}
             setUserCode={setUserCode}
+            hasSolution={scaffoldingConfiguration?.hasSolution ?? false}
           />
         </TabPanel>
         <TabPanel value={value} index={1} sx={{ height: '95%' }}>
@@ -64,6 +75,7 @@ type Props = {
   language: string;
   userCode?: string;
   setUserCode: (code: string) => void;
+  scaffoldingConfiguration?: ScaffoldingConfiguration;
 };
 
 export default GetUnstuckModal;

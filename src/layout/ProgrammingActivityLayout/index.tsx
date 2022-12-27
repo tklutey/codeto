@@ -30,9 +30,10 @@ const ProgrammingActivityLayout = (props: Props) => {
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
   const [problemAttemptStatus, setProblemAttemptStatus] = useState<ProblemAttemptStatus>(ProblemAttemptStatus.Correct);
   const [resetEventHandlers, setResetEventHandlers] = useState<(() => void)[]>([]);
-  const scaffoldingConfiguration: ScaffoldingConfiguration | undefined = currentProblemMasteryStatus
-    ? getScaffoldingConfiguration(currentProblemMasteryStatus)
-    : undefined;
+  const scaffoldingConfiguration: ScaffoldingConfiguration | undefined =
+    currentProblemMasteryStatus !== null && currentProblemMasteryStatus !== undefined
+      ? getScaffoldingConfiguration(currentProblemMasteryStatus)
+      : undefined;
   useSnackbar();
   const { isSnackbarOpen: masteredProblemSnackbarOpen, setIsSnackbarOpen: setMasteredProblemSnackbarOpen, handleClose } = useSnackbar();
 
@@ -92,6 +93,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           solutionCode={solutionCode ? solutionCode : 'No solution provided.'}
           userCode={userCode}
           setUserCode={setUserCode}
+          scaffoldingConfiguration={scaffoldingConfiguration}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
@@ -99,7 +101,11 @@ const ProgrammingActivityLayout = (props: Props) => {
           width={'20%'}
           height={'100%'}
           isLoading={isLoading}
-          hasGetUnstuck={scaffoldingConfiguration ? scaffoldingConfiguration.hasGetUnstuck : true}
+          hasGetUnstuck={
+            scaffoldingConfiguration
+              ? scaffoldingConfiguration.hasSolution || scaffoldingConfiguration.hasChat || scaffoldingConfiguration.hasVideo
+              : true
+          }
           setShowGetUnstuckModal={setShowGetUnstuckModal}
         />
         <IDE
