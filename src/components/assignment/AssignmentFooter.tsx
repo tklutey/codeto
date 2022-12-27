@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Button } from '@mui/material';
 import { useTheme } from '@mui/styles';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MasteryStepper from 'components/assignment/MasteryStepper';
 import { MasteryStatus } from 'server/types';
 import AdaptiveModeToggle from 'components/assignment/AdaptiveModeToggle';

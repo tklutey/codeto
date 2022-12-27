@@ -36,7 +36,6 @@ const ProgrammingActivityLayout = (props: Props) => {
       : undefined;
   useSnackbar();
   const { isSnackbarOpen: masteredProblemSnackbarOpen, setIsSnackbarOpen: setMasteredProblemSnackbarOpen, handleClose } = useSnackbar();
-  console.log(problemAttemptStatus);
 
   useEffect(() => {
     if (submittedProblemMasteryStatus === MasteryStatus.Mastered) {

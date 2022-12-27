@@ -1,14 +1,21 @@
 import { TabsProps } from 'types';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 
-export default function TabPanel({ children, value, index, sx, ...other }: TabsProps & { sx?: any}) {
+export default function TabPanel({ children, value, index, sx, ...other }: TabsProps & { sx?: any }) {
   return (
-    <Box role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other} {...sx}>
+    <Box
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+      {...sx}
+    >
       {value === index && (
         <Box
           sx={{
-            p: 3,
+            p: 3
           }}
           height={'100%'}
         >
