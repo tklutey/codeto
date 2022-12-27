@@ -7,6 +7,8 @@ const VideoPlayer = ({ youtubeTutorialUrl }: Props) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(isLoading);
+
   return (
     <Box width={'100%'} height={'100%'}>
       {isLoading && <Skeleton variant="rectangular" width={WIDTH} height={HEIGHT} />}

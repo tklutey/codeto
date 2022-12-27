@@ -35,7 +35,7 @@ const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
         </Tabs>
-        <TabPanel value={value} index={0} sx={{height: '85%'}}>
+        <TabPanel value={value} index={0} sx={{ height: '85%' }}>
           <AssignmentWalkthrough
             handleTestCode={handleClose}
             solutionCode={solutionCode}
@@ -44,10 +44,10 @@ const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode
             setUserCode={setUserCode}
           />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={1} sx={{ height: '95%' }}>
           {youtubeTutorialUrl && <VideoPlayer youtubeTutorialUrl={youtubeTutorialUrl} />}
         </TabPanel>
-        <TabPanel value={value} index={3}>
+        <TabPanel value={value} index={2} sx={{ height: '95%' }}>
           <ChatHelp />
         </TabPanel>
       </Box>
