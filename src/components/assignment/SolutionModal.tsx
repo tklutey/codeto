@@ -20,13 +20,15 @@ const SolutionModal = (props: Props) => {
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <AssignmentWalkthrough
-        handleTestCode={handleClose}
-        solutionCode={solutionCode}
-        language={language}
-        userCode={userCode}
-        setUserCode={setUserCode}
-      />
+      <Box style={style}>
+        <AssignmentWalkthrough
+            handleTestCode={handleClose}
+            solutionCode={solutionCode}
+            language={language}
+            userCode={userCode}
+            setUserCode={setUserCode}
+        />
+      </Box>
     </Modal>
   );
 };

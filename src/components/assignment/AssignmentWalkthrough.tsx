@@ -3,18 +3,6 @@ import ThemedDiffEditor from 'components/ide/editor/ThemedDiffEditor';
 import React, { useState } from 'react';
 import { useTheme } from '@mui/styles';
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '60%',
-  height: '80%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
-};
 const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCode, setUserCode }: Props) => {
   const [isUserCodeCorrect, setIsUserCodeCorrect] = useState(false);
   const theme = useTheme();
@@ -30,7 +18,7 @@ const AssignmentWalkthrough = ({ handleTestCode, solutionCode, language, userCod
     }
   };
   return (
-    <Box sx={style}>
+    <Box height={'100%'}>
       <Alert severity="info" sx={{ marginY: '10px' }}>
         Modify your code on the right to match the solution code.
       </Alert>

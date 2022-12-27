@@ -13,8 +13,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '60%',
-  height: '70%',
+  width: '75%',
+  height: '85%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -35,7 +35,7 @@ const GetUnstuckModal = ({ isOpen, handleClose, youtubeTutorialUrl, solutionCode
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Watch" />
           <Tab icon={<RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label="Ask" />
         </Tabs>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0} sx={{height: '85%'}}>
           <AssignmentWalkthrough
             handleTestCode={handleClose}
             solutionCode={solutionCode}
