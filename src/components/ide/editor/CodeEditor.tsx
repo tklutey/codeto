@@ -4,7 +4,7 @@ import { CodeEditorOptions } from 'components/ide/editor/CodeEditorOptions';
 import { Skeleton } from '@mui/material';
 
 const CodeEditor = ({ updateCode, language, startingCode, isLoading, ...rest }: Props) => {
-  const Loading = () => <Skeleton variant="rectangular" width={'100%'} height={'100%'} />;
+  const Loading = () => <Skeleton variant="rectangular" {...rest} />;
   if (isLoading) {
     return <Loading />;
   }
