@@ -1,7 +1,8 @@
 export enum ProblemAttemptStatus {
   Correct = 'correct',
   Incorrect = 'incorrect',
-  Skipped = 'skipped'
+  Skipped = 'skipped',
+  ScaffoldingUsed = 'scaffolding_used'
 }
 
 // Create ordered enum call mastery status

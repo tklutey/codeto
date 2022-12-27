@@ -94,7 +94,7 @@ const ProgrammingActivityLayout = (props: Props) => {
           userCode={userCode}
           setUserCode={setUserCode}
           scaffoldingConfiguration={scaffoldingConfiguration}
-          setProblemSkipped={() => setProblemAttemptStatus(ProblemAttemptStatus.Skipped)}
+          setProblemSkipped={() => setProblemAttemptStatus(ProblemAttemptStatus.ScaffoldingUsed)}
         />
         <AssignmentSidebar
           assignmentTitle={assignmentTitle}
