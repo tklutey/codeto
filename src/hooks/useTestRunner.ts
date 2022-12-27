@@ -50,6 +50,8 @@ const useTestRunner = (
       if (onAllTestsPassed) {
         onAllTestsPassed();
       }
+    } else {
+      setAreAllTestsPassed(false);
     }
     if (testResults.length > 0) {
       setSuites(testResults);
