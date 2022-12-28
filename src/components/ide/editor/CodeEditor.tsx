@@ -1,14 +1,11 @@
 import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
 import { CodeEditorOptions } from 'components/ide/editor/CodeEditorOptions';
-import { Skeleton } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 
 const CodeEditor = ({ updateCode, language, startingCode, isLoading, ...rest }: Props) => {
-  const Loading = () => <Skeleton variant="rectangular" {...rest} />;
-  if (isLoading) {
-    return <Loading />;
-  }
-  return (
+  const Loading = () => <Skeleton variant="rectangular" width={'100%'} height={'100%'} />;
+  const Editor = (
     <MonacoEditor
       defaultLanguage={language}
       value={startingCode}
@@ -16,9 +13,9 @@ const CodeEditor = ({ updateCode, language, startingCode, isLoading, ...rest }: 
       onChange={updateCode}
       theme={'vs-dark'}
       options={CodeEditorOptions}
-      {...rest}
     />
   );
+  return <Box {...rest}>{isLoading ? <Loading /> : Editor}</Box>;
 };
 
 type Props = {
