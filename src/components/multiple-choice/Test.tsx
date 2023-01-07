@@ -2,17 +2,22 @@ import Question from './Question';
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { useTheme } from '@mui/styles';
+import { trpc } from '../../utils/trpc';
 
 const Test = () => {
   const theme = useTheme();
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const [problem, setProblem] = useState(null);
+  trpc.useQuery(['multipleChoiceProblem.getById', 1], {
+    onSuccess: (data) => {
+      if (data) {
+        setProblem(data);
+      }
+    }
+  });
   return (
     <Box>
-      <Question
-        prompt={'Which of these identifiers is legal as a variable name in Java (i.e. it will compile successfully)?'}
-        answerOptions={['1stPlace', 'DAILY TAX RATE', 'while', 'salt&pepper', 'mySocialSecurity$_22']}
-        setIsAnswerSelected={setIsAnswerSelected}
-      />
+      {problem && <Question prompt={problem.prompt} answerOptions={problem.answerOptions} setIsAnswerSelected={setIsAnswerSelected} />}
       <Button
         variant="contained"
         disabled={!isAnswerSelected}
