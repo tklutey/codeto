@@ -7,7 +7,7 @@ import { trpc } from '../../utils/trpc';
 const Test = () => {
   const theme = useTheme();
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
-  const [problem, setProblem] = useState(null);
+  const [problem, setProblem] = useState<any>(null);
   trpc.useQuery(['multipleChoiceProblem.getById', 1], {
     onSuccess: (data) => {
       if (data) {
