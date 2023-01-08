@@ -7,9 +7,10 @@ import { useRouter } from 'next/router';
 const UnitAssessmentPage = () => {
   const router = useRouter();
   const { unit_num } = router.query;
+  const unitNum = parseInt(unit_num as string);
   return (
     <Page title={`Assessment: Unit ${unit_num}`}>
-      <Test />
+      <Test unitNum={unitNum} />
     </Page>
   );
 };

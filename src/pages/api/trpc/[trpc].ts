@@ -9,12 +9,14 @@ import { learningStandards } from 'server/routers/learningStandards';
 import { gpt } from 'server/routers/gpt';
 import { userProblem } from 'server/routers/userProblem';
 import { multipleChoiceProblem } from '../../../server/routers/multipleChoiceProblem';
+import { assessmentEngine } from '../../../server/routers/assessmentEngine';
 
 const appRouter = trpc
   .router()
   .merge('knowledgeState.', knowledgeState)
   .merge('codingProblem.', codingProblem)
   .merge('userHistory.', userHistory)
+  .merge('assessmentEngine.', assessmentEngine)
   .merge('engine.', engine)
   .merge('learningStandards.', learningStandards)
   .merge('gpt.', gpt)
