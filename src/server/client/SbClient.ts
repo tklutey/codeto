@@ -257,4 +257,12 @@ export default class SbClient {
     const { data } = await this.supabaseClient.from('learning_standard').select().eq('type', type);
     return data;
   }
+
+  async getAssessmentState(unitId: number, userId: string) {
+    const { data } = await this.supabaseClient
+      .from('unit_assessment')
+      .select('*, assessment_problem_relationship(*, mc_problem(*))')
+      .limit(1);
+    return data;
+  }
 }
