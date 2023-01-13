@@ -1,19 +1,22 @@
 import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
 import MainCard from 'ui-component/cards/MainCard';
-import { Box, Button, Grid, LinearProgress, Typography } from '@mui/material';
+import { Box, Button, Grid, LinearProgress, Stack, Typography } from '@mui/material';
 import { trpc } from 'utils/trpc';
 import useAuth from 'hooks/useAuth';
 import SkeletonStudentMasteryChart from 'components/skeleton/SkeletonStudentMasteryChart';
 import Page from 'ui-component/Page';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import StudentDashboardFooter from 'components/dashboard/StudentDashboard/StudentDashboardFooter';
+import { useRouter } from 'next/router';
+import JumpInCard from '../../components/dashboard/StudentDashboard/JumpInCard';
 
 type DrilldownFilters = {
   unitIndex?: number;
 };
 const StudentDashboard = () => {
   const { user } = useAuth();
+  const router = useRouter();
   const [drilldownFilters, setDrilldownFilters] = useState<DrilldownFilters>({});
   const [chartData, setChartData] = useState<any>(null);
   if (!user || !user.id) {
@@ -120,9 +123,10 @@ const StudentDashboard = () => {
 
   return (
     <Page title="Dashboard">
-      <MainCard title="Student Mastery" style={{ width: '100%' }}>
-        {chartData ? LoadedPageContents : <SkeletonStudentMasteryChart rows={10} />}
-      </MainCard>
+      <Stack spacing={3}>
+        <JumpInCard />
+        <MainCard style={{ width: '100%' }}>{chartData ? LoadedPageContents : <SkeletonStudentMasteryChart rows={10} />}</MainCard>
+      </Stack>
       <StudentDashboardFooter />
     </Page>
   );
