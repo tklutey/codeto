@@ -10,16 +10,18 @@ const Test = ({ unitNum }: Props) => {
   const theme = useTheme();
   const { user } = useAuth();
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
-  const [problem, setProblem] = useState<any>(null);
   const [assessmentState, setAssessmentState] = useState<any>(null);
-  trpc.useQuery(['assessmentEngine.getAssessmentState', JSON.stringify({ userId: user.id, unitNum: unitNum, prevProblemIndex: 1 })], {
-    onSuccess: (data) => {
-      if (data) {
-        setProblem(data.currentProblem);
-        setAssessmentState(data);
+  const [problemSequence, setProblemSequence] = useState(0);
+  trpc.useQuery(
+    ['assessmentEngine.getAssessmentState', JSON.stringify({ userId: user?.id, unitNum: unitNum, problemSequence: problemSequence })],
+    {
+      onSuccess: (data) => {
+        if (data) {
+          setAssessmentState(data);
+        }
       }
     }
-  });
+  );
   return (
     <Box>
       {assessmentState && (
@@ -40,6 +42,7 @@ const Test = ({ unitNum }: Props) => {
             background: theme.palette.warning.dark,
             '&:hover': { background: theme.palette.warning.main }
           }}
+          onClick={() => setProblemSequence((prevProblemIndex) => prevProblemIndex + 1)}
         >
           Submit
         </Button>

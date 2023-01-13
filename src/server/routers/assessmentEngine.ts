@@ -26,17 +26,17 @@ const transformMcProblems = (mcProblems: any) => {
 export const assessmentEngine = trpc.router().query('getAssessmentState', {
   input: z.string(),
   async resolve({ input }) {
-    const { userId, unitNum, prevProblemIndex } = JSON.parse(input);
+    const { userId, unitNum, problemSequence } = JSON.parse(input);
     const sbClient = new SbClient();
     const assessmentStateList = await sbClient.getAssessmentState(unitNum, userId);
     const assessmentState = assessmentStateList ? assessmentStateList[0] : null;
     const mcProblems = assessmentState?.assessment_problem_relationship;
     const transformedMcProblems = transformMcProblems(mcProblems);
-    const nextProblem = transformedMcProblems?.find((p: any) => p.sequence === prevProblemIndex + 1);
+    const nextProblem = transformedMcProblems?.find((p: any) => p.sequence === problemSequence);
     return {
       assessmentId: nextProblem.assessmentId,
       currentProblem: nextProblem.problem,
-      problemsCompleted: prevProblemIndex,
+      problemsCompleted: problemSequence + 1,
       totalProblems: mcProblems.length
     };
   }
