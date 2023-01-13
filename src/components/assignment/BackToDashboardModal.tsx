@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
   p: 4
 };
-const SolutionModal = () => {
+const BackToDashboardModal = ({ title, body }: Props) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -25,11 +25,10 @@ const SolutionModal = () => {
     <Modal open={true} onClose={() => {}}>
       <Box sx={style}>
         <Typography variant="h2" component="h2">
-          Mastery Achieved!
+          {title}
         </Typography>
         <Typography variant="body2" component="h2">
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          You've mastered all of the skills in this unit. Head to the dashboard to see your progress.
+          {body}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
@@ -50,4 +49,9 @@ const SolutionModal = () => {
   );
 };
 
-export default SolutionModal;
+type Props = {
+  title?: string;
+  body?: string;
+};
+
+export default BackToDashboardModal;

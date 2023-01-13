@@ -31,13 +31,19 @@ export const assessmentEngine = trpc.router().query('getAssessmentState', {
     const assessmentStateList = await sbClient.getAssessmentState(unitNum, userId);
     const assessmentState = assessmentStateList ? assessmentStateList[0] : null;
     const mcProblems = assessmentState?.assessment_problem_relationship;
+    if (problemSequence >= mcProblems.length) {
+      return {
+        status: 'COMPLETE'
+      };
+    }
     const transformedMcProblems = transformMcProblems(mcProblems);
     const nextProblem = transformedMcProblems?.find((p: any) => p.sequence === problemSequence);
     return {
       assessmentId: nextProblem.assessmentId,
       currentProblem: nextProblem.problem,
       problemsCompleted: problemSequence + 1,
-      totalProblems: mcProblems.length
+      totalProblems: mcProblems.length,
+      status: 'IN_PROGRESS'
     };
   }
 });

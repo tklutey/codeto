@@ -5,6 +5,7 @@ import { useTheme } from '@mui/styles';
 import { trpc } from '../../utils/trpc';
 import useAuth from '../../hooks/useAuth';
 import FooterStrip from '../footer/FooterStrip';
+import BackToDashboardModal from '../assignment/BackToDashboardModal';
 
 const Test = ({ unitNum }: Props) => {
   const theme = useTheme();
@@ -24,15 +25,22 @@ const Test = ({ unitNum }: Props) => {
   );
   return (
     <Box>
-      {assessmentState && (
+      {assessmentState && assessmentState.status === 'IN_PROGRESS' && (
         <Question
           prompt={assessmentState.currentProblem.prompt}
           answerOptions={assessmentState.currentProblem.answerOptions}
           setIsAnswerSelected={setIsAnswerSelected}
         />
       )}
+      {assessmentState && assessmentState.status === 'COMPLETE' && (
+        <BackToDashboardModal title={'Assessment Complete!'} body={'Head back to the dashboard to see what you mastered.'} />
+      )}
       <FooterStrip>
-        <Box>{`Question ${assessmentState?.problemsCompleted} of ${assessmentState?.totalProblems}`}</Box>
+        <Box>
+          {assessmentState &&
+            assessmentState.status === 'IN_PROGRESS' &&
+            `Question ${assessmentState?.problemsCompleted} of ${assessmentState?.totalProblems}`}
+        </Box>
         <Button
           variant="contained"
           disabled={!isAnswerSelected}

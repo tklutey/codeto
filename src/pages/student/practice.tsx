@@ -5,7 +5,7 @@ import { trpc } from 'utils/trpc';
 import useAuth from 'hooks/useAuth';
 import Page from 'ui-component/Page';
 import useOpenNavDrawer from 'hooks/useOpenNavDrawer';
-import AssignmentsCompleteModal from 'components/assignment/AssignmentsCompleteModal';
+import AssignmentsCompleteModal from 'components/assignment/BackToDashboardModal';
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import { getMasteryStatusByKey, MasteryStatus, ProblemAttemptStatus } from 'server/types';
 
@@ -65,7 +65,12 @@ const Practice = () => {
 
   const getPageContent = (problem: any) => {
     if (isAllProblemsComplete) {
-      return <AssignmentsCompleteModal />;
+      return (
+        <AssignmentsCompleteModal
+          title={'Mastery Achieved!'}
+          body={"You've mastered all of the skills in this unit. Head to the dashboard to see your progress."}
+        />
+      );
     } else if (problem) {
       const {
         title: assignmentTitle,
