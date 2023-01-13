@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import AnswerOption from './AnswerOption';
+import ReactMarkdown from 'react-markdown';
 
 const Question = ({ prompt, answerOptions, setIsAnswerSelected }: Props) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -18,7 +19,8 @@ const Question = ({ prompt, answerOptions, setIsAnswerSelected }: Props) => {
     <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'50%'}>
       <Box width={'100%'}>
         <Typography variant={'h4'} sx={{ marginY: '10px' }}>
-          {prompt}
+          {/* eslint-disable-next-line react/no-children-prop */}
+          <ReactMarkdown children={prompt} />
         </Typography>
       </Box>
       <Box display={'flex'} flexDirection={'column'} width={'100%'}>
