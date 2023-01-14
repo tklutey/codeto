@@ -1,22 +1,19 @@
 import React, { ReactElement, useState } from 'react';
 import Layout from 'layout';
-import MainCard from 'ui-component/cards/MainCard';
 import { Box, Button, Grid, LinearProgress, Stack, Typography } from '@mui/material';
 import { trpc } from 'utils/trpc';
 import useAuth from 'hooks/useAuth';
 import SkeletonStudentMasteryChart from 'components/skeleton/SkeletonStudentMasteryChart';
 import Page from 'ui-component/Page';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import StudentDashboardFooter from 'components/dashboard/StudentDashboard/StudentDashboardFooter';
-import { useRouter } from 'next/router';
 import JumpInCard from '../../components/dashboard/StudentDashboard/JumpInCard';
+import SubCard from 'ui-component/cards/SubCard';
 
 type DrilldownFilters = {
   unitIndex?: number;
 };
 const StudentDashboard = () => {
   const { user } = useAuth();
-  const router = useRouter();
   const [drilldownFilters, setDrilldownFilters] = useState<DrilldownFilters>({});
   const [chartData, setChartData] = useState<any>(null);
   if (!user || !user.id) {
@@ -99,35 +96,35 @@ const StudentDashboard = () => {
           Back
         </Button>
       )}
-      <Grid container spacing={2}>
+      <Stack spacing={2}>
         {filterMasteryData(chartData)?.map((unitData: any, index: number) => (
-          <Grid item key={unitData.key} xs={12}>
-            <Grid container alignItems="center" spacing={1} sx={{ cursor: 'pointer' }} onClick={() => handleDrilldownClick(index)}>
-              <Grid item sm zeroMinWidth>
-                <Typography variant="body2">{unitData.name}</Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="body2" align="right">
-                  {unitData.percentage}%
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <LinearProgress variant="determinate" value={unitData.percentage} color="primary" />
+          <SubCard key={unitData.key} title={unitData.name} sx={{ width: '100%' }}>
+            <Grid item xs={12}>
+              <Grid container alignItems="flex-end" spacing={1} sx={{ cursor: 'pointer' }} onClick={() => handleDrilldownClick(index)}>
+                <Grid item>
+                  <Typography variant="body2" align="right">
+                    {unitData.percentage}%
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <LinearProgress variant="determinate" value={unitData.percentage} color="primary" />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </SubCard>
         ))}
-      </Grid>
+      </Stack>
     </Box>
   );
 
   return (
     <Page title="Dashboard">
-      <Stack spacing={3}>
+      <Stack spacing={3} height={'100%'}>
         <JumpInCard />
-        <MainCard style={{ width: '100%' }}>{chartData ? LoadedPageContents : <SkeletonStudentMasteryChart rows={10} />}</MainCard>
+        <Box style={{ width: '100%', height: '75%', overflow: 'auto' }}>
+          {chartData ? LoadedPageContents : <SkeletonStudentMasteryChart rows={10} />}
+        </Box>
       </Stack>
-      <StudentDashboardFooter />
     </Page>
   );
 };
