@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { useTheme } from '@mui/styles';
 
 const ColoredHeaderCard = ({ title, children }: Props) => {

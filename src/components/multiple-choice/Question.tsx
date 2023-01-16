@@ -7,7 +7,7 @@ const Question = ({ prompt, answerOptions, setIsAnswerSelected }: Props) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   useEffect(() => {
     setIsAnswerSelected(selectedAnswer !== null);
-  }, [selectedAnswer]);
+  }, [selectedAnswer, setIsAnswerSelected]);
   const handleClick = (index: number) => {
     if (selectedAnswer === index) {
       setSelectedAnswer(null);
