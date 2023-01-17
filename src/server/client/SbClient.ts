@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { generateIdAndTimestamp, join } from 'utils/pgUtil';
+import { generateIdAndTimestamp } from 'utils/pgUtil';
 import { ProblemAttemptStatus } from 'server/types';
 
 export default class SbClient {
@@ -82,52 +82,8 @@ export default class SbClient {
   }
 
   async getLearningStandards() {
-    const { data: standard_objective } = await this.supabaseClient
-      .from('standard_relationship')
-      .select('objective:parent_id(*), standard:child_id!inner(*)')
-      .eq('standard.type', 'standard');
-
-    const { data: standard_dependencies } = await this.supabaseClient.from('standard_dependencies').select();
-
-    const standardObjectivesWithDeps = join(
-      { queryResult: standard_objective, joinKey: 'standard.id' },
-      {
-        queryResult: standard_dependencies,
-        joinKey: 'standard_id'
-      },
-      'dependencies'
-    );
-
-    const formattedStandardObjectivesWithDeps = standardObjectivesWithDeps.map((x: any) => {
-      const { dependencies, standard, objective } = x;
-      const formattedDependencies = dependencies.map((y: any) => y.dependent_standard);
-
-      const standardWithDependencies = { ...standard, dependencies: formattedDependencies };
-      return { standard: standardWithDependencies, objective };
-    });
-
-    const { data: objective_topic } = await this.supabaseClient
-      .from('standard_relationship')
-      .select('topic:parent_id(*, topic_unit_relationship(learning_unit(*))), objective:child_id!inner(*)')
-      .eq('objective.type', 'objective');
-
-    const fullStandardsJoin = join(
-      { queryResult: formattedStandardObjectivesWithDeps, joinKey: 'objective.id' },
-      {
-        queryResult: objective_topic,
-        joinKey: 'objective.id'
-      },
-      'topic_objective'
-    ).map((x: any) => {
-      const { topic_unit_relationship, ...topic } = x.topic_objective[0].topic;
-      return {
-        standard: x.standard,
-        objective: x.objective,
-        topic: topic,
-        unit: topic_unit_relationship[0].learning_unit
-      };
-    });
-    return fullStandardsJoin;
+    const { data } = await this.supabaseClient.from('denormalized_course_standards').select('*').eq('course_id', 2);
+    return data;
   }
 
   async updateCodingProblemAttemptHistory(problemId: number, userId: string, problemAttemptStatus: string) {

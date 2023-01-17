@@ -4,26 +4,17 @@ export const getCourseStandards = async () => {
   const sbClient = new SbClient();
   const rawLearningStandards = await sbClient.getLearningStandards();
   const units = rawLearningStandards
-    .map((ls: any) => ls.unit)
-    .filter((unit: any, index: number, self: any) => self.findIndex((u: any) => u.id === unit.id) === index);
-  return units.map((unit: any) => {
-    const unitLearningStandards = rawLearningStandards.filter((ls: any) => ls.unit.id === unit.id);
-    const displayStandards = unitLearningStandards.map((ls: any) => {
+    ?.map((ls: any) => {
       return {
-        unit_id: ls.unit.id,
-        unit_sequence: ls.unit.unit_sequence,
-        topic_id: ls.topic.id,
-        topic_code: ls.topic.code,
-        topic_description: ls.topic.description,
-        objective_id: ls.objective.id,
-        objective_code: ls.objective.code,
-        objective_description: ls.objective.description,
-        standard_id: ls.standard.id,
-        standard_code: ls.standard.code,
-        standard_description: ls.standard.description,
-        standard_dependencies: ls.standard.dependencies
+        unit_id: ls.unit_id,
+        unit_name: ls.unit_name,
+        unit_sequence: ls.unit_sequence
       };
-    });
+    })
+    .filter((unit: any, index: number, self: any) => self.findIndex((u: any) => u.unit_id === unit.unit_id) === index);
+  return units?.map((unit: any) => {
+    const unitLearningStandards = rawLearningStandards?.filter((ls: any) => ls.unit_id === unit.unit_id);
+    const displayStandards = unitLearningStandards;
     const displayUnit = {
       id: unit.id,
       unit_name: unit.unit_name,
