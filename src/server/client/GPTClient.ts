@@ -35,7 +35,7 @@ export default class GPTClient {
   };
 
   classifyArticle = async (articleTitle: string) => {
-    const queryString = `Based off of the following text ${articleTitle}, classify whether the content is relevant to all of the following terms: Telehealth OR telemedicine, youth OR children, a country in Europe. Using only a yes or no answer, is this relevant?:`;
+    const queryString = `Based off of the following text ${articleTitle}, classify whether the content is relevant to all of the following terms: telemedicine, children, and a country in Europe.`;
     const gptResponse = await this.openAIClient.complete({
       engine: 'text-davinci-003',
       prompt: queryString,
