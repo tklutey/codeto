@@ -19,4 +19,12 @@ export const gpt = trpc
       const gptClient = new GPTClient();
       return gptClient.askQuestion(question);
     }
+  })
+  .query('classifyArticle', {
+    input: z.string(),
+    async resolve({ input }) {
+      const { articleTitle } = JSON.parse(input);
+      const gptClient = new GPTClient();
+      return gptClient.classifyArticle(articleTitle);
+    }
   });

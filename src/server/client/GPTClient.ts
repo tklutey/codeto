@@ -33,4 +33,17 @@ export default class GPTClient {
 
     return gptResponse.data?.choices[0]?.text;
   };
+
+  classifyArticle = async (articleTitle: string) => {
+    const queryString = `Based off of the following text ${articleTitle}, classify whether the content is relevant to all of the following terms: Telehealth OR telemedicine, youth OR children, a country in Europe. Using only a yes or no answer, is this relevant?:`;
+    const gptResponse = await this.openAIClient.complete({
+      engine: 'text-davinci-003',
+      prompt: queryString,
+      maxTokens: 512,
+      temperature: 0,
+      stream: false
+    });
+
+    return gptResponse.data?.choices[0]?.text;
+  };
 }
