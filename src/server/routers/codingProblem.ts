@@ -30,6 +30,7 @@ export const codingProblem = trpc
       description: z.string(),
       startingCode: z.string(),
       solutionCode: z.string(),
+      language: z.string(),
       expectedOutputTests: z.array(
         z.object({
           message: z.string(),
@@ -58,13 +59,14 @@ export const codingProblem = trpc
         sourceCodeTests,
         source,
         youtubeUrl,
-        dependentStandards
+        dependentStandards,
+        language
       } = input;
       const tests = { expectedOutput: expectedOutputTests, expectedSourceCode: sourceCodeTests };
       const problem = {
         title,
         description,
-        language: 'java',
+        language,
         starting_code: startingCode,
         solution_code: solutionCode,
         tests,
