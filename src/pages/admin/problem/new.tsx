@@ -45,6 +45,7 @@ const NewProblem = () => {
         initialValues={{
           title: '',
           description: '',
+          language: 'javascript',
           youtubeUrl: '',
           source: 'none',
           submit: null
@@ -112,10 +113,18 @@ const NewProblem = () => {
               <ReactMarkdown children={values.description} />
             </Box>
 
+            <FormSelectInput fieldName={'language'} values={values} selectOptions={['java', 'javascript']} handleChange={handleChange} />
+
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Starting Code
             </Typography>
-            <CodeEditor language={'java'} startingCode={startingCode} updateCode={updateStartingCode} width={'900px'} height={'500px'} />
+            <CodeEditor
+              language={values.language}
+              startingCode={startingCode}
+              updateCode={updateStartingCode}
+              width={'900px'}
+              height={'500px'}
+            />
 
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Solution Code
@@ -124,7 +133,7 @@ const NewProblem = () => {
               <IDE
                 width={'100%'}
                 height={'100%'}
-                language={'java'}
+                language={values.language}
                 startingCode={startingCode}
                 setIsProblemComplete={() => {}}
                 userCode={solutionCode}

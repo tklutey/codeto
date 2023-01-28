@@ -13,12 +13,13 @@ export const executeCode = trpc.router().mutation('post', {
   }),
   async resolve({ input }): Promise<InlineResponse200> {
     const { language, script, doMock } = input;
+    const jDoodleLanguageInput = language === 'javascript' ? 'nodejs' : language;
 
     const execute: Execute = {
       clientId: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       script,
-      language,
+      language: jDoodleLanguageInput,
       versionIndex: '0'
     };
 
