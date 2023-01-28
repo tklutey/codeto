@@ -8,6 +8,8 @@ import { Divider, List, Typography } from '@mui/material';
 import NavItem from '../NavItem';
 import NavCollapse from '../NavCollapse';
 import { GenericCardProps } from 'types';
+import useAuth from '../../../../../hooks/useAuth';
+import { UserProfile } from '../../../../../types/user-profile';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
@@ -20,11 +22,14 @@ export interface NavGroupProps {
     title?: ReactNode | string;
     caption?: ReactNode | string;
     color?: 'primary' | 'secondary' | 'default' | undefined;
+    whitelistFunction?: (user: UserProfile) => boolean;
   };
 }
 
 const NavGroup = ({ item }: NavGroupProps) => {
   const theme = useTheme();
+  const { user } = useAuth();
+  const isWhitelisted = item.whitelistFunction && user ? item.whitelistFunction(user) : true;
 
   // menu list collapse & items
   const items = item.children?.map((menu) => {
@@ -44,25 +49,29 @@ const NavGroup = ({ item }: NavGroupProps) => {
 
   return (
     <>
-      <List
-        subheader={
-          item.title && (
-            <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-              {item.title}
-              {item.caption && (
-                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                  {item.caption}
+      {isWhitelisted && (
+        <>
+          <List
+            subheader={
+              item.title && (
+                <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
+                  {item.title}
+                  {item.caption && (
+                    <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                      {item.caption}
+                    </Typography>
+                  )}
                 </Typography>
-              )}
-            </Typography>
-          )
-        }
-      >
-        {items}
-      </List>
+              )
+            }
+          >
+            {items}
+          </List>
 
-      {/* group divider */}
-      <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+          {/* group divider */}
+          <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+        </>
+      )}
     </>
   );
 };

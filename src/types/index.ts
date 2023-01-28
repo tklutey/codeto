@@ -103,6 +103,7 @@ export type NavItemType = {
   breadcrumbs?: boolean;
   disabled?: boolean;
   chip?: ChipProps;
+  whitelistFunction?: (user: UserProfile) => boolean;
 };
 
 export type AuthSliderProps = {
