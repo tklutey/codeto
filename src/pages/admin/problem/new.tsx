@@ -5,7 +5,7 @@ import Page from 'ui-component/Page';
 import { Formik } from 'formik';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import CodeEditor from 'components/ide/editor/CodeEditor';
-import CodeTestInput from 'components/forms/components/CodeTestInput/CodeTestInput';
+import CodeTestInput, { CodeTest } from 'components/forms/components/CodeTestInput/CodeTestInput';
 import IDE from 'components/ide';
 import { trpc } from 'utils/trpc';
 import LearningStandardMultiselect from 'components/forms/components/CodingProblemSkillChooser/LearningStandardMultiselect';
@@ -13,14 +13,15 @@ import FormTextInput from 'components/forms/components/FormInputs/FormTextInput'
 import FormSelectInput from 'components/forms/components/FormInputs/FormSelectInput';
 import useLearningStandards from 'hooks/useLearningStandards';
 import ReactMarkdown from 'react-markdown';
+import { TestType } from '../../../components/forms/components/CodeTestInput/TestInputRow';
 
 const NewProblem = () => {
   const { standards, setStandards } = useLearningStandards();
   const [startingCode, setStartingCode] = useState('');
   const [solutionCode, setSolutionCode] = useState('');
   const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
-  const [sourceCodeTests, setSourceCodeTests] = useState([{ message: '', testCode: '' }]);
-  const [expectedOutputTests, setExpectedOutputTests] = useState([{ message: '', testCode: '' }]);
+  const [sourceCodeTests, setSourceCodeTests] = useState<CodeTest[]>([{ testType: TestType.regex, message: '', testCode: '' }]);
+  const [expectedOutputTests, setExpectedOutputTests] = useState<CodeTest[]>([{ testType: TestType.regex, message: '', testCode: '' }]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const updateStartingCode = (newCode?: string, _?: any) => {
@@ -52,14 +53,12 @@ const NewProblem = () => {
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
-          const sourceCodeTestsWithType = sourceCodeTests.map((test) => ({ ...test, type: 'regex' }));
-          const expectedOutputTestsWithType = expectedOutputTests.map((test) => ({ ...test, type: 'regex' }));
           const mergedValues = {
             ...values,
             startingCode,
             solutionCode,
-            sourceCodeTests: sourceCodeTestsWithType,
-            expectedOutputTests: expectedOutputTestsWithType,
+            sourceCodeTests,
+            expectedOutputTests,
             dependentStandards
           };
           const handleError = () => {

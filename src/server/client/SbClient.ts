@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { generateIdAndTimestamp } from 'utils/pgUtil';
 import { ProblemAttemptStatus } from 'server/types';
+import { CodeTest } from '../../components/forms/components/CodeTestInput/CodeTestInput';
 
 export default class SbClient {
   private supabaseClient: SupabaseClient;
@@ -129,12 +130,12 @@ export default class SbClient {
       if (error2) {
         throw new Error(error2.message);
       }
-      const createCodingProblemTestRecord = async (test: any, sourceType: string, problemTestId: number) => {
+      const createCodingProblemTestRecord = async (test: CodeTest, sourceType: string, problemTestId: number) => {
         return {
           id: problemTestId,
           created_at: timestamp,
           coding_problem_id: problemId,
-          test_type: test.type,
+          test_type: test.testType,
           source_type: sourceType,
           test_message: test.message,
           test_code: test.testCode

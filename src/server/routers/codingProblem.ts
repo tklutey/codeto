@@ -35,14 +35,14 @@ export const codingProblem = trpc
         z.object({
           message: z.string(),
           testCode: z.string(),
-          type: z.string()
+          testType: z.string()
         })
       ),
       sourceCodeTests: z.array(
         z.object({
           message: z.string(),
           testCode: z.string(),
-          type: z.string()
+          testType: z.string()
         })
       ),
       source: z.string(),
