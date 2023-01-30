@@ -22,7 +22,7 @@ const useLearningStandards = () => {
     }
   };
 
-  trpc.useQuery(['learningStandards.getCourseStandards'], { onSuccess: transformStandards });
+  trpc.useQuery(['learningStandards.getCourseStandards'], { onSuccess: transformStandards, refetchOnWindowFocus: false });
 
   return { standards, setStandards };
 };
