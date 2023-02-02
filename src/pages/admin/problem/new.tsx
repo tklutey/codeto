@@ -13,7 +13,7 @@ import FormTextInput from 'components/forms/components/FormInputs/FormTextInput'
 import FormSelectInput from 'components/forms/components/FormInputs/FormSelectInput';
 import useLearningStandards from 'hooks/useLearningStandards';
 import ReactMarkdown from 'react-markdown';
-import { TestType } from '../../../components/forms/components/CodeTestInput/TestInputRow';
+import { TestType } from '../../../utils/testRunner';
 
 const NewProblem = () => {
   const { standards, setStandards } = useLearningStandards();

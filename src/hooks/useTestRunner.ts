@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TestResult } from 'components/ide';
 import { CodingProblemTest } from 'server/routers/codingProblem';
+import { testRegex, testUnitTest } from '../utils/testRunner';
 
 const useTestRunner = (
   tests: CodingProblemTest[],
@@ -14,7 +15,10 @@ const useTestRunner = (
   const runTestSuite = (testSuite: CodingProblemTest[], stringToMatch: string): TestResult[] => {
     return testSuite.map((test) => {
       if (test.test_type === 'regex') {
-        const status = stringToMatch.match(test.test_code) ? 'pass' : 'fail';
+        const status = testRegex(stringToMatch, test.test_code) ? 'pass' : 'fail';
+        return { status: status, message: test.test_message };
+      } else if (test.test_type === 'unit_test') {
+        const status = testUnitTest(stringToMatch, test.test_code) ? 'pass' : 'fail';
         return { status: status, message: test.test_message };
       } else {
         return { status: 'fail', message: 'Unknown test type' };

@@ -1,5 +1,6 @@
-import TestInputRow, { TestType } from 'components/forms/components/CodeTestInput/TestInputRow';
+import TestInputRow from 'components/forms/components/CodeTestInput/TestInputRow';
 import { Box, Button } from '@mui/material';
+import { TestType } from '../../../../utils/testRunner';
 
 export type CodeTest = {
   message: string;

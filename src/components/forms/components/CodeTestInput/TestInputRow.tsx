@@ -1,21 +1,6 @@
 import { Box, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useState } from 'react';
-
-export enum TestType {
-  regex = 'regex',
-  unit_test = 'unit_test'
-}
-
-const TEST_TYPES = [TestType.regex, TestType.unit_test];
-
-const testRegex = (testInput: string, testCode: string) => {
-  return testInput.match(testCode) && testCode.length > 0;
-};
-
-const testUnitTest = (testInput: string, testCode: string) => {
-  const codeWithTests = testCode + `\n${testInput}`;
-  return eval(codeWithTests);
-};
+import { TEST_TYPES, testRegex, TestType, testUnitTest } from 'utils/testRunner';
 
 const TestInputRow = ({ message, testCode, onChange, testInput }: Props) => {
   const [status, setStatus] = useState('fail');

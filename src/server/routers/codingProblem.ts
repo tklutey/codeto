@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { transformCodingProblem } from 'server/routers/util';
 
 export type CodingProblemTest = {
-  test_type: 'regex' | 'code';
+  test_type: 'regex' | 'unit_test';
   source_type: 'stdin' | 'stdout';
   test_message: string;
   test_code: string;
