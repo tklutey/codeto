@@ -23,8 +23,11 @@ const ProgrammingActivityLayout = (props: Props) => {
     problemFetchTimestamp,
     currentProblemMasteryStatus,
     submittedProblemMasteryStatus,
-    isAdaptiveMode
+    isAdaptiveMode,
+    showGetUnstuckButton,
+    footer
   } = props;
+  const shouldShowGetUnstuckButton = showGetUnstuckButton !== null && showGetUnstuckButton !== undefined ? showGetUnstuckButton : true;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showGetUnstuckModal, setShowGetUnstuckModal] = useState(false);
   const [userCode, setUserCode] = useState<string | undefined>(startingCode);
@@ -103,9 +106,10 @@ const ProgrammingActivityLayout = (props: Props) => {
           height={'100%'}
           isLoading={isLoading}
           hasGetUnstuck={
-            scaffoldingConfiguration
+            shouldShowGetUnstuckButton &&
+            (scaffoldingConfiguration
               ? scaffoldingConfiguration.hasSolution || scaffoldingConfiguration.hasChat || scaffoldingConfiguration.hasVideo
-              : true
+              : true)
           }
           setShowGetUnstuckModal={setShowGetUnstuckModal}
         />
@@ -130,13 +134,16 @@ const ProgrammingActivityLayout = (props: Props) => {
           {'Skill Mastered'}
         </Alert>
       </Snackbar>
-      <AssignmentFooter
-        disabled={!canMoveOnToNextProblem}
-        onNextClicked={handleGoToNextProblem}
-        onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
-        masteryStatus={currentProblemMasteryStatus}
-        isAdaptiveMode={isAdaptiveMode}
-      />
+      {footer && footer}
+      {!footer && (
+        <AssignmentFooter
+          disabled={!canMoveOnToNextProblem}
+          onNextClicked={handleGoToNextProblem}
+          onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
+          masteryStatus={currentProblemMasteryStatus}
+          isAdaptiveMode={isAdaptiveMode}
+        />
+      )}
     </div>
   );
 };
@@ -155,6 +162,8 @@ type Props = {
   currentProblemMasteryStatus?: MasteryStatus;
   submittedProblemMasteryStatus?: MasteryStatus;
   isAdaptiveMode?: boolean;
+  showGetUnstuckButton?: boolean;
+  footer?: React.ReactNode;
 };
 
 export default ProgrammingActivityLayout;
