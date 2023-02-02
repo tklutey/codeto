@@ -1,5 +1,5 @@
 import { dispatch, useSelector } from 'store';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { openDrawer } from 'store/slices/menu';
 import { trpc } from 'utils/trpc';
 import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
@@ -10,9 +10,15 @@ import AssessmentFooter from '../../components/assessment/AssessmentFooter';
 import useModal from '../../hooks/useModal';
 import AssessmentIntroModal from '../../components/assessment/AssessmentIntroModal';
 import useAuth from '../../hooks/useAuth';
+import { ProblemAttemptStatus } from '../../server/types';
+import AssignmentsCompleteModal from '../../components/assignment/BackToDashboardModal';
 
 const Problem = () => {
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [codingProblem, setCodingProblem] = useState<any>(null);
+  const [problemFetchTimestamp, setProblemFetchTimestamp] = useState<number>(0);
+  const [isAllProblemsComplete, setIsAllProblemsComplete] = useState(false);
   if (!user || !user.id) {
     throw new Error('User not found');
   }
@@ -25,16 +31,53 @@ const Problem = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { data: problems, isLoading } = trpc.useQuery([
-    'engine.getProblemsByDistance',
-    JSON.stringify({
-      userId: user.id,
-      courseId: 2,
-      order: 'desc'
-    })
-  ]);
-  const getPageContent = (problemList?: any[]) => {
-    if (problemList && problemList.length > 0) {
+  const { refetch: refetchProblemsByDistance } = trpc.useQuery(
+    [
+      'engine.getProblemsByDistance',
+      JSON.stringify({
+        userId: user.id,
+        courseId: 2,
+        order: 'desc'
+      })
+    ],
+    {
+      onSuccess: (data) => {
+        if (data) {
+          if (data.length > 0) {
+            const prob = data[0];
+            setCodingProblem(prob);
+            setProblemFetchTimestamp(Date.now());
+          } else {
+            setIsAllProblemsComplete(true);
+          }
+          setIsLoading(false);
+        }
+      },
+      refetchOnWindowFocus: false
+    }
+  );
+
+  const submitProblemAttempt = trpc.useMutation('userProblem.submitProblemAttempt');
+
+  const goToNextProblem = async (problemAttemptStatus: ProblemAttemptStatus) => {
+    setIsLoading(true);
+    const data = await submitProblemAttempt.mutateAsync({
+      userId: user.id as string,
+      codingProblemId: codingProblem.id,
+      problemAttemptStatus
+    });
+    await refetchProblemsByDistance();
+  };
+
+  const getPageContent = (problem: any) => {
+    if (isAllProblemsComplete) {
+      return (
+        <AssignmentsCompleteModal
+          title={'Mastery Achieved!'}
+          body={"You've mastered all of the skills in this unit. Head to the dashboard to see your progress."}
+        />
+      );
+    } else if (problem) {
       const {
         title: assignmentTitle,
         description: assignmentDescription,
@@ -43,7 +86,7 @@ const Problem = () => {
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
         coding_problem_tests: codingProblemTests
-      } = problemList[0];
+      } = problem;
       return (
         <>
           <AssessmentIntroModal isOpen={isOpen} handleClose={closeModal} />
@@ -58,6 +101,8 @@ const Problem = () => {
             isLoading={isLoading}
             showGetUnstuckButton={false}
             footer={<AssessmentFooter disabled={true} onNextClicked={() => console.log('click')} />}
+            problemFetchTimestamp={problemFetchTimestamp}
+            goToNextProblem={(problemAttemptStatus: ProblemAttemptStatus) => goToNextProblem(problemAttemptStatus)}
           />
         </>
       );
@@ -65,7 +110,7 @@ const Problem = () => {
     return <div>Loading...</div>;
   };
 
-  return <Page title="Practice">{getPageContent(problems)}</Page>;
+  return <Page title="Practice">{getPageContent(codingProblem)}</Page>;
 };
 
 Problem.getLayout = function getLayout(page: ReactElement) {
