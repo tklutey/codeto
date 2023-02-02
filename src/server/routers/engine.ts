@@ -89,11 +89,12 @@ const sortProblemSets = (a: any, b: any) => {
   return 0;
 };
 
-const getProblemsByDistance = async (userId: string, userLearningStandards: number[]) => {
+const getProblemsByDistance = async (userId: string, userLearningStandards: number[], sortOrder?: string, courseId?: number) => {
+  const order = sortOrder === 'asc' ? 'asc' : 'desc';
   const sbClient = new SbClient();
   const currentStreak = await getCurrentUserStreak(userId);
   const targetDistance = streakToTargetDistance(currentStreak);
-  const allCodingProblems = await sbClient.getAllCodingProblems(userId);
+  const allCodingProblems = await sbClient.getAllCodingProblems(userId, courseId);
   const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
   const sortedLearningStandards = transformedCodingProblems
     ?.map((cp) => {
@@ -111,6 +112,9 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
       };
     })
     .sort(sortProblems);
+  if (order === 'desc') {
+    return sortedLearningStandards?.reverse();
+  }
   return sortedLearningStandards;
 };
 
@@ -166,8 +170,8 @@ export const engine = trpc
   .query('getProblemsByDistance', {
     input: z.string(),
     async resolve({ input }) {
-      const { userId, learningStandards: userLearningStandards } = JSON.parse(input);
-      return (await getProblemsByDistance(userId, userLearningStandards))?.filter((cp) => cp.distance > 0);
+      const { userId, learningStandards: userLearningStandards, courseId, order } = JSON.parse(input);
+      return (await getProblemsByDistance(userId, userLearningStandards, order, courseId))?.filter((cp) => cp.distance > 0);
     }
   })
   .query('getProblemSetsByDistance', {

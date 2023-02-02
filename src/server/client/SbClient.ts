@@ -35,13 +35,17 @@ export default class SbClient {
     return data;
   }
 
-  async getAllCodingProblems(userId: string) {
-    let { data } = await this.supabaseClient
+  async getAllCodingProblems(userId: string, courseId?: number) {
+    let query = this.supabaseClient
       .from('coding_problem')
       .select(
         '*, problem_standard_relationship(learning_standard(id, code, description)), user_problem_attempt_history(attempt_timestamp, is_successful_attempt, attempt_status), coding_problem_tests(test_type, source_type, test_message, test_code)'
       )
       .eq('user_problem_attempt_history.user_id', userId);
+    if (courseId) {
+      query = query.eq('course_id', courseId);
+    }
+    const { data } = await query;
     return data;
   }
 
