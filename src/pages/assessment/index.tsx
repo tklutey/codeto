@@ -100,7 +100,7 @@ const Problem = () => {
             youtubeTutorialUrl={youtubeTutorialUrl}
             isLoading={isLoading}
             showGetUnstuckButton={false}
-            footer={<AssessmentFooter disabled={true} onNextClicked={() => console.log('click')} />}
+            footerConfig={{ type: 'Assessment' }}
             problemFetchTimestamp={problemFetchTimestamp}
             goToNextProblem={(problemAttemptStatus: ProblemAttemptStatus) => goToNextProblem(problemAttemptStatus)}
           />

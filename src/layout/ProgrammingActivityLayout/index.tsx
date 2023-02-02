@@ -8,6 +8,8 @@ import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/Pr
 import { Alert, Snackbar } from '@mui/material';
 import useSnackbar from 'hooks/useSnackbar';
 import GetUnstuckModal from 'components/assignment/GetUnstuckModal';
+import { FooterConfig } from '../../types/programmingActivity';
+import ProgrammingActivityFooter from './ProgrammingActivityFooter';
 
 const ProgrammingActivityLayout = (props: Props) => {
   const {
@@ -25,8 +27,9 @@ const ProgrammingActivityLayout = (props: Props) => {
     submittedProblemMasteryStatus,
     isAdaptiveMode,
     showGetUnstuckButton,
-    footer
+    footerConfig
   } = props;
+  const resolvedFooterConfig = footerConfig || { type: 'Learning' };
   const shouldShowGetUnstuckButton = showGetUnstuckButton !== null && showGetUnstuckButton !== undefined ? showGetUnstuckButton : true;
   const [canMoveOnToNextProblem, setCanMoveOnToNextProblem] = useState(false);
   const [showGetUnstuckModal, setShowGetUnstuckModal] = useState(false);
@@ -134,16 +137,14 @@ const ProgrammingActivityLayout = (props: Props) => {
           {'Skill Mastered'}
         </Alert>
       </Snackbar>
-      {footer && footer}
-      {!footer && (
-        <AssignmentFooter
-          disabled={!canMoveOnToNextProblem}
-          onNextClicked={handleGoToNextProblem}
-          onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
-          masteryStatus={currentProblemMasteryStatus}
-          isAdaptiveMode={isAdaptiveMode}
-        />
-      )}
+      <ProgrammingActivityFooter
+        footerConfig={resolvedFooterConfig}
+        isNextButtonEnabled={canMoveOnToNextProblem}
+        handleGoToNextProblem={handleGoToNextProblem}
+        onSkipClicked={() => handleProblemComplete(ProblemAttemptStatus.Skipped)}
+        masteryStatus={currentProblemMasteryStatus}
+        isAdaptiveMode={isAdaptiveMode}
+      />
     </div>
   );
 };
@@ -163,7 +164,7 @@ type Props = {
   submittedProblemMasteryStatus?: MasteryStatus;
   isAdaptiveMode?: boolean;
   showGetUnstuckButton?: boolean;
-  footer?: React.ReactNode;
+  footerConfig?: FooterConfig;
 };
 
 export default ProgrammingActivityLayout;
