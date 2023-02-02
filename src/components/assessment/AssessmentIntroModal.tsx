@@ -27,7 +27,7 @@ const AssessmentIntroModal = ({ isOpen, handleClose }: Props) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Box sx={style}>
-        <Typography variant={'body2'}>Here is some text</Typography>
+        <Typography variant={'h2'}>Here is some text</Typography>
       </Box>
     </Modal>
   );

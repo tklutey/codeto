@@ -19,6 +19,28 @@ const AssessmentFooter = ({ disabled, onNextClicked }: Props) => {
       <ButtonStrip>
         <Button
           variant="contained"
+          sx={{
+            margin: '14px',
+            color: theme.palette.common.black,
+            background: theme.palette.error.main,
+            '&:hover': { background: theme.palette.error.dark }
+          }}
+        >
+          Too Hard
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            margin: '14px',
+            color: theme.palette.common.black,
+            background: theme.palette.success.main,
+            '&:hover': { background: theme.palette.success.dark }
+          }}
+        >
+          Too Easy
+        </Button>
+        <Button
+          variant="contained"
           disabled={disabled}
           sx={{
             margin: '14px',
