@@ -9,10 +9,15 @@ import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssessmentFooter from '../../components/assessment/AssessmentFooter';
 import useModal from '../../hooks/useModal';
 import AssessmentIntroModal from '../../components/assessment/AssessmentIntroModal';
+import useAuth from '../../hooks/useAuth';
 
 const Problem = () => {
+  const { user } = useAuth();
+  if (!user || !user.id) {
+    throw new Error('User not found');
+  }
   const { drawerOpen } = useSelector((state) => state.menu);
-  const { isOpen, closeModal } = useModal(true);
+  const { isOpen, closeModal } = useModal(false);
   useEffect(() => {
     if (drawerOpen) {
       dispatch(openDrawer(false));
@@ -20,9 +25,17 @@ const Problem = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { data: lesson, isLoading } = trpc.useQuery(['codingProblem.getById', 16]);
-  const getPageContent = (problem: any) => {
-    if (problem) {
+  const { data: problems, isLoading } = trpc.useQuery([
+    'engine.getProblemsByDistance',
+    JSON.stringify({
+      learningStandards: [],
+      userId: user.id,
+      courseId: 2,
+      order: 'desc'
+    })
+  ]);
+  const getPageContent = (problemList?: any[]) => {
+    if (problemList && problemList.length > 0) {
       const {
         title: assignmentTitle,
         description: assignmentDescription,
@@ -31,7 +44,7 @@ const Problem = () => {
         youtube_tutorial_url: youtubeTutorialUrl,
         solution_code: solutionCode,
         coding_problem_tests: codingProblemTests
-      } = problem;
+      } = problemList[0];
       return (
         <>
           <AssessmentIntroModal isOpen={isOpen} handleClose={closeModal} />
@@ -53,7 +66,7 @@ const Problem = () => {
     return <div>Loading...</div>;
   };
 
-  return <Page title="Practice">{getPageContent(lesson)}</Page>;
+  return <Page title="Practice">{getPageContent(problems)}</Page>;
 };
 
 Problem.getLayout = function getLayout(page: ReactElement) {
