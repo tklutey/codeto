@@ -110,7 +110,7 @@ const Problem = () => {
     return <div>Loading...</div>;
   };
 
-  return <Page title="Practice">{getPageContent(codingProblem)}</Page>;
+  return <Page title="Assessment">{getPageContent(codingProblem)}</Page>;
 };
 
 Problem.getLayout = function getLayout(page: ReactElement) {
