@@ -28,7 +28,6 @@ const Problem = () => {
   const { data: problems, isLoading } = trpc.useQuery([
     'engine.getProblemsByDistance',
     JSON.stringify({
-      learningStandards: [],
       userId: user.id,
       courseId: 2,
       order: 'desc'

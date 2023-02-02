@@ -89,7 +89,7 @@ const sortProblemSets = (a: any, b: any) => {
   return 0;
 };
 
-const getProblemsByDistance = async (userId: string, userLearningStandards: number[], sortOrder?: string, courseId?: number) => {
+const getProblemsByDistanceBase = async (userId: string, userLearningStandards: number[], sortOrder?: string, courseId?: number) => {
   const order = sortOrder === 'asc' ? 'asc' : 'desc';
   const sbClient = new SbClient();
   const currentStreak = await getCurrentUserStreak(userId);
@@ -118,10 +118,16 @@ const getProblemsByDistance = async (userId: string, userLearningStandards: numb
   return sortedLearningStandards;
 };
 
+const getProblemsByDistance = async (userId: string, sortOrder?: string, courseId?: number) => {
+  const sbClient = new SbClient();
+  const userLearningStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
+  return getProblemsByDistanceBase(userId, userLearningStandards || [], sortOrder, courseId);
+};
+
 export const getProblemSetsByDistance = async (userId: string) => {
   const sbClient = new SbClient();
   const userLearningStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
-  const problemsByDistance = await getProblemsByDistance(userId, userLearningStandards ? userLearningStandards : []);
+  const problemsByDistance = await getProblemsByDistanceBase(userId, userLearningStandards ? userLearningStandards : []);
   // group problems that share the same exact learning standards
   const problemSetsByDistance = problemsByDistance?.reduce((acc: any, problem: any) => {
     const { learning_standards, distance, distanceFromTarget, isAdaptiveMode, ...rest } = problem;
@@ -170,8 +176,8 @@ export const engine = trpc
   .query('getProblemsByDistance', {
     input: z.string(),
     async resolve({ input }) {
-      const { userId, learningStandards: userLearningStandards, courseId, order } = JSON.parse(input);
-      return (await getProblemsByDistance(userId, userLearningStandards, order, courseId))?.filter((cp) => cp.distance > 0);
+      const { userId, courseId, order } = JSON.parse(input);
+      return (await getProblemsByDistance(userId, order, courseId))?.filter((cp) => cp.distance > 0);
     }
   })
   .query('getProblemSetsByDistance', {
