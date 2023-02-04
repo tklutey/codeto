@@ -1,14 +1,6 @@
 import Modal from '@mui/material/Modal';
-import { Box, Tab, Tabs, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import TabPanel from 'components/ui-elements/basic/UITabs/TabPanel';
-import VideoPlayer from 'components/assignment/VideoPlayer';
-import ChatHelp from 'components/assignment/ChatHelp';
-import AssignmentWalkthrough from 'components/assignment/AssignmentWalkthrough';
-import DifferenceIcon from '@mui/icons-material/Difference';
-import VideocamIcon from '@mui/icons-material/Videocam';
-import ChatIcon from '@mui/icons-material/Chat';
-import { ScaffoldingConfiguration } from '../../layout/ProgrammingActivityLayout/scaffolding';
+import { Box, Typography } from '@mui/material';
+import React from 'react';
 
 const style = {
   position: 'absolute' as 'absolute',

@@ -6,7 +6,6 @@ import ProgrammingActivityLayout from 'layout/ProgrammingActivityLayout';
 import Layout from 'layout';
 import Page from 'ui-component/Page';
 import { CodingProblemTest } from 'server/routers/codingProblem';
-import AssessmentFooter from '../../components/assessment/AssessmentFooter';
 import useModal from '../../hooks/useModal';
 import AssessmentIntroModal from '../../components/assessment/AssessmentIntroModal';
 import useAuth from '../../hooks/useAuth';
@@ -61,7 +60,7 @@ const Problem = () => {
 
   const goToNextProblem = async (problemAttemptStatus: ProblemAttemptStatus) => {
     setIsLoading(true);
-    const data = await submitProblemAttempt.mutateAsync({
+    await submitProblemAttempt.mutateAsync({
       userId: user.id as string,
       codingProblemId: codingProblem.id,
       problemAttemptStatus

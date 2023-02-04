@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import Modal from '@mui/material/Modal';
-import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const useModal = (initialState: boolean) => {
   const [isOpen, setIsOpen] = useState(initialState);

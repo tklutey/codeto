@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { generateIdAndTimestamp } from 'utils/pgUtil';
-import { convertMasteryStatusToString, getMasteryStatusByKey, MasteryStatus, ProblemAttemptStatus } from 'server/types';
+import { convertMasteryStatusToString, MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { CodeTest } from '../../components/forms/components/CodeTestInput/CodeTestInput';
 
 export default class SbClient {

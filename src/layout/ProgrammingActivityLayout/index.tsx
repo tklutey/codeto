@@ -2,7 +2,6 @@ import IDE from 'components/ide';
 import React, { useEffect, useState } from 'react';
 import { CodingProblemTest } from 'server/routers/codingProblem';
 import AssignmentSidebar from 'components/assignment/AssignmentSidebar';
-import AssignmentFooter from 'components/assignment/AssignmentFooter';
 import { MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { getScaffoldingConfiguration, ScaffoldingConfiguration } from 'layout/ProgrammingActivityLayout/scaffolding';
 import { Alert, Snackbar } from '@mui/material';

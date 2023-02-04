@@ -1,7 +1,7 @@
 import { FooterConfig } from '../../types/programmingActivity';
 import AssignmentFooter from '../../components/assignment/AssignmentFooter';
 import AssessmentFooter from '../../components/assessment/AssessmentFooter';
-import { MasteryStatus, ProblemAttemptStatus } from '../../server/types';
+import { MasteryStatus } from '../../server/types';
 
 const ProgrammingActivityFooter = ({
   footerConfig,
