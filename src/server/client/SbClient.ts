@@ -29,7 +29,11 @@ export default class SbClient {
   async getCodingProblemById(id: number) {
     let { data } = await this.supabaseClient
       .from(this._getTableName('coding_problem'))
-      .select(`*, coding_problem_tests:"${this._getTableName('coding_problem_tests')}"(test_type, source_type, test_message, test_code)`)
+      .select(
+        `*, coding_problem_tests:"${this._getTableName(
+          'coding_problem_tests'
+        )}"(test_type, source_type, test_message, test_code), learning_standard(id, code, description)`
+      )
       .eq('id', id);
 
     return data;
@@ -65,6 +69,25 @@ export default class SbClient {
   async deleteUserProblemAttemptHistory(userId: string) {
     const { data } = await this.supabaseClient.from('user_problem_attempt_history').delete().eq('user_id', userId);
     return data;
+  }
+
+  async updateUserKnowledgeStateV2(learningStandardStatuses: Record<string, any>[], userUuid: string) {
+    const upsertRecords = learningStandardStatuses
+      .map((standard) => {
+        return {
+          user_id: userUuid,
+          learning_standard_id: standard.standard_id,
+          mastery_status: standard.mastery_status
+        };
+      })
+      .filter((x) => x);
+    if (upsertRecords.length > 0) {
+      return this.supabaseClient
+        .from('user_learning_standard_relationship')
+        .upsert(upsertRecords, { onConflict: 'learning_standard_id, user_id', ignoreDuplicates: false })
+        .select();
+    }
+    return 'No new records to insert';
   }
 
   async updateUserKnowledgeState(newLearningStandards: number[], userUuid: string) {

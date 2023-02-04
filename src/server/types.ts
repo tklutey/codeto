@@ -10,9 +10,26 @@ export enum MasteryStatus {
   Unattempted = 0,
   Learned = 1,
   Practiced = 2,
-  Mastered = 3
+  Mastered = 3,
+  Failed = 4
 }
 
+export const convertMasteryStatusToString = (masteryStatus: MasteryStatus) => {
+  switch (masteryStatus) {
+    case MasteryStatus.Unattempted:
+      return 'Unattempted';
+    case MasteryStatus.Learned:
+      return 'Learned';
+    case MasteryStatus.Practiced:
+      return 'Practiced';
+    case MasteryStatus.Mastered:
+      return 'Mastered';
+    case MasteryStatus.Failed:
+      return 'Failed';
+    default:
+      return 'Unattempted';
+  }
+};
 export const getMasteryStatusByValue = (value: number) => {
   switch (value) {
     case 0:

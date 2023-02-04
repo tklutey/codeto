@@ -57,7 +57,7 @@ const Problem = () => {
     }
   );
 
-  const submitProblemAttempt = trpc.useMutation('userProblem.submitProblemAttempt');
+  const submitProblemAttempt = trpc.useMutation('userProblem.submitAssessmentProblemAttempt');
 
   const goToNextProblem = async (problemAttemptStatus: ProblemAttemptStatus) => {
     setIsLoading(true);
