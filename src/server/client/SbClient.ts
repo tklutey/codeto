@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { generateIdAndTimestamp } from 'utils/pgUtil';
-import { ProblemAttemptStatus } from 'server/types';
+import { convertMasteryStatusToString, getMasteryStatusByKey, MasteryStatus, ProblemAttemptStatus } from 'server/types';
 import { CodeTest } from '../../components/forms/components/CodeTestInput/CodeTestInput';
 
 export default class SbClient {
@@ -57,7 +57,8 @@ export default class SbClient {
     const { data: masteredStandards } = await this.supabaseClient
       .from('user_learning_standard_relationship')
       .select()
-      .eq('user_id', userUuid);
+      .eq('user_id', userUuid)
+      .eq('mastery_status', convertMasteryStatusToString(MasteryStatus.Mastered));
     return masteredStandards;
   }
 
