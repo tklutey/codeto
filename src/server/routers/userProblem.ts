@@ -52,7 +52,6 @@ export const userProblem = trpc
       const sbClient = new SbClient();
       // update problem attempt history
       await sbClient.updateCodingProblemAttemptHistory(codingProblemId, userId, problemAttemptStatus);
-      // get coding problem learning standards
       const masteryStatus = convertMasteryStatusToString(getMasteryStatusFromAttemptStatus(problemAttemptStatus));
       const codingProblem = await sbClient.getCodingProblemById(codingProblemId);
       const standardMasteryStatuses: Record<string, any>[] | undefined = codingProblem?.flatMap((problem: any) =>

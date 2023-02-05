@@ -43,7 +43,6 @@ export const knowledgeState = trpc
       const sbClient = new SbClient();
       const courseSummaryPromise = getCourseStandards();
       const userStandardStatuses = await sbClient.getAllUserStandardMastery(userId);
-      // const masteredStandardIds = new Set(userStandardStatuses?.map((standard) => standard.learning_standard_id));
       const courseSummary = await courseSummaryPromise;
       const courseSummaryWithMastery = courseSummary?.map((unit: any) => {
         const standardsWithMastery = unit.standards?.map((standard: any) => {
