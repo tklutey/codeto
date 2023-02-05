@@ -12,7 +12,7 @@ const JumpInCard = () => {
           <Typography variant={'body2'}>Take the diagnostic assessment to show what you know.</Typography>
         </Grid>
         <Grid item>
-          <Button variant="contained" onClick={() => router.push('/assessment/unit/1')}>
+          <Button variant="contained" onClick={() => router.push('/assessment')}>
             Assess
           </Button>
         </Grid>

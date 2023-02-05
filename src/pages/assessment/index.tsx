@@ -11,8 +11,10 @@ import AssessmentIntroModal from '../../components/assessment/AssessmentIntroMod
 import useAuth from '../../hooks/useAuth';
 import { ProblemAttemptStatus } from '../../server/types';
 import AssignmentsCompleteModal from '../../components/assignment/BackToDashboardModal';
+import useOpenNavDrawer from '../../hooks/useOpenNavDrawer';
 
 const Problem = () => {
+  useOpenNavDrawer();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [codingProblem, setCodingProblem] = useState<any>(null);
