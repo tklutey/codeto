@@ -20,7 +20,8 @@ export default class SbClient {
     // create a new set with 2 elements
     const hasBetaTable = new Set(['coding_problem', 'coding_problem_tests', 'problem_standard_relationship']);
     const env = process.env.NODE_ENV;
-    if (env === 'development' && hasBetaTable.has(tableName)) {
+    const useBetaTables = process.env.USE_BETA_TABLES ? process.env.USE_BETA_TABLES === 'true' : false;
+    if (env === 'development' && hasBetaTable.has(tableName) && useBetaTables) {
       return `beta:${tableName}`;
     }
     return tableName;
