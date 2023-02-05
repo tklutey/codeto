@@ -118,10 +118,34 @@ const getProblemsByDistanceBase = async (userId: string, userLearningStandards: 
   return sortedLearningStandards;
 };
 
-const getProblemsByDistance = async (userId: string, sortOrder?: string, courseId?: number) => {
+const getAssessmentProblemsByDistance = async (userId: string, sortOrder?: string, courseId?: number) => {
   const sbClient = new SbClient();
-  const userLearningStandards = (await sbClient.getMasteredStandardsForUser(userId))?.map((standard: any) => standard.learning_standard_id);
-  return getProblemsByDistanceBase(userId, userLearningStandards || [], sortOrder, courseId);
+  // get all standards that have been attempted
+  const userLearningStandards =
+    (await sbClient.getAllUserStandardMastery(userId))
+      ?.filter((ls) => ls.mastery_status !== MasteryStatus.Unattempted)
+      ?.map((standard: any) => standard.learning_standard_id) || [];
+  const order = sortOrder === 'asc' ? 'asc' : 'desc';
+  const allCodingProblems = await sbClient.getAllCodingProblems(userId, courseId);
+  const transformedCodingProblems = allCodingProblems?.map((cp) => transformCodingProblem(cp));
+  const sortedLearningStandards = transformedCodingProblems
+    ?.map((cp) => {
+      const { learning_standards, ...rest } = cp;
+      const numericLearningStandards = learning_standards.map((ls: any) => ls.standard_id);
+      const intersection = userLearningStandards.filter((x: any) => numericLearningStandards?.includes(x));
+      const distance = learning_standards.length - intersection.length;
+      return {
+        ...rest,
+        learning_standards,
+        distance,
+        distanceFromTarget: distance
+      };
+    })
+    .sort(sortProblems);
+  if (order === 'desc') {
+    return sortedLearningStandards?.reverse();
+  }
+  return sortedLearningStandards;
 };
 
 export const getProblemSetsByDistance = async (userId: string) => {
@@ -173,11 +197,11 @@ export const getProblemSetsByDistance = async (userId: string) => {
 };
 export const engine = trpc
   .router()
-  .query('getProblemsByDistance', {
+  .query('getAssessmentProblemsByDistance', {
     input: z.string(),
     async resolve({ input }) {
       const { userId, courseId, order } = JSON.parse(input);
-      return (await getProblemsByDistance(userId, order, courseId))?.filter((cp) => cp.distance > 0);
+      return (await getAssessmentProblemsByDistance(userId, order, courseId))?.filter((cp) => cp.distance > 0);
     }
   })
   .query('getProblemSetsByDistance', {

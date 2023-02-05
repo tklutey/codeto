@@ -34,7 +34,7 @@ const Problem = () => {
 
   const { refetch: refetchProblemsByDistance } = trpc.useQuery(
     [
-      'engine.getProblemsByDistance',
+      'engine.getAssessmentProblemsByDistance',
       JSON.stringify({
         userId: user.id,
         courseId: 2,
