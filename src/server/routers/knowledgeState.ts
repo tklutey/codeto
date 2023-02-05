@@ -2,6 +2,7 @@ import * as trpc from '@trpc/server';
 import SbClient from 'server/client/SbClient';
 import { z } from 'zod';
 import { getCourseStandards } from 'server/routers/util';
+import { convertMasteryStatusToString, MasteryStatus } from '../types';
 
 export const knowledgeState = trpc
   .router()
@@ -41,14 +42,16 @@ export const knowledgeState = trpc
       const userId = input;
       const sbClient = new SbClient();
       const courseSummaryPromise = getCourseStandards();
-      const masteredStandards = await sbClient.getMasteredStandardsForUser(userId);
-      const masteredStandardIds = new Set(masteredStandards?.map((standard) => standard.learning_standard_id));
+      const userStandardStatuses = await sbClient.getAllUserStandardMastery(userId);
+      // const masteredStandardIds = new Set(userStandardStatuses?.map((standard) => standard.learning_standard_id));
       const courseSummary = await courseSummaryPromise;
       const courseSummaryWithMastery = courseSummary?.map((unit: any) => {
         const standardsWithMastery = unit.standards?.map((standard: any) => {
+          const userStandardStatus = userStandardStatuses?.find((userStandard) => userStandard.learning_standard_id === standard.id);
           return {
             ...standard,
-            mastered: masteredStandardIds.has(standard.standard_id)
+            mastered: userStandardStatus ? userStandardStatus === MasteryStatus.Mastered : false,
+            status: convertMasteryStatusToString(userStandardStatus ? userStandardStatus : MasteryStatus.Unattempted)
           };
         });
         // get percentage of standards in unit that are mastered
