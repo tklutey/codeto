@@ -22,7 +22,7 @@ const ProgrammingActivityFooter = ({
       />
     );
   } else {
-    return <AssessmentFooter disabled={!isNextButtonEnabled} onNextClicked={handleGoToNextProblem} />;
+    return <AssessmentFooter disabled={!isNextButtonEnabled} onNextClicked={handleGoToNextProblem} onSkipClicked={onSkipClicked} />;
   }
 };
 

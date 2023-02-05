@@ -7,7 +7,7 @@ import FooterStrip from 'components/footer/FooterStrip';
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'
 }));
-const AssessmentFooter = ({ disabled, onNextClicked }: Props) => {
+const AssessmentFooter = ({ disabled, onNextClicked, onSkipClicked }: Props) => {
   const theme = useTheme();
   return (
     <FooterStrip>
@@ -22,6 +22,7 @@ const AssessmentFooter = ({ disabled, onNextClicked }: Props) => {
             background: theme.palette.error.main,
             '&:hover': { background: theme.palette.error.dark }
           }}
+          onClick={onSkipClicked}
         >
           Too Hard
         </Button>
@@ -33,6 +34,7 @@ const AssessmentFooter = ({ disabled, onNextClicked }: Props) => {
             background: theme.palette.success.main,
             '&:hover': { background: theme.palette.success.dark }
           }}
+          onClick={onNextClicked}
         >
           Too Easy
         </Button>
@@ -57,6 +59,7 @@ const AssessmentFooter = ({ disabled, onNextClicked }: Props) => {
 type Props = {
   disabled: boolean;
   onNextClicked?: () => void;
+  onSkipClicked: () => void;
 };
 
 export default AssessmentFooter;
