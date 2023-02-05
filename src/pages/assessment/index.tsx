@@ -74,8 +74,8 @@ const Problem = () => {
     if (isAllProblemsComplete) {
       return (
         <AssignmentsCompleteModal
-          title={'Mastery Achieved!'}
-          body={"You've mastered all of the skills in this unit. Head to the dashboard to see your progress."}
+          title={'Assessment Complete'}
+          body={"You've completed all the problems in this assessment. Head to the dashboard to see your results."}
         />
       );
     } else if (problem) {
