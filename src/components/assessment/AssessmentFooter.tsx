@@ -1,8 +1,9 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import FooterStrip from 'components/footer/FooterStrip';
+import LinearProgressWithLabel from '../progress/LinearProgressWithLabel';
 
 const ButtonStrip = styled(Box)(({ theme }) => ({
   display: 'flex'
@@ -11,8 +12,12 @@ const AssessmentFooter = ({ disabled, onNextClicked, onSkipClicked }: Props) => 
   const theme = useTheme();
   return (
     <FooterStrip>
-      <span />
-      <span />
+      <Box width={'70%'} display={'flex'}>
+        <Typography variant="body2" color="text.secondary" sx={{ marginX: '15px' }}>
+          Assessment Progress
+        </Typography>
+        <LinearProgressWithLabel value={70} />
+      </Box>
       <ButtonStrip>
         <Button
           variant="contained"
