@@ -46,10 +46,12 @@ export const knowledgeState = trpc
       const courseSummary = await courseSummaryPromise;
       const courseSummaryWithMastery = courseSummary?.map((unit: any) => {
         const standardsWithMastery = unit.standards?.map((standard: any) => {
-          const userStandardStatus = userStandardStatuses?.find((userStandard) => userStandard.learning_standard_id === standard.id);
+          const userStandardStatus = userStandardStatuses?.find(
+            (userStandard: any) => userStandard.learning_standard_id === standard.standard_id
+          )?.mastery_status;
           return {
             ...standard,
-            mastered: userStandardStatus ? userStandardStatus === MasteryStatus.Mastered : false,
+            mastered: userStandardStatus ? userStandardStatus === convertMasteryStatusToString(MasteryStatus.Mastered) : false,
             status: convertMasteryStatusToString(userStandardStatus ? userStandardStatus : MasteryStatus.Unattempted)
           };
         });
