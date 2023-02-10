@@ -204,6 +204,11 @@ export default class SbClient {
     return { data, error };
   }
 
+  async getLearningStandardById(learningStandardId: number) {
+    const { data } = await this.supabaseClient.from('learning_standard').select().eq('id', learningStandardId);
+    return data;
+  }
+
   async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {
     const { timestamp, id } = await generateIdAndTimestamp('learning_standard');
     const { data, error } = await this.supabaseClient

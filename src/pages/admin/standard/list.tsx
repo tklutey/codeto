@@ -13,6 +13,7 @@ const mapToRows = (data: any) => {
   return data.flatMap((unit: any) => {
     return unit.standards.map((standard: any) => {
       return {
+        id: standard.standard_id,
         unit: standard.unit_name,
         topic: standard.topic_description,
         objective: standard.objective_description,
@@ -33,6 +34,7 @@ const ListStandardsPage = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>ID</TableCell>
             <TableCell>Unit</TableCell>
             <TableCell align="right">Topic</TableCell>
             <TableCell align="right">Objective</TableCell>
@@ -42,6 +44,9 @@ const ListStandardsPage = () => {
         <TableBody>
           {rows.map((row: any) => (
             <TableRow key={row.standard} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">
+                {row.id}
+              </TableCell>
               <TableCell component="th" scope="row">
                 {row.unit}
               </TableCell>

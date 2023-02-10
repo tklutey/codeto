@@ -32,4 +32,12 @@ export const learningStandards = trpc
       const result = sbClient.createStandard(learningStandard, parent, dependentStandards);
       return result;
     }
+  })
+  .query('getById', {
+    input: z.number(),
+    async resolve({ input }) {
+      const id = input;
+      const sbClient = new SbClient();
+      return sbClient.getLearningStandardById(id);
+    }
   });

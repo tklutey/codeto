@@ -6,7 +6,7 @@ import { trpc } from 'utils/trpc';
 import StandardMutateForm from '../../../sections/StandardMutateForm';
 
 const NewStandardPage = () => {
-  const { standards } = useLearningStandards();
+  const { standards: allStandards } = useLearningStandards();
 
   const createStandard = trpc.useMutation('learningStandards.create');
   const { data: parentStandards } = trpc.useQuery(['learningStandards.getCourseStandardsByType', 'objective']);
@@ -14,7 +14,7 @@ const NewStandardPage = () => {
   return (
     <Page title={'New Standard'}>
       {parentStandards && (
-        <StandardMutateForm initialStandards={standards} parentStandards={parentStandards} createStandard={createStandard} />
+        <StandardMutateForm initialStandards={allStandards} parentStandards={parentStandards} createStandard={createStandard} />
       )}
     </Page>
   );

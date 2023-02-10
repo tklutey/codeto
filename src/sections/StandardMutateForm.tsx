@@ -10,7 +10,7 @@ import { UseMutationResult } from 'react-query';
 const mapStandardToString = (s: any) => {
   return `${s.code} | ${s.description}`;
 };
-const StandardMutateForm = ({ initialStandards, parentStandards, createStandard }: Props) => {
+const StandardMutateForm = ({ initialStandards, parentStandards, createStandard, code, description }: Props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [standards, setStandards] = useState(initialStandards);
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -29,8 +29,8 @@ const StandardMutateForm = ({ initialStandards, parentStandards, createStandard 
       initialValues={{
         standards: standards,
         type: 'standard',
-        code: '',
-        description: '',
+        code: code,
+        description: description,
         parent: parentStandards[0].id
       }}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -113,6 +113,8 @@ type Props = {
   initialStandards: any[];
   parentStandards: any[];
   createStandard: UseMutationResult<any, any, any, any>;
+  code?: string;
+  description?: string;
 };
 
 export default StandardMutateForm;

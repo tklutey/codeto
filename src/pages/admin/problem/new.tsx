@@ -16,7 +16,7 @@ import ReactMarkdown from 'react-markdown';
 import { TestType } from '../../../utils/testRunner';
 
 const NewProblem = () => {
-  const { standards, setStandards } = useLearningStandards();
+  const { standards: allStandards, setStandards } = useLearningStandards();
   const [startingCode, setStartingCode] = useState('');
   const [solutionCode, setSolutionCode] = useState('');
   const [solutionCodeTerminalText, setSolutionCodeTerminalText] = useState('');
@@ -52,7 +52,7 @@ const NewProblem = () => {
           submit: null
         }}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
+          const dependentStandards = allStandards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
           const mergedValues = {
             ...values,
             startingCode,
@@ -167,7 +167,7 @@ const NewProblem = () => {
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Associated Skills
             </Typography>
-            <LearningStandardMultiselect standards={standards} setStandards={setStandards} />
+            <LearningStandardMultiselect standards={allStandards} setStandards={setStandards} />
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
