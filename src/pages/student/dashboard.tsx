@@ -120,7 +120,7 @@ const StudentDashboard = () => {
   return (
     <Page title="Dashboard">
       <Typography variant="h1" sx={{ marginBottom: '20px' }} align={'center'}>
-        {chartData[0].standards[0].course_name}
+        {chartData ? chartData[0].standards[0].course_name : 'Loading...'}
       </Typography>
       <Stack spacing={3} height={'100%'}>
         <JumpInCard />
