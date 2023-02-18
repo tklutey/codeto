@@ -21,7 +21,7 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
     setSnackbarOpen(false);
   };
 
-  if (!allObjectives) {
+  if (!allObjectives || !standards) {
     return <div>Loading...</div>;
   }
   return (

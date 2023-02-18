@@ -10,9 +10,9 @@ import { Box } from '@mui/material';
 const LearningStandardMultiselect = ({ standards, setStandards }: Props) => {
   const handleToggle = (index: number, standard: any) => () => {
     // handle toggled standard
-    const isChecked = standard.isChecked ? !standard.isChecked : true;
+    const selected = standard.selected ? !standard.selected : true;
     const standardIndex = standards.findIndex((s) => s.standard_id === standard.standard_id);
-    const modifiedStandard = { ...standard, isChecked };
+    const modifiedStandard = { ...standard, selected: selected };
     const newStandards = [...standards];
     newStandards[standardIndex] = modifiedStandard;
 
@@ -22,11 +22,11 @@ const LearningStandardMultiselect = ({ standards, setStandards }: Props) => {
       dependencies.forEach((dependency: number) => {
         const dependencyIndex = standards.findIndex((s) => s.standard_id === dependency);
         const dependencyStandard = standards[dependencyIndex];
-        const isDependencyChecked = isChecked;
-        const isDependencyDisabled = isChecked;
+        const isDependencyChecked = selected;
+        const isDependencyDisabled = selected;
         const modifiedDependency = {
           ...dependencyStandard,
-          isChecked: isDependencyChecked,
+          selected: isDependencyChecked,
           isDisabled: isDependencyDisabled
         };
         newStandards[dependencyIndex] = modifiedDependency;
@@ -56,7 +56,7 @@ const LearningStandardMultiselect = ({ standards, setStandards }: Props) => {
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
-                      checked={value.isChecked === true ? true : false}
+                      checked={value.selected === true ? true : false}
                       disabled={value.isDisabled === true ? true : false}
                       tabIndex={-1}
                       disableRipple
