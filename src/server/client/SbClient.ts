@@ -205,7 +205,10 @@ export default class SbClient {
   }
 
   async getLearningStandardById(learningStandardId: number) {
-    const { data } = await this.supabaseClient.from('learning_standard').select().eq('id', learningStandardId);
+    const { data } = await this.supabaseClient
+      .from('learning_standard')
+      .select('*, standard_relationship!child_id(*), standard_dependencies!standard_id(*)')
+      .eq('id', learningStandardId);
     return data;
   }
 

@@ -38,6 +38,13 @@ export const learningStandards = trpc
     async resolve({ input }) {
       const id = input;
       const sbClient = new SbClient();
-      return sbClient.getLearningStandardById(id);
+      const standard = await sbClient.getLearningStandardById(id);
+      const transformedStandard = standard?.map((std: any) => {
+        const { standard_dependencies, standard_relationship, ...rest } = std;
+        const dependencies = standard_dependencies?.map((dependency: any) => dependency.dependent_standard);
+        const parentStandards = standard_relationship?.map((relationship: any) => relationship.parent_id);
+        return { ...rest, dependentStandards: dependencies, parentStandards };
+      });
+      return transformedStandard;
     }
   });

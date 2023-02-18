@@ -12,17 +12,34 @@ const EditStandardPage = () => {
   const standardId = router.query.id;
 
   const { data: existingStandard } = trpc.useQuery(['learningStandards.getById', parseInt(standardId as string)]);
-
   const createStandard = trpc.useMutation('learningStandards.create');
   const { data: parentStandards } = trpc.useQuery(['learningStandards.getCourseStandardsByType', 'objective']);
+
+  const existingDependentStandards = existingStandard ? existingStandard[0]?.dependentStandards : [];
+  const existingDependentObjectives = existingStandard ? existingStandard[0]?.parentStandards : [];
+
+  const standardsWithMatches = allStandards.map((standard) => {
+    const existing = existingDependentStandards.find((std: number) => std === standard.standard_id);
+    return {
+      ...standard,
+      selected: existing !== undefined && existing !== null
+    };
+  });
+  const objectivesWithMatches = parentStandards?.map((standard) => {
+    const existing = existingDependentObjectives.find((std: number) => std === standard.id);
+    return {
+      ...standard,
+      selected: existing !== undefined && existing !== null
+    };
+  });
 
   return (
     <Page title={'Edit Standard'}>
       {parentStandards && existingStandard && (
         <StandardMutateForm
-          initialStandards={allStandards}
-          parentStandards={parentStandards}
-          createStandard={createStandard}
+          allStandards={standardsWithMatches}
+          allObjectives={objectivesWithMatches || []}
+          createStandardOperation={createStandard}
           code={existingStandard[0].code}
           description={existingStandard[0].description}
         />

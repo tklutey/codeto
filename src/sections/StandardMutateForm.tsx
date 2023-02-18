@@ -10,9 +10,9 @@ import { UseMutationResult } from 'react-query';
 const mapStandardToString = (s: any) => {
   return `${s.code} | ${s.description}`;
 };
-const StandardMutateForm = ({ initialStandards, parentStandards, createStandard, code, description }: Props) => {
+const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [standards, setStandards] = useState(initialStandards);
+  const [standards, setStandards] = useState(allStandards);
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
@@ -21,7 +21,7 @@ const StandardMutateForm = ({ initialStandards, parentStandards, createStandard,
     setSnackbarOpen(false);
   };
 
-  if (!parentStandards) {
+  if (!allObjectives) {
     return <div>Loading...</div>;
   }
   return (
@@ -31,14 +31,14 @@ const StandardMutateForm = ({ initialStandards, parentStandards, createStandard,
         type: 'standard',
         code: code,
         description: description,
-        parent: parentStandards[0].id
+        parent: allObjectives[0].id
       }}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { standards: x, ...rest } = values;
         const mergedValues = { ...rest, dependentStandards };
-        const { error } = await createStandard.mutateAsync(mergedValues);
+        const { error } = await createStandardOperation.mutateAsync(mergedValues);
         if (error) {
           setStatus({ success: false });
         } else {
@@ -82,7 +82,7 @@ const StandardMutateForm = ({ initialStandards, parentStandards, createStandard,
           <FormControl fullWidth>
             <InputLabel htmlFor={'parent'}>Parent Standard</InputLabel>
             <Select id={'parent'} name={'parent'} value={values.parent} label={'Parent'} onChange={handleChange}>
-              {(parentStandards ? parentStandards : []).map((o) => (
+              {(allObjectives ? allObjectives : []).map((o) => (
                 <MenuItem key={o.id} value={o.id}>
                   {mapStandardToString(o)}
                 </MenuItem>
@@ -110,9 +110,9 @@ const StandardMutateForm = ({ initialStandards, parentStandards, createStandard,
 };
 
 type Props = {
-  initialStandards: any[];
-  parentStandards: any[];
-  createStandard: UseMutationResult<any, any, any, any>;
+  allStandards: any[];
+  allObjectives: any[];
+  createStandardOperation: UseMutationResult<any, any, any, any>;
   code?: string;
   description?: string;
 };

@@ -14,7 +14,7 @@ const NewStandardPage = () => {
   return (
     <Page title={'New Standard'}>
       {parentStandards && (
-        <StandardMutateForm initialStandards={allStandards} parentStandards={parentStandards} createStandard={createStandard} />
+        <StandardMutateForm allStandards={allStandards} allObjectives={parentStandards} createStandardOperation={createStandard} />
       )}
     </Page>
   );
