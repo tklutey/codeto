@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
 const mapToRows = (data: any) => {
@@ -33,38 +33,45 @@ const ListStandardsPage = () => {
     }
   });
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Unit</TableCell>
-            <TableCell align="right">Topic</TableCell>
-            <TableCell align="right">Objective</TableCell>
-            <TableCell align="right">Standard</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row: any) => (
-            <TableRow key={row.standard} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {row.unit}
-              </TableCell>
-              <TableCell align="right">{row.topic}</TableCell>
-              <TableCell align="right">{row.objective}</TableCell>
-              <TableCell align="right">{row.standard}</TableCell>
-              <TableCell align="right">
-                <Button onClick={() => router.push('/admin/standard/edit/' + row.id)}>Edit</Button>
-              </TableCell>
+    <>
+      <Box display={'flex'} justifyContent={'flex-end'} sx={{ marginY: '20px' }}>
+        <Button variant={'contained'} onClick={() => router.push('/admin/standard/new')}>
+          New Standard
+        </Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Unit</TableCell>
+              <TableCell align="right">Topic</TableCell>
+              <TableCell align="right">Objective</TableCell>
+              <TableCell align="right">Standard</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map((row: any) => (
+              <TableRow key={row.standard} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {row.unit}
+                </TableCell>
+                <TableCell align="right">{row.topic}</TableCell>
+                <TableCell align="right">{row.objective}</TableCell>
+                <TableCell align="right">{row.standard}</TableCell>
+                <TableCell align="right">
+                  <Button onClick={() => router.push('/admin/standard/edit/' + row.id)}>Edit</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 ListStandardsPage.getLayout = function getLayout(page: ReactElement) {
