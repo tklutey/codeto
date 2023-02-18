@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const mapToRows = (data: any) => {
   return data.flatMap((unit: any) => {
@@ -24,6 +26,7 @@ const mapToRows = (data: any) => {
 };
 const ListStandardsPage = () => {
   const [rows, setRows] = useState<any[]>([]);
+  const router = useRouter();
   trpc.useQuery(['learningStandards.getCourseStandards'], {
     onSuccess: (data) => {
       setRows(mapToRows(data));
@@ -39,6 +42,7 @@ const ListStandardsPage = () => {
             <TableCell align="right">Topic</TableCell>
             <TableCell align="right">Objective</TableCell>
             <TableCell align="right">Standard</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -53,6 +57,9 @@ const ListStandardsPage = () => {
               <TableCell align="right">{row.topic}</TableCell>
               <TableCell align="right">{row.objective}</TableCell>
               <TableCell align="right">{row.standard}</TableCell>
+              <TableCell align="right">
+                <Button onClick={() => router.push('/admin/standard/edit/' + row.id)}>Edit</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
