@@ -13,6 +13,7 @@ const mapStandardToString = (s: any) => {
 const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [standards, setStandards] = useState(allStandards);
+  const parentObjective = allObjectives.find((o) => o.selected);
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
@@ -31,7 +32,7 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
         type: 'standard',
         code: code,
         description: description,
-        parent: allObjectives[0].id
+        parent: parentObjective ? parentObjective.id : allObjectives[0].id
       }}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
