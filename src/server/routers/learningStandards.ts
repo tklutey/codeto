@@ -18,7 +18,7 @@ export const learningStandards = trpc
       return sbClient.getLearningStandardByType(type);
     }
   })
-  .mutation('create', {
+  .mutation('upsert', {
     input: z.object({
       type: z.string(),
       code: z.string(),

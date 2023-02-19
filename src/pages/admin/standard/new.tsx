@@ -8,7 +8,7 @@ import StandardMutateForm from '../../../sections/StandardMutateForm';
 const NewStandardPage = () => {
   const { standards: allStandards } = useLearningStandards();
 
-  const createStandard = trpc.useMutation('learningStandards.create');
+  const createStandard = trpc.useMutation('learningStandards.upsert');
   const { data: parentStandards } = trpc.useQuery(['learningStandards.getCourseStandardsByType', 'objective']);
 
   return (

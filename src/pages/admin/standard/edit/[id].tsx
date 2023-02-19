@@ -12,7 +12,7 @@ const EditStandardPage = () => {
   const standardId = router.query.id;
 
   const { data: existingStandard } = trpc.useQuery(['learningStandards.getById', parseInt(standardId as string)]);
-  const createStandard = trpc.useMutation('learningStandards.create');
+  const createStandard = trpc.useMutation('learningStandards.upsert');
   const { data: parentStandards } = trpc.useQuery(['learningStandards.getCourseStandardsByType', 'objective']);
 
   const existingDependentStandards = existingStandard ? existingStandard[0]?.dependentStandards : [];
