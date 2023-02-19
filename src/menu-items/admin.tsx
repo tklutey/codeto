@@ -53,18 +53,10 @@ const admin: AdminMenuProps = {
       breadcrumbs: false
     },
     {
-      id: 'new_standard',
-      title: <FormattedMessage id="New Standard" defaultMessage={'New Standard'} />,
+      id: 'manage_standards',
+      title: <FormattedMessage id="Manage Standards" defaultMessage={'Manage Standards'} />,
       type: 'item',
-      url: '/admin/standard/new',
-      icon: icons.Icon3dCubeSphere,
-      breadcrumbs: false
-    },
-    {
-      id: 'list_standards',
-      title: <FormattedMessage id="List Standards" defaultMessage={'List Standards'} />,
-      type: 'item',
-      url: '/admin/standard/list',
+      url: '/admin/standard/manage',
       icon: icons.Icon3dCubeSphere,
       breadcrumbs: false
     }

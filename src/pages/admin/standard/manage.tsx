@@ -26,7 +26,7 @@ const mapToRows = (data: any) => {
     })
     .sort((a: any, b: any) => a.id - b.id);
 };
-const ListStandardsPage = () => {
+const ManageStandardsPage = () => {
   const [rows, setRows] = useState<any[]>([]);
   const router = useRouter();
   trpc.useQuery(['learningStandards.getCourseStandards'], {
@@ -75,7 +75,12 @@ const ListStandardsPage = () => {
                   >
                     Edit
                   </Button>
-                  <Button color="error" variant="outlined" sx={{ marginX: '5px' }} onClick={() => deleteStandard.mutateAsync({ id })}>
+                  <Button
+                    color="error"
+                    variant="outlined"
+                    sx={{ marginX: '5px' }}
+                    onClick={() => deleteStandard.mutateAsync({ id: row.id })}
+                  >
                     Delete
                   </Button>
                 </TableCell>
@@ -87,8 +92,8 @@ const ListStandardsPage = () => {
     </>
   );
 };
-ListStandardsPage.getLayout = function getLayout(page: ReactElement) {
+ManageStandardsPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default ListStandardsPage;
+export default ManageStandardsPage;
