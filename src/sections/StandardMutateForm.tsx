@@ -6,11 +6,13 @@ import LearningStandardMultiselect from '../components/forms/components/CodingPr
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import React, { useState } from 'react';
 import { UseMutationResult } from 'react-query';
+import { useRouter } from 'next/router';
 
 const mapStandardToString = (s: any) => {
   return `${s.code} | ${s.description}`;
 };
-const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
+const StandardMutateForm = ({ standardId, allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
+  const router = useRouter();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [standards, setStandards] = useState(allStandards);
   const parentObjective = allObjectives.find((o) => o.selected);
@@ -38,12 +40,15 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
         const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { standards: x, ...rest } = values;
-        const mergedValues = { ...rest, dependentStandards };
+        const mergedValues = { id: standardId, ...rest, dependentStandards };
         const { error } = await createStandardOperation.mutateAsync(mergedValues);
         if (error) {
           setStatus({ success: false });
         } else {
           setStatus({ success: true });
+          setTimeout(() => {
+            router.push('/admin/standard/list');
+          }, 1500);
         }
         setSubmitting(false);
         setSnackbarOpen(true);
@@ -111,6 +116,7 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
 };
 
 type Props = {
+  standardId?: number;
   allStandards: any[];
   allObjectives: any[];
   createStandardOperation: UseMutationResult<any, any, any, any>;

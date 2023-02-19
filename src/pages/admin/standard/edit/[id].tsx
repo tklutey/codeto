@@ -37,6 +37,7 @@ const EditStandardPage = () => {
     <Page title={'Edit Standard'}>
       {parentStandards && existingStandard && (
         <StandardMutateForm
+          standardId={parseInt(standardId as string)}
           allStandards={standardsWithMatches}
           allObjectives={objectivesWithMatches || []}
           createStandardOperation={createStandard}
