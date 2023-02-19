@@ -12,17 +12,19 @@ import { Button, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
 const mapToRows = (data: any) => {
-  return data.flatMap((unit: any) => {
-    return unit.standards.map((standard: any) => {
-      return {
-        id: standard.standard_id,
-        unit: standard.unit_name,
-        topic: standard.topic_description,
-        objective: standard.objective_description,
-        standard: standard.standard_description
-      };
-    });
-  });
+  return data
+    .flatMap((unit: any) => {
+      return unit.standards.map((standard: any) => {
+        return {
+          id: standard.standard_id,
+          unit: standard.unit_name,
+          topic: standard.topic_description,
+          objective: standard.objective_description,
+          standard: standard.standard_description
+        };
+      });
+    })
+    .sort((a: any, b: any) => a.id - b.id);
 };
 const ListStandardsPage = () => {
   const [rows, setRows] = useState<any[]>([]);
