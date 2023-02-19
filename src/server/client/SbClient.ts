@@ -212,24 +212,31 @@ export default class SbClient {
     return data;
   }
 
-  async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {
-    const { timestamp, id } = await generateIdAndTimestamp('learning_standard');
+  async upsertStandard(inputId: number | undefined, learningStandard: any, parentStandard: number, dependentStandards: number[]) {
+    const { timestamp, id: generatedId } = await generateIdAndTimestamp('learning_standard');
+    const id = inputId || generatedId;
     const { data, error } = await this.supabaseClient
       .from('learning_standard')
-      .insert({
-        ...learningStandard,
-        id,
-        created_at: timestamp
-      })
+      .upsert(
+        {
+          ...learningStandard,
+          id,
+          created_at: timestamp
+        },
+        { onConflict: 'id', ignoreDuplicates: false }
+      )
       .select();
     if (!error) {
       const { error: error2 } = await this.supabaseClient
         .from('standard_relationship')
-        .insert({
-          parent_id: parentStandard,
-          child_id: id,
-          created_at: timestamp
-        })
+        .upsert(
+          {
+            parent_id: parentStandard,
+            child_id: id,
+            created_at: timestamp
+          },
+          { onConflict: 'parent_id, child_id', ignoreDuplicates: false }
+        )
         .select();
       if (error2) {
         throw new Error(error2.message);
@@ -241,7 +248,10 @@ export default class SbClient {
             dependent_standard: dependentStandard
           };
         });
-        const { error: error3 } = await this.supabaseClient.from('standard_dependencies').insert(records).select();
+        const { error: error3 } = await this.supabaseClient
+          .from('standard_dependencies')
+          .upsert(records, { onConflict: 'standard_id, dependent_standard', ignoreDuplicates: false })
+          .select();
         if (error3) {
           throw new Error(error3.message);
         }

@@ -10,7 +10,7 @@ import { UseMutationResult } from 'react-query';
 const mapStandardToString = (s: any) => {
   return `${s.code} | ${s.description}`;
 };
-const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
+const StandardMutateForm = ({ standardId, allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [standards, setStandards] = useState(allStandards);
   const parentObjective = allObjectives.find((o) => o.selected);
@@ -38,7 +38,7 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
         const dependentStandards = standards.filter((standard) => standard.isChecked).map((standard) => standard.standard_id);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { standards: x, ...rest } = values;
-        const mergedValues = { ...rest, dependentStandards };
+        const mergedValues = { id: standardId, ...rest, dependentStandards };
         const { error } = await createStandardOperation.mutateAsync(mergedValues);
         if (error) {
           setStatus({ success: false });
@@ -111,6 +111,7 @@ const StandardMutateForm = ({ allStandards, allObjectives, createStandardOperati
 };
 
 type Props = {
+  standardId?: number;
   allStandards: any[];
   allObjectives: any[];
   createStandardOperation: UseMutationResult<any, any, any, any>;
