@@ -33,6 +33,18 @@ export const learningStandards = trpc
       return result;
     }
   })
+  .mutation('delete', {
+    input: z.object({
+      id: z.number()
+    }),
+    async resolve({ input }) {
+      const { id } = input;
+      const sbClient = new SbClient();
+      const result = sbClient.deleteStandard(id);
+      return result;
+    }
+  })
+
   .query('getById', {
     input: z.number(),
     async resolve({ input }) {

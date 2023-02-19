@@ -212,6 +212,24 @@ export default class SbClient {
     return data;
   }
 
+  async deleteStandard(learningStandardId: number) {
+    const { data, error } = await this.supabaseClient.from('learning_standard').delete().eq('id', learningStandardId).select();
+    const { data: data2, error: error2 } = await this.supabaseClient
+      .from('standard_dependencies')
+      .delete()
+      .eq('standard_id', learningStandardId)
+      .select();
+    const { data: data3, error: error3 } = await this.supabaseClient
+      .from('standard_relationship')
+      .delete()
+      .eq('child_id', learningStandardId)
+      .select();
+    if (error || error2 || error3) {
+      throw new Error(error?.message || error2?.message || error3?.message);
+    }
+    return { data, error };
+  }
+
   async createStandard(learningStandard: any, parentStandard: number, dependentStandards: number[]) {
     const { timestamp, id } = await generateIdAndTimestamp('learning_standard');
     const { data, error } = await this.supabaseClient
