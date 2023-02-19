@@ -32,6 +32,7 @@ const ListStandardsPage = () => {
       setRows(mapToRows(data));
     }
   });
+  const deleteStandard = trpc.useMutation('learningStandards.delete');
   return (
     <>
       <Box display={'flex'} justifyContent={'flex-end'} sx={{ marginY: '20px' }}>
@@ -64,7 +65,17 @@ const ListStandardsPage = () => {
                 <TableCell align="right">{row.objective}</TableCell>
                 <TableCell align="right">{row.standard}</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => router.push('/admin/standard/edit/' + row.id)}>Edit</Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{ marginX: '5px' }}
+                    onClick={() => router.push('/admin/standard/edit/' + row.id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button color="error" variant="outlined" sx={{ marginX: '5px' }} onClick={() => deleteStandard.mutateAsync({ id })}>
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
