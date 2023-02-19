@@ -6,11 +6,13 @@ import LearningStandardMultiselect from '../components/forms/components/CodingPr
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import React, { useState } from 'react';
 import { UseMutationResult } from 'react-query';
+import { useRouter } from 'next/router';
 
 const mapStandardToString = (s: any) => {
   return `${s.code} | ${s.description}`;
 };
 const StandardMutateForm = ({ standardId, allStandards, allObjectives, createStandardOperation, code, description }: Props) => {
+  const router = useRouter();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [standards, setStandards] = useState(allStandards);
   const parentObjective = allObjectives.find((o) => o.selected);
@@ -44,6 +46,9 @@ const StandardMutateForm = ({ standardId, allStandards, allObjectives, createSta
           setStatus({ success: false });
         } else {
           setStatus({ success: true });
+          setTimeout(() => {
+            router.push('/admin/standard/list');
+          }, 1500);
         }
         setSubmitting(false);
         setSnackbarOpen(true);
