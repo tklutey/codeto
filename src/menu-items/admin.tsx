@@ -37,22 +37,6 @@ const admin: AdminMenuProps = {
   whitelistFunction: (user: UserProfile) => user.email === 'kluteyt@gmail.com',
   children: [
     {
-      id: 'read_problem',
-      title: <FormattedMessage id="View Problem" defaultMessage={'View Problem'} />,
-      type: 'item',
-      url: '/admin/problem/1',
-      icon: icons.IconDashboard,
-      breadcrumbs: false
-    },
-    {
-      id: 'new_problem',
-      title: <FormattedMessage id="New Problem" defaultMessage={'New Problem'} />,
-      type: 'item',
-      url: '/admin/problem/new',
-      icon: icons.IconPencil,
-      breadcrumbs: false
-    },
-    {
       id: 'manage_problems',
       title: <FormattedMessage id="Manage Problems" defaultMessage={'Manage Problems'} />,
       type: 'item',
