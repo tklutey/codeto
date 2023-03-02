@@ -296,4 +296,12 @@ export default class SbClient {
       .limit(1);
     return data;
   }
+
+  async getCodingProblemsByCourseId(courseId: number) {
+    const { data } = await this.supabaseClient
+      .from('coding_problem')
+      .select('*, problem_standard_relationship(*, learning_standard(*))')
+      .eq('course_id', courseId);
+    return data;
+  }
 }

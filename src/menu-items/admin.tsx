@@ -53,6 +53,14 @@ const admin: AdminMenuProps = {
       breadcrumbs: false
     },
     {
+      id: 'manage_problems',
+      title: <FormattedMessage id="Manage Problems" defaultMessage={'Manage Problems'} />,
+      type: 'item',
+      url: '/admin/problem/manage',
+      icon: icons.IconPencil,
+      breadcrumbs: false
+    },
+    {
       id: 'manage_standards',
       title: <FormattedMessage id="Manage Standards" defaultMessage={'Manage Standards'} />,
       type: 'item',

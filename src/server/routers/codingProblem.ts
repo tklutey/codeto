@@ -24,6 +24,19 @@ export const codingProblem = trpc
       return transformedResult;
     }
   })
+  .query('getByCourseId', {
+    input: z.number(),
+    async resolve({ input }) {
+      const id = input;
+      const sbClient = new SbClient();
+      const codingProblemQueryResult = await sbClient.getCodingProblemsByCourseId(id);
+      const transformedResult = codingProblemQueryResult?.map((cp) => {
+        return transformCodingProblem(cp);
+      });
+      // @ts-ignore
+      return transformedResult;
+    }
+  })
   .mutation('create', {
     input: z.object({
       title: z.string(),
