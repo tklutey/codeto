@@ -214,16 +214,12 @@ export default class SbClient {
 
   async deleteStandard(learningStandardId: number) {
     const { data, error } = await this.supabaseClient.from('learning_standard').delete().eq('id', learningStandardId).select();
-    const { data: data2, error: error2 } = await this.supabaseClient
+    const { error: error2 } = await this.supabaseClient
       .from('standard_dependencies')
       .delete()
       .eq('standard_id', learningStandardId)
       .select();
-    const { data: data3, error: error3 } = await this.supabaseClient
-      .from('standard_relationship')
-      .delete()
-      .eq('child_id', learningStandardId)
-      .select();
+    const { error: error3 } = await this.supabaseClient.from('standard_relationship').delete().eq('child_id', learningStandardId).select();
     if (error || error2 || error3) {
       throw new Error(error?.message || error2?.message || error3?.message);
     }
