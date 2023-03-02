@@ -62,8 +62,13 @@ const ManageProblemsPage = () => {
                   ))}
                 </TableCell>
                 <TableCell align="right">
-                  <Button color="primary" variant="contained" sx={{ marginX: '5px' }} onClick={() => {}}>
-                    Edit
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{ marginX: '5px' }}
+                    onClick={() => router.push('/admin/problem/' + row.id)}
+                  >
+                    View
                   </Button>
                   <Button color="error" variant="outlined" sx={{ marginX: '5px' }} onClick={() => {}}>
                     Delete
