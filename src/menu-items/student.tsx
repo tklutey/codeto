@@ -42,21 +42,29 @@ const student: StudentMenuProps = {
       breadcrumbs: false
     },
     {
-      id: 'practice',
-      title: <FormattedMessage id="Practice" defaultMessage={'Practice'} />,
+      id: 'assessment',
+      title: <FormattedMessage id="Assessment" defaultMessage={'Assessment'} />,
       type: 'item',
-      url: '/student/practice',
+      url: '/assessment',
       icon: icons.IconPencil,
       breadcrumbs: false
-    },
-    {
-      id: 'sandbox',
-      title: <FormattedMessage id="Sandbox" defaultMessage={'Sandbox'} />,
-      type: 'item',
-      url: '/student/sandbox',
-      icon: icons.Icon3dCubeSphere,
-      breadcrumbs: false
     }
+    // {
+    //   id: 'practice',
+    //   title: <FormattedMessage id="Practice" defaultMessage={'Practice'} />,
+    //   type: 'item',
+    //   url: '/student/practice',
+    //   icon: icons.IconPencil,
+    //   breadcrumbs: false
+    // },
+    // {
+    //   id: 'sandbox',
+    //   title: <FormattedMessage id="Sandbox" defaultMessage={'Sandbox'} />,
+    //   type: 'item',
+    //   url: '/student/sandbox',
+    //   icon: icons.Icon3dCubeSphere,
+    //   breadcrumbs: false
+    // }
   ]
 };
 
