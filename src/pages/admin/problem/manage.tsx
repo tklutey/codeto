@@ -32,7 +32,7 @@ const ManageProblemsPage = () => {
     <>
       <Box display={'flex'} justifyContent={'flex-end'} sx={{ marginY: '20px' }}>
         <Button variant={'contained'} onClick={() => router.push('/admin/problem/new')}>
-          New Standard
+          New Problem
         </Button>
       </Box>
       <TableContainer component={Paper}>

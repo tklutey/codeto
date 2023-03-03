@@ -163,7 +163,12 @@ const NewProblem = () => {
               handleChange={handleChange}
             />
 
-            <FormSelectInput fieldName={'source'} values={values} selectOptions={['none', 'codehs']} handleChange={handleChange} />
+            <FormSelectInput
+              fieldName={'source'}
+              values={values}
+              selectOptions={['none', 'codehs', 'leetcode']}
+              handleChange={handleChange}
+            />
             <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
               Associated Skills
             </Typography>
