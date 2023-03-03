@@ -12,7 +12,7 @@ export const getCourseStandards = async () => {
       };
     })
     .filter((unit: any, index: number, self: any) => self.findIndex((u: any) => u.unit_id === unit.unit_id) === index);
-  return units?.map((unit: any) => {
+  const standards = units?.map((unit: any) => {
     const unitLearningStandards = rawLearningStandards?.filter((ls: any) => ls.unit_id === unit.unit_id);
     const displayStandards = unitLearningStandards;
     const displayUnit = {
@@ -23,6 +23,23 @@ export const getCourseStandards = async () => {
     };
     return displayUnit;
   });
+
+  const codingProblems = await sbClient.getCodingProblemsByCourseId(2);
+  // filter standards that don't appear in any coding problems
+  const filteredStandards = standards?.map((standard) => {
+    const filteredStandard = {
+      ...standard,
+      standards: standard.standards?.filter((s) => {
+        return codingProblems?.some((cp) => {
+          return cp.problem_standard_relationship?.some((psr: any) => {
+            return psr.learning_standard.id === s.standard_id;
+          });
+        });
+      })
+    };
+    return filteredStandard;
+  });
+  return filteredStandards;
 };
 
 export const transformCodingProblem = (codingProblem: any) => {

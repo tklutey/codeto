@@ -7,24 +7,7 @@ export const learningStandards = trpc
   .router()
   .query('getCourseStandards', {
     async resolve() {
-      const standards = await getCourseStandards();
-      const sbClient = new SbClient();
-      const codingProblems = await sbClient.getCodingProblemsByCourseId(2);
-      // filter standards that don't appear in any coding problems
-      const filteredStandards = standards?.map((standard) => {
-        const filteredStandard = {
-          ...standard,
-          standards: standard.standards?.filter((s) => {
-            return codingProblems?.some((cp) => {
-              return cp.problem_standard_relationship?.some((psr: any) => {
-                return psr.learning_standard.id === s.standard_id;
-              });
-            });
-          })
-        };
-        return filteredStandard;
-      });
-      return filteredStandards;
+      return getCourseStandards();
     }
   })
   .query('getCourseStandardsByType', {
