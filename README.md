@@ -1,6 +1,4 @@
 # CodeTo
-<img width="60" alt="image" src="https://github.com/tklutey/codeto/assets/17607557/df62bd3a-d630-4a6e-a1ce-a70bec0f709b">
-
 [CodeTo](https://codeto.io/) is an adaptive platform for learning computer science.
 
 ### About the Project
