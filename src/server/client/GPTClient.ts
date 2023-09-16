@@ -4,7 +4,7 @@ export default class GPTClient {
   private openAIClient: OpenAI;
 
   constructor() {
-    const OPENAI_API_KEY = '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';
+    const OPENAI_API_KEY = process.env.OPENAI_KEY || '';
     this.openAIClient = new OpenAI(OPENAI_API_KEY);
   }
 
